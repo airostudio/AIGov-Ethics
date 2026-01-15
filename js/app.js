@@ -20,8 +20,15 @@ const appState = {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Supabase
-    appState.isSupabaseConnected = initSupabase();
+    // Initialize Supabase (with safety check)
+    if (typeof initSupabase === 'function') {
+        appState.isSupabaseConnected = initSupabase();
+    } else if (typeof window.initSupabase === 'function') {
+        appState.isSupabaseConnected = window.initSupabase();
+    } else {
+        console.warn('initSupabase not found - running in demo mode');
+        appState.isSupabaseConnected = false;
+    }
 
     // Check for existing session and load user tier
     checkAuthState();
