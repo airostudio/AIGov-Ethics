@@ -63,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupNavigation() {
     // Main navigation links
     document.querySelectorAll('.main-nav a').forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            const page = e.target.dataset.page;
+            const page = this.dataset.page;
             if (page) {
                 navigateTo(page);
             }
@@ -73,7 +73,8 @@ function setupNavigation() {
     });
 
     // Logo click - go home
-    document.querySelector('.logo')?.addEventListener('click', () => {
+    document.querySelector('.logo')?.addEventListener('click', (e) => {
+        e.preventDefault();
         navigateTo('home');
     });
 }
