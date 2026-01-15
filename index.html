@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional AI Governance & Ethics Training Platform for Government IT Professionals and Line Managers">
+    <title>AI Governance & Ethics Academy</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-container">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2"/>
+                        <path d="M24 8L24 40M8 24L40 24" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="24" cy="24" r="8" fill="currentColor" opacity="0.3"/>
+                        <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                    </svg>
+                    <span class="logo-text">AI Gov Academy</span>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#" data-page="home" class="active">Home</a></li>
+                        <li><a href="#" data-page="courses">Courses</a></li>
+                        <li><a href="#" data-page="progress">My Progress</a></li>
+                        <li><a href="#" data-page="resources">Resources</a></li>
+                        <li><a href="#" data-page="about">About</a></li>
+                    </ul>
+                </nav>
+                <div class="user-menu">
+                    <button class="btn-login" id="loginBtn">Sign In</button>
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+            <!-- Home Page -->
+            <section id="page-home" class="page active">
+                <!-- Hero Section -->
+                <div class="hero">
+                    <div class="hero-content">
+                        <div class="hero-badge">Government Professional Development</div>
+                        <h1>AI Governance & Ethics Academy</h1>
+                        <p class="hero-subtitle">Comprehensive training for IT professionals and line managers navigating the complex landscape of artificial intelligence governance, ethics, and regulatory compliance.</p>
+                        <div class="hero-cta">
+                            <button class="btn btn-primary btn-large" onclick="navigateTo('courses')">Explore Courses</button>
+                            <button class="btn btn-secondary btn-large" onclick="navigateTo('about')">Learn More</button>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat">
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">Main Courses</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">28</span>
+                                <span class="stat-label">Sub-Courses</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">100+</span>
+                                <span class="stat-label">Lessons</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-illustration">
+                        <svg viewBox="0 0 400 400" class="hero-svg">
+                            <!-- Neural network style illustration -->
+                            <defs>
+                                <linearGradient id="heroGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#2563eb"/>
+                                    <stop offset="100%" style="stop-color:#0ea5e9"/>
+                                </linearGradient>
+                                <linearGradient id="heroGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#10b981"/>
+                                    <stop offset="100%" style="stop-color:#06b6d4"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Connection lines -->
+                            <g stroke="url(#heroGrad1)" stroke-width="2" opacity="0.4">
+                                <line x1="100" y1="100" x2="200" y2="150"/>
+                                <line x1="100" y1="200" x2="200" y2="150"/>
+                                <line x1="100" y1="300" x2="200" y2="250"/>
+                                <line x1="200" y1="150" x2="300" y2="200"/>
+                                <line x1="200" y1="250" x2="300" y2="200"/>
+                                <line x1="200" y1="150" x2="200" y2="250"/>
+                            </g>
+                            <!-- Nodes -->
+                            <circle cx="100" cy="100" r="20" fill="url(#heroGrad1)" opacity="0.8"/>
+                            <circle cx="100" cy="200" r="25" fill="url(#heroGrad2)" opacity="0.8"/>
+                            <circle cx="100" cy="300" r="20" fill="url(#heroGrad1)" opacity="0.8"/>
+                            <circle cx="200" cy="150" r="30" fill="url(#heroGrad2)"/>
+                            <circle cx="200" cy="250" r="30" fill="url(#heroGrad1)"/>
+                            <circle cx="300" cy="200" r="35" fill="url(#heroGrad2)"/>
+                            <!-- Center icon -->
+                            <g transform="translate(285, 185)">
+                                <path d="M15 0L18 10H28L20 16L23 26L15 20L7 26L10 16L2 10H12L15 0Z" fill="white"/>
+                            </g>
+                            <!-- Animated pulse circles -->
+                            <circle cx="200" cy="150" r="30" fill="none" stroke="url(#heroGrad2)" stroke-width="2" class="pulse-ring"/>
+                            <circle cx="300" cy="200" r="35" fill="none" stroke="url(#heroGrad1)" stroke-width="2" class="pulse-ring" style="animation-delay: 0.5s"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <section class="features-section">
+                    <div class="section-header">
+                        <h2>Why Choose Our Academy</h2>
+                        <p>Designed specifically for government professionals who need practical, actionable knowledge</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 16H44" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="10" cy="12" r="2" fill="currentColor"/>
+                                    <circle cx="16" cy="12" r="2" fill="currentColor"/>
+                                    <circle cx="22" cy="12" r="2" fill="currentColor"/>
+                                    <path d="M12 24L18 30L32 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3>Practical Frameworks</h3>
+                            <p>Learn actionable governance frameworks you can implement immediately in your organization.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <path d="M24 4L44 14V34L24 44L4 34V14L24 4Z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M24 4V44" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M4 14L44 34" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+                                    <path d="M44 14L4 34" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+                                </svg>
+                            </div>
+                            <h3>Regulatory Coverage</h3>
+                            <p>Comprehensive coverage of EU AI Act, NIST AI RMF, and emerging global regulations.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M24 12V24L32 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="24" cy="24" r="3" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <h3>Self-Paced Learning</h3>
+                            <p>Progress at your own pace with comprehensive modules designed for busy professionals.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <path d="M8 40V16L24 4L40 16V40H28V28H20V40H8Z" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="18" y="20" width="4" height="4" fill="currentColor"/>
+                                    <rect x="26" y="20" width="4" height="4" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <h3>Government Focus</h3>
+                            <p>Content tailored specifically for public sector requirements and compliance needs.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <rect x="6" y="6" width="36" height="36" rx="4" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M14 24L20 30L34 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>Assessments & Certification</h3>
+                            <p>Test your knowledge with comprehensive assessments and earn completion certificates.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg viewBox="0 0 48 48" fill="none">
+                                    <circle cx="16" cy="16" r="8" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="32" cy="16" r="8" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="24" cy="32" r="8" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M16 24V24" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M32 24V24" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Real Case Studies</h3>
+                            <p>Learn from documented AI failures and successes to avoid common pitfalls.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Course Preview Section -->
+                <section class="courses-preview-section">
+                    <div class="section-header">
+                        <h2>Our Learning Pathways</h2>
+                        <p>Five comprehensive courses taking you from foundational concepts to strategic leadership</p>
+                    </div>
+                    <div class="course-pathway">
+                        <div class="pathway-line"></div>
+                        <div class="pathway-courses" id="homeCoursesPreview">
+                            <!-- Courses loaded dynamically -->
+                        </div>
+                    </div>
+                    <div class="section-cta">
+                        <button class="btn btn-primary" onclick="navigateTo('courses')">View All Courses</button>
+                    </div>
+                </section>
+
+                <!-- Testimonials / Trust Section -->
+                <section class="trust-section">
+                    <div class="trust-badges">
+                        <div class="trust-item">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <path d="M24 4L30 16H44L33 26L37 40L24 31L11 40L15 26L4 16H18L24 4Z" stroke="currentColor" stroke-width="2" fill="currentColor" fill-opacity="0.1"/>
+                            </svg>
+                            <span>Evidence-Based Content</span>
+                        </div>
+                        <div class="trust-item">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <rect x="8" y="12" width="32" height="28" rx="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M16 12V8C16 5.79086 17.7909 4 20 4H28C30.2091 4 32 5.79086 32 8V12" stroke="currentColor" stroke-width="2"/>
+                                <path d="M8 24H40" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>Professional Standards</span>
+                        </div>
+                        <div class="trust-item">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                                <path d="M16 24L22 30L34 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span>Regularly Updated</span>
+                        </div>
+                        <div class="trust-item">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <path d="M24 4C24 4 8 12 8 24C8 36 24 44 24 44C24 44 40 36 40 24C40 12 24 4 24 4Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span>Secure Platform</span>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Courses Page -->
+            <section id="page-courses" class="page">
+                <div class="page-header">
+                    <h1>Learning Pathways</h1>
+                    <p>Progress from foundational concepts to strategic leadership in AI governance</p>
+                </div>
+                <div class="courses-container" id="coursesContainer">
+                    <!-- Courses loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Course Detail Page -->
+            <section id="page-course-detail" class="page">
+                <div id="courseDetailContent">
+                    <!-- Course detail loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Sub-Course/Lesson Page -->
+            <section id="page-lesson" class="page">
+                <div id="lessonContent">
+                    <!-- Lesson content loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Progress Page -->
+            <section id="page-progress" class="page">
+                <div class="page-header">
+                    <h1>My Learning Progress</h1>
+                    <p>Track your journey through the AI Governance & Ethics curriculum</p>
+                </div>
+                <div class="progress-dashboard" id="progressDashboard">
+                    <div class="auth-required-message">
+                        <svg viewBox="0 0 48 48" fill="none" class="auth-icon">
+                            <circle cx="24" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 42C8 34 15 28 24 28C33 28 40 34 40 42" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <h3>Sign in to track your progress</h3>
+                        <p>Create an account or sign in to save your progress across all courses and earn certificates.</p>
+                        <button class="btn btn-primary" onclick="showAuthModal()">Sign In</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Page -->
+            <section id="page-resources" class="page">
+                <div class="page-header">
+                    <h1>Resources & References</h1>
+                    <p>Curated materials from authoritative sources on AI governance</p>
+                </div>
+                <div class="resources-container">
+                    <div class="resource-category">
+                        <h2>Official Regulatory Documents</h2>
+                        <div class="resource-list">
+                            <a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>EU AI Act</h4>
+                                    <p>Complete text of the European Union's Artificial Intelligence Act</p>
+                                </div>
+                            </a>
+                            <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>NIST AI Risk Management Framework</h4>
+                                    <p>Comprehensive framework for managing AI risks</p>
+                                </div>
+                            </a>
+                            <a href="https://www.whitehouse.gov/ostp/ai-bill-of-rights/" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>Blueprint for an AI Bill of Rights</h4>
+                                    <p>White House guidance on protecting civil rights in AI systems</p>
+                                </div>
+                            </a>
+                            <a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>OECD AI Principles</h4>
+                                    <p>International standards for responsible AI development</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="resource-category">
+                        <h2>Research & Standards</h2>
+                        <div class="resource-list">
+                            <a href="https://www.iso.org/standard/81230.html" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>ISO/IEC 42001</h4>
+                                    <p>AI Management System Standard</p>
+                                </div>
+                            </a>
+                            <a href="https://standards.ieee.org/industry-connections/ec/autonomous-systems/" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>IEEE Ethically Aligned Design</h4>
+                                    <p>Guidelines for autonomous and intelligent systems</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="resource-category">
+                        <h2>Case Study Sources</h2>
+                        <div class="resource-list">
+                            <a href="https://incidentdatabase.ai/" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>AI Incident Database</h4>
+                                    <p>Documented cases of AI system failures and harms</p>
+                                </div>
+                            </a>
+                            <a href="https://www.ajl.org/" target="_blank" rel="noopener" class="resource-item">
+                                <div class="resource-icon">
+                                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/></svg>
+                                </div>
+                                <div class="resource-info">
+                                    <h4>Algorithmic Justice League</h4>
+                                    <p>Research on algorithmic bias and discrimination</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Page -->
+            <section id="page-about" class="page">
+                <div class="page-header">
+                    <h1>About This Academy</h1>
+                    <p>Professional development for responsible AI governance</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-section">
+                        <h2>Our Mission</h2>
+                        <p>The AI Governance & Ethics Academy exists to equip government IT professionals and line managers with the knowledge, frameworks, and practical skills needed to deploy AI systems responsibly. As AI becomes increasingly integrated into public services, the need for informed governance has never been more critical.</p>
+                    </div>
+                    <div class="about-section">
+                        <h2>Who This Is For</h2>
+                        <div class="audience-cards">
+                            <div class="audience-card">
+                                <h3>IT Professionals</h3>
+                                <p>Technical staff involved in AI system development, deployment, and maintenance who need to understand governance requirements and implement appropriate safeguards.</p>
+                            </div>
+                            <div class="audience-card">
+                                <h3>Line Managers</h3>
+                                <p>Decision-makers who oversee AI initiatives and need to ensure compliance, manage risks, and build accountability structures.</p>
+                            </div>
+                            <div class="audience-card">
+                                <h3>Policy Advisors</h3>
+                                <p>Those shaping organizational AI policies who need comprehensive understanding of the regulatory landscape and best practices.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-section">
+                        <h2>Our Approach</h2>
+                        <ul class="approach-list">
+                            <li><strong>Evidence-Based:</strong> All content is grounded in peer-reviewed research, official regulatory documents, and documented case studies.</li>
+                            <li><strong>Practical:</strong> Every concept is connected to actionable frameworks and real-world implementation guidance.</li>
+                            <li><strong>Current:</strong> Content is regularly updated to reflect the rapidly evolving regulatory landscape.</li>
+                            <li><strong>Accessible:</strong> Complex topics are presented in clear, understandable language without sacrificing accuracy.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AI Gov Academy</h4>
+                    <p>Professional development for responsible AI governance in government.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="navigateTo('courses')">All Courses</a></li>
+                        <li><a href="#" onclick="navigateTo('resources')">Resources</a></li>
+                        <li><a href="#" onclick="navigateTo('about')">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Key References</h4>
+                    <ul>
+                        <li><a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">EU AI Act</a></li>
+                        <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI RMF</a></li>
+                        <li><a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD AI Principles</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AI Governance & Ethics Academy. Educational content for government professionals.</p>
+            </div>
+        </footer>
+
+        <!-- Auth Modal -->
+        <div id="authModal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="hideAuthModal()">&times;</button>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signin">Sign In</button>
+                    <button class="auth-tab" data-tab="signup">Create Account</button>
+                </div>
+                <form id="signinForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="signinEmail">Email</label>
+                        <input type="email" id="signinEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signinPassword">Password</label>
+                        <input type="password" id="signinPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                </form>
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupRole">Role</label>
+                        <select id="signupRole" required>
+                            <option value="">Select your role</option>
+                            <option value="it_professional">IT Professional</option>
+                            <option value="line_manager">Line Manager</option>
+                            <option value="policy_advisor">Policy Advisor</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/courseData.js"></script>
+    <script src="js/courseContent.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
