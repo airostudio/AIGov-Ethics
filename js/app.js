@@ -10,6 +10,7 @@ const appState = {
     currentSubcourse: null,
     currentLesson: null,
     user: null,
+    userTier: null, // User's purchased tier level (1-5)
     progress: {},
     isSupabaseConnected: false
 };
@@ -22,8 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Supabase
     appState.isSupabaseConnected = initSupabase();
 
-    // Check for existing session
+    // Check for existing session and load user tier
     checkAuthState();
+    loadUserTier();
+
+    // Check for payment success/cancel from Stripe redirect
+    checkPaymentSuccess();
 
     // Setup event listeners
     setupNavigation();
@@ -31,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAuthForms();
     setupUserDropdown();
 
-    // Load initial content
+    // Load initial content (overview only on home page)
     loadCoursesPreview();
-    loadCoursesPage();
 
     // Handle browser back/forward
     window.addEventListener('popstate', handlePopState);
@@ -76,10 +80,32 @@ function setupNavigation() {
 
 function navigateTo(page, params = {}) {
     // Check if page requires auth
-    const authRequiredPages = ['dashboard', 'profile', 'certificates', 'progress'];
+    const authRequiredPages = ['dashboard', 'profile', 'certificates', 'progress', 'courses'];
     if (authRequiredPages.includes(page) && !appState.user) {
         showAuthModal();
         return;
+    }
+
+    // Check course access - requires auth and purchased tier
+    if ((page === 'course-detail' || page === 'lesson') && !appState.user) {
+        showAuthModal();
+        return;
+    }
+
+    // Check tier access for course content
+    if (page === 'course-detail' && params.courseId) {
+        if (!hasAccessToCourse(params.courseId)) {
+            showAccessRestricted(params.courseId);
+            return;
+        }
+    }
+
+    if (page === 'lesson' && params.subcourseId) {
+        const courseId = getCourseIdFromSubcourse(params.subcourseId);
+        if (!hasAccessToCourse(courseId)) {
+            showAccessRestricted(courseId);
+            return;
+        }
     }
 
     // Hide all pages
@@ -102,6 +128,9 @@ function navigateTo(page, params = {}) {
 
     // Handle special pages
     switch (page) {
+        case 'pricing':
+            loadPricingPage();
+            break;
         case 'courses':
             loadCoursesPage();
             break;
@@ -202,11 +231,13 @@ function loadCoursesPreview() {
     const container = document.getElementById('homeCoursesPreview');
     if (!container || !COURSE_DATA?.courses) return;
 
+    // Show overview-only cards (no click to access - purchase required)
     const html = COURSE_DATA.courses.map(course => `
-        <div class="pathway-course" onclick="navigateTo('course-detail', {courseId: '${course.id}'})">
+        <div class="pathway-course overview-only">
             <div class="pathway-node" style="border-color: ${course.color}">${course.number}</div>
             <div class="pathway-title">${course.title}</div>
             <div class="pathway-level">${course.level}</div>
+            <div class="pathway-duration">${course.duration}</div>
         </div>
     `).join('');
 
@@ -217,7 +248,28 @@ function loadCoursesPage() {
     const container = document.getElementById('coursesContainer');
     if (!container || !COURSE_DATA?.courses) return;
 
-    const html = COURSE_DATA.courses.map(course => renderCourseCard(course)).join('');
+    // Only show courses the user has access to
+    const accessibleCourses = COURSE_DATA.courses.filter(course =>
+        hasAccessToCourse(course.id)
+    );
+
+    if (accessibleCourses.length === 0) {
+        container.innerHTML = `
+            <div class="access-restricted">
+                <svg viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="20" width="32" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 20V14C16 9.58172 19.5817 6 24 6C28.4183 6 32 9.58172 32 14V20" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="24" cy="32" r="3" fill="currentColor"/>
+                </svg>
+                <h3>No Courses Available</h3>
+                <p>You haven't purchased any courses yet. Explore our pricing tiers to unlock comprehensive AI governance training.</p>
+                <button class="btn btn-primary" onclick="navigateTo('pricing')">View Pricing</button>
+            </div>
+        `;
+        return;
+    }
+
+    const html = accessibleCourses.map(course => renderCourseCard(course)).join('');
     container.innerHTML = html;
 }
 
@@ -1565,6 +1617,280 @@ function getCourseIcon(iconType) {
     return icons[iconType] || icons.foundation;
 }
 
+// ============================================
+// TIER ACCESS CONTROL
+// ============================================
+
+function hasAccessToCourse(courseId) {
+    // If no user, no access
+    if (!appState.user) return false;
+
+    // If no tier, no access
+    if (!appState.userTier) return false;
+
+    // Use PRICING_TIERS to check access
+    if (typeof PRICING_TIERS !== 'undefined') {
+        return PRICING_TIERS.hasAccess(appState.userTier, courseId);
+    }
+
+    // Fallback: check tier level manually
+    const courseNumber = parseInt(courseId.replace('course-', ''));
+    return appState.userTier >= courseNumber;
+}
+
+function getCourseIdFromSubcourse(subcourseId) {
+    // Extract course ID from subcourse ID (e.g., 'course-1-1' -> 'course-1')
+    const parts = subcourseId.split('-');
+    if (parts.length >= 2) {
+        return `${parts[0]}-${parts[1]}`;
+    }
+    return null;
+}
+
+function showAccessRestricted(courseId) {
+    const course = COURSE_DATA.courses.find(c => c.id === courseId);
+    const courseName = course ? course.title : 'this course';
+
+    // Find which tier is needed
+    let requiredTier = null;
+    if (typeof PRICING_TIERS !== 'undefined') {
+        requiredTier = PRICING_TIERS.tiers.find(t => t.courses.includes(courseId));
+    }
+
+    const container = document.getElementById('main-content');
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'accessRestrictedModal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAccessRestrictedModal()">&times;</button>
+            <div class="access-restricted">
+                <svg viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="20" width="32" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 20V14C16 9.58172 19.5817 6 24 6C28.4183 6 32 9.58172 32 14V20" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="24" cy="32" r="3" fill="currentColor"/>
+                </svg>
+                <h3>Course Access Required</h3>
+                <p>You need to purchase ${requiredTier ? `the <strong>${requiredTier.name}</strong> tier or higher` : 'a higher tier'} to access <strong>${courseName}</strong>.</p>
+                <button class="btn btn-primary" onclick="closeAccessRestrictedModal(); navigateTo('pricing');">View Pricing</button>
+                <button class="btn btn-secondary" onclick="closeAccessRestrictedModal();">Go Back</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function closeAccessRestrictedModal() {
+    const modal = document.getElementById('accessRestrictedModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// ============================================
+// PRICING PAGE
+// ============================================
+
+function loadPricingPage() {
+    const container = document.getElementById('pricingContainer');
+    if (!container) return;
+
+    if (typeof PRICING_TIERS === 'undefined') {
+        container.innerHTML = '<p>Pricing information unavailable.</p>';
+        return;
+    }
+
+    const html = PRICING_TIERS.tiers.map(tier => {
+        const isOwned = appState.userTier && appState.userTier >= tier.level;
+        const isPopular = tier.popular;
+
+        // Generate course list
+        const allCourses = COURSE_DATA.courses.map(course => {
+            const included = tier.courses.includes(course.id);
+            return `
+                <li class="${included ? '' : 'locked'}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${included
+                            ? '<path d="M5 13l4 4L19 7"/>'
+                            : '<path d="M18 6L6 18M6 6l12 12"/>'
+                        }
+                    </svg>
+                    ${course.title}
+                </li>
+            `;
+        }).join('');
+
+        // Generate features list
+        const featuresList = tier.features.map(feature => `
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 13l4 4L19 7"/>
+                </svg>
+                ${feature}
+            </li>
+        `).join('');
+
+        return `
+            <div class="pricing-card ${isPopular ? 'popular' : ''} ${isOwned ? 'owned' : ''}">
+                <div class="pricing-tier-name">${tier.name}</div>
+                <div class="pricing-tier-level">Level ${tier.level}</div>
+                <div class="pricing-price">
+                    <span class="pricing-amount">
+                        <span class="pricing-currency">$</span>${tier.price.toLocaleString()}
+                    </span>
+                    <div class="pricing-period">One-time payment</div>
+                </div>
+                <div class="pricing-description">${tier.description}</div>
+                <div class="pricing-courses">
+                    <div class="pricing-courses-title">Courses Included</div>
+                    <ul class="pricing-courses-list">
+                        ${allCourses}
+                    </ul>
+                </div>
+                <div class="pricing-features">
+                    <div class="pricing-features-title">Features</div>
+                    <ul class="pricing-features-list">
+                        ${featuresList}
+                    </ul>
+                </div>
+                <div class="pricing-cta">
+                    ${isOwned
+                        ? '<button class="btn btn-owned" disabled>Purchased</button>'
+                        : `<button class="btn btn-primary" onclick="purchaseTier('${tier.id}')">Get Started</button>`
+                    }
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = html;
+}
+
+async function purchaseTier(tierId) {
+    // Require login first
+    if (!appState.user) {
+        showAuthModal();
+        showToast('Please sign in to purchase a course tier', 'info');
+        return;
+    }
+
+    const tier = PRICING_TIERS.getTier(tierId);
+    if (!tier) {
+        showToast('Invalid tier selected', 'error');
+        return;
+    }
+
+    // Check if already owned
+    if (appState.userTier && appState.userTier >= tier.level) {
+        showToast('You already have access to this tier', 'info');
+        return;
+    }
+
+    try {
+        showToast('Redirecting to checkout...', 'info');
+
+        // Get user email
+        const userEmail = appState.user.email ||
+                         appState.user.user_metadata?.email ||
+                         '';
+
+        // Try Stripe checkout
+        if (typeof STRIPE_CONFIG !== 'undefined' && STRIPE_CONFIG.stripe) {
+            await STRIPE_CONFIG.redirectToCheckout(tierId, userEmail);
+        } else {
+            // Demo mode - simulate purchase
+            console.log('Demo mode: Simulating purchase for', tierId);
+            await simulatePurchase(tierId);
+        }
+    } catch (error) {
+        console.error('Purchase error:', error);
+        showToast('Failed to initiate checkout. Please try again.', 'error');
+    }
+}
+
+async function simulatePurchase(tierId) {
+    // Demo mode purchase simulation
+    const tier = PRICING_TIERS.getTier(tierId);
+    if (!tier) return;
+
+    // Update user tier in demo mode
+    appState.userTier = tier.level;
+    demoStorage.userTier = tier.level;
+
+    // Store in localStorage for persistence
+    localStorage.setItem('aiGovUserTier', tier.level.toString());
+
+    showToast(`Successfully purchased ${tier.name} tier! (Demo Mode)`, 'success');
+
+    // Reload the pricing page to show updated state
+    loadPricingPage();
+
+    // Navigate to courses
+    setTimeout(() => {
+        navigateTo('courses');
+    }, 1500);
+}
+
+function loadUserTier() {
+    // Load tier from Supabase or demo storage
+    if (appState.isSupabaseConnected && supabase && appState.user) {
+        loadTierFromSupabase();
+    } else {
+        // Demo mode - load from localStorage
+        const savedTier = localStorage.getItem('aiGovUserTier');
+        if (savedTier) {
+            appState.userTier = parseInt(savedTier);
+            demoStorage.userTier = appState.userTier;
+        }
+    }
+}
+
+async function loadTierFromSupabase() {
+    if (!supabase || !appState.user) return;
+
+    try {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('tier_level')
+            .eq('id', appState.user.id)
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.tier_level) {
+            appState.userTier = data.tier_level;
+        }
+    } catch (error) {
+        console.error('Error loading user tier:', error);
+    }
+}
+
+// ============================================
+// PAYMENT SUCCESS HANDLING
+// ============================================
+
+function checkPaymentSuccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+
+    if (paymentStatus === 'success') {
+        showToast('Payment successful! Welcome to the Academy.', 'success');
+        // Reload user tier
+        loadUserTier();
+        // Clean URL
+        const url = new URL(window.location);
+        url.searchParams.delete('payment');
+        url.searchParams.delete('session_id');
+        window.history.replaceState({}, '', url);
+    } else if (paymentStatus === 'cancelled') {
+        showToast('Payment was cancelled.', 'info');
+        // Clean URL
+        const url = new URL(window.location);
+        url.searchParams.delete('payment');
+        window.history.replaceState({}, '', url);
+    }
+}
+
 // Make functions globally available
 window.navigateTo = navigateTo;
 window.showAuthModal = showAuthModal;
@@ -1574,3 +1900,5 @@ window.startCourse = startCourse;
 window.checkAssessment = checkAssessment;
 window.markLessonComplete = markLessonComplete;
 window.downloadCertificate = downloadCertificate;
+window.purchaseTier = purchaseTier;
+window.closeAccessRestrictedModal = closeAccessRestrictedModal;

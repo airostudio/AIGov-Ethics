@@ -1643,3 +1643,338 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ============================================
+   PRICING PAGE STYLES
+   ============================================ */
+
+.pricing-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+.pricing-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all var(--transition-normal);
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card.popular {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px var(--primary-500);
+}
+
+.pricing-card.popular::before {
+    content: 'Most Popular';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    padding: var(--space-xs) var(--space-lg);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pricing-card.owned {
+    border-color: var(--success);
+    background: linear-gradient(to bottom, rgba(16, 185, 129, 0.05), transparent);
+}
+
+.pricing-card.owned::after {
+    content: '✓ Purchased';
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: var(--success);
+    color: white;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.pricing-tier-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+}
+
+.pricing-tier-level {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.pricing-price {
+    margin-bottom: var(--space-lg);
+}
+
+.pricing-amount {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.pricing-currency {
+    font-size: 1.5rem;
+    font-weight: 600;
+    vertical-align: super;
+    margin-right: 2px;
+}
+
+.pricing-period {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--space-xs);
+}
+
+.pricing-description {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.pricing-courses {
+    margin-bottom: var(--space-xl);
+}
+
+.pricing-courses-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.pricing-courses-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pricing-courses-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.pricing-courses-list li svg {
+    width: 16px;
+    height: 16px;
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+.pricing-courses-list li.locked svg {
+    color: var(--text-muted);
+}
+
+.pricing-courses-list li.locked {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+.pricing-features {
+    margin-bottom: var(--space-xl);
+    flex-grow: 1;
+}
+
+.pricing-features-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.pricing-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pricing-features-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+.pricing-features-list li svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary-500);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.pricing-cta {
+    margin-top: auto;
+}
+
+.pricing-cta .btn {
+    width: 100%;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 1rem;
+}
+
+.pricing-cta .btn-owned {
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    cursor: default;
+}
+
+.pricing-cta .btn-owned:hover {
+    background: var(--bg-tertiary);
+    transform: none;
+}
+
+.pricing-guarantee {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    max-width: 600px;
+    margin: var(--space-3xl) auto 0;
+    padding: var(--space-xl);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+}
+
+.pricing-guarantee svg {
+    width: 48px;
+    height: 48px;
+    color: var(--success);
+    flex-shrink: 0;
+}
+
+.guarantee-text h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.guarantee-text p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Pricing responsive */
+@media (max-width: 1200px) {
+    .pricing-container {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing-container {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .pricing-guarantee {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .pricing-amount {
+        font-size: 2.5rem;
+    }
+}
+
+/* ============================================
+   COURSE OVERVIEW CARDS (Home Page - No Access)
+   ============================================ */
+
+.pathway-course.overview-only {
+    cursor: default;
+}
+
+.pathway-course.overview-only:hover {
+    transform: none;
+}
+
+.pathway-course .course-locked-badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.pathway-course .course-locked-badge svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ============================================
+   ACCESS RESTRICTED MESSAGE
+   ============================================ */
+
+.access-restricted {
+    text-align: center;
+    padding: var(--space-3xl);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.access-restricted svg {
+    width: 64px;
+    height: 64px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.access-restricted h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.access-restricted p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+}
+
+.access-restricted .btn {
+    margin: 0 var(--space-sm);
+}

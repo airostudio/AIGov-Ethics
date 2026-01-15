@@ -28,7 +28,8 @@
                 <nav class="main-nav">
                     <ul>
                         <li><a href="#" data-page="home" class="active">Home</a></li>
-                        <li><a href="#" data-page="courses">Courses</a></li>
+                        <li><a href="#" data-page="pricing">Pricing</a></li>
+                        <li><a href="#" data-page="courses" class="nav-auth-only" style="display:none;">My Courses</a></li>
                         <li><a href="#" data-page="dashboard" class="nav-auth-only" style="display:none;">Dashboard</a></li>
                         <li><a href="#" data-page="resources">Resources</a></li>
                         <li><a href="#" data-page="about">About</a></li>
@@ -99,7 +100,7 @@
                         <h1>AI Governance & Ethics Academy</h1>
                         <p class="hero-subtitle">Comprehensive training for IT professionals and line managers navigating the complex landscape of artificial intelligence governance, ethics, and regulatory compliance.</p>
                         <div class="hero-cta">
-                            <button class="btn btn-primary btn-large" onclick="navigateTo('courses')">Explore Courses</button>
+                            <button class="btn btn-primary btn-large" onclick="navigateTo('pricing')">View Pricing</button>
                             <button class="btn btn-secondary btn-large" onclick="navigateTo('about')">Learn More</button>
                         </div>
                         <div class="hero-stats">
@@ -251,7 +252,7 @@
                         </div>
                     </div>
                     <div class="section-cta">
-                        <button class="btn btn-primary" onclick="navigateTo('courses')">View All Courses</button>
+                        <button class="btn btn-primary" onclick="navigateTo('pricing')">Get Started</button>
                     </div>
                 </section>
 
@@ -290,14 +291,35 @@
                 </section>
             </section>
 
-            <!-- Courses Page -->
+            <!-- Pricing Page -->
+            <section id="page-pricing" class="page">
+                <div class="page-header">
+                    <h1>Investment in Your Future</h1>
+                    <p>Choose the learning pathway that matches your professional development goals</p>
+                </div>
+                <div class="pricing-container" id="pricingContainer">
+                    <!-- Pricing tiers loaded dynamically -->
+                </div>
+                <div class="pricing-guarantee">
+                    <svg viewBox="0 0 48 48" fill="none">
+                        <path d="M24 4C24 4 8 12 8 24C8 36 24 44 24 44C24 44 40 36 40 24C40 12 24 4 24 4Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div class="guarantee-text">
+                        <h3>Secure Payment via Stripe</h3>
+                        <p>All transactions are processed securely through Stripe. Your payment information is never stored on our servers.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Courses Page (Auth Required) -->
             <section id="page-courses" class="page">
                 <div class="page-header">
-                    <h1>Learning Pathways</h1>
-                    <p>Progress from foundational concepts to strategic leadership in AI governance</p>
+                    <h1>My Learning Pathways</h1>
+                    <p>Access your purchased courses and track your progress</p>
                 </div>
                 <div class="courses-container" id="coursesContainer">
-                    <!-- Courses loaded dynamically -->
+                    <!-- Courses loaded dynamically based on user tier -->
                 </div>
             </section>
 
@@ -512,7 +534,7 @@
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="#" data-page="home" onclick="navigateTo('home'); return false;">Home</a></li>
-                        <li><a href="#" data-page="courses" onclick="navigateTo('courses'); return false;">Courses</a></li>
+                        <li><a href="#" data-page="pricing" onclick="navigateTo('pricing'); return false;">Pricing</a></li>
                         <li><a href="#" data-page="resources" onclick="navigateTo('resources'); return false;">Resources</a></li>
                         <li><a href="#" data-page="about" onclick="navigateTo('about'); return false;">About</a></li>
                     </ul>
@@ -583,7 +605,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="js/config.js"></script>
+    <script src="js/pricing.js"></script>
     <script src="js/courseData.js"></script>
     <script src="js/courseContent.js"></script>
     <script src="js/app.js"></script>

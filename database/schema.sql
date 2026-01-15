@@ -20,10 +20,19 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    email TEXT,
     full_name TEXT,
     role TEXT CHECK (role IN ('it_professional', 'line_manager', 'policy_advisor', 'other')),
     organization TEXT,
     department TEXT,
+    -- Tier/Payment fields
+    tier_id TEXT,
+    tier_level INTEGER DEFAULT 0,
+    tier_name TEXT,
+    payment_id TEXT,
+    payment_amount DECIMAL(10,2),
+    payment_date TIMESTAMPTZ,
+    -- Timestamps
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -221,6 +230,39 @@ ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
 -- Policy - only allow inserts, admin-only reads
 CREATE POLICY "Anyone can log events" ON public.analytics_events
     FOR INSERT WITH CHECK (true);
+
+-- ============================================
+-- PURCHASES
+-- ============================================
+-- Track all purchases for audit and support
+
+CREATE TABLE IF NOT EXISTS public.purchases (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    email TEXT NOT NULL,
+    tier_id TEXT NOT NULL,
+    tier_level INTEGER NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency TEXT DEFAULT 'USD',
+    stripe_session_id TEXT,
+    stripe_payment_intent TEXT,
+    status TEXT CHECK (status IN ('pending', 'completed', 'failed', 'refunded')) DEFAULT 'pending',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index for faster queries
+CREATE INDEX idx_purchases_email ON public.purchases(email);
+CREATE INDEX idx_purchases_user ON public.purchases(user_id);
+CREATE INDEX idx_purchases_stripe ON public.purchases(stripe_payment_intent);
+
+-- Enable Row Level Security
+ALTER TABLE public.purchases ENABLE ROW LEVEL SECURITY;
+
+-- Policies for purchases
+CREATE POLICY "Users can view own purchases" ON public.purchases
+    FOR SELECT USING (auth.uid() = user_id);
+
+-- Only server (service role) can insert/update purchases
 
 -- ============================================
 -- HELPER FUNCTIONS
