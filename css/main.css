@@ -861,8 +861,14 @@ main {
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--space-md);
+}
+
+@media (min-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .form-row .form-group {
@@ -1044,9 +1050,5 @@ main {
 
     .modal-content {
         padding: var(--space-lg);
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
     }
 }
