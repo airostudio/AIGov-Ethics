@@ -20,47 +20,58 @@ const appState = {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Supabase (with safety check)
-    if (typeof initSupabase === 'function') {
-        appState.isSupabaseConnected = initSupabase();
-    } else if (typeof window.initSupabase === 'function') {
-        appState.isSupabaseConnected = window.initSupabase();
-    } else {
-        console.warn('initSupabase not found - running in demo mode');
-        appState.isSupabaseConnected = false;
+    try {
+        // Initialize Supabase (with safety check)
+        if (typeof initSupabase === 'function') {
+            appState.isSupabaseConnected = initSupabase();
+        } else if (typeof window.initSupabase === 'function') {
+            appState.isSupabaseConnected = window.initSupabase();
+        } else {
+            console.warn('initSupabase not found - running in demo mode');
+            appState.isSupabaseConnected = false;
+        }
+
+        // Check for existing session and load user tier
+        checkAuthState();
+        loadUserTier();
+
+        // Check for payment success/cancel from Stripe redirect
+        checkPaymentSuccess();
+
+        // Setup event listeners
+        setupNavigation();
+        setupMobileMenu();
+        setupAuthForms();
+        setupUserDropdown();
+
+        // Load initial content (overview only on home page)
+        loadCoursesPreview();
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', handlePopState);
+
+        // Check URL params for initial page
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialPage = urlParams.get('page');
+        if (initialPage) {
+            const params = {};
+            urlParams.forEach((value, key) => {
+                if (key !== 'page') params[key] = value;
+            });
+            navigateTo(initialPage, params);
+        }
+
+        console.log('AI Governance & Ethics Academy initialized');
+    } catch (error) {
+        console.error('Initialization error:', error);
+        // Attempt minimal setup for navigation
+        try {
+            setupNavigation();
+            setupMobileMenu();
+        } catch (e) {
+            console.error('Navigation setup failed:', e);
+        }
     }
-
-    // Check for existing session and load user tier
-    checkAuthState();
-    loadUserTier();
-
-    // Check for payment success/cancel from Stripe redirect
-    checkPaymentSuccess();
-
-    // Setup event listeners
-    setupNavigation();
-    setupMobileMenu();
-    setupAuthForms();
-    setupUserDropdown();
-
-    // Load initial content (overview only on home page)
-    loadCoursesPreview();
-
-    // Handle browser back/forward
-    window.addEventListener('popstate', handlePopState);
-
-    // Check URL params for initial page
-    const urlParams = new URLSearchParams(window.location.search);
-    const initialPage = urlParams.get('page');
-    if (initialPage) {
-        const params = {};
-        urlParams.forEach((value, key) => {
-            if (key !== 'page') params[key] = value;
-        });
-        navigateTo(initialPage, params);
-    }
-
-    console.log('AI Governance & Ethics Academy initialized');
 });
 
 // ============================================
@@ -984,7 +995,7 @@ async function updateProfile() {
     const role = document.getElementById('profileRole')?.value;
     const organization = document.getElementById('profileOrg')?.value;
 
-    if (appState.isSupabaseConnected && supabase && appState.user) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase && appState.user) {
         try {
             const { error } = await supabase.auth.updateUser({
                 data: { name, role, organization }
@@ -1391,7 +1402,7 @@ function hideAuthModal() {
 }
 
 async function signIn(email, password) {
-    if (appState.isSupabaseConnected && supabase) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase) {
         try {
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
@@ -1425,7 +1436,7 @@ async function signIn(email, password) {
 async function signUp(signupData) {
     const { name, email, password, role, jobTitle, organization, phone, newsletter } = signupData;
 
-    if (appState.isSupabaseConnected && supabase) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase) {
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
@@ -1479,7 +1490,7 @@ async function signUp(signupData) {
 }
 
 async function signOut() {
-    if (appState.isSupabaseConnected && supabase) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase) {
         await supabase.auth.signOut();
     }
 
@@ -1492,7 +1503,7 @@ async function signOut() {
 }
 
 async function checkAuthState() {
-    if (appState.isSupabaseConnected && supabase) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
             appState.user = session.user;
@@ -1571,7 +1582,7 @@ function trackLessonView(subcourseId) {
 }
 
 async function saveProgress() {
-    if (appState.isSupabaseConnected && supabase && appState.user) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase && appState.user) {
         try {
             await supabase.from('user_progress').upsert({
                 user_id: appState.user.id,
@@ -1588,7 +1599,7 @@ async function saveProgress() {
 }
 
 async function loadUserProgress() {
-    if (appState.isSupabaseConnected && supabase && appState.user) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase && appState.user) {
         try {
             const { data, error } = await supabase
                 .from('user_progress')
@@ -1878,7 +1889,7 @@ async function simulatePurchase(tierId) {
 
 function loadUserTier() {
     // Load tier from Supabase or demo storage
-    if (appState.isSupabaseConnected && supabase && appState.user) {
+    if (appState.isSupabaseConnected && typeof supabase !== 'undefined' && supabase && appState.user) {
         loadTierFromSupabase();
     } else {
         // Demo mode - load from localStorage
@@ -1891,7 +1902,7 @@ function loadUserTier() {
 }
 
 async function loadTierFromSupabase() {
-    if (!supabase || !appState.user) return;
+    if (typeof supabase === 'undefined' || !supabase || !appState.user) return;
 
     try {
         const { data, error } = await supabase
