@@ -749,7 +749,9 @@ main {
     border-radius: var(--radius-xl);
     padding: var(--space-2xl);
     width: 100%;
-    max-width: 420px;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
     animation: modalSlideIn 0.3s ease;
 }
@@ -1042,5 +1044,9 @@ main {
 
     .modal-content {
         padding: var(--space-lg);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }

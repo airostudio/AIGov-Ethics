@@ -1320,16 +1320,30 @@ document.addEventListener('click', (e) => {
 // ============================================
 
 function setupAuthForms() {
-    // Auth tabs
-    document.querySelectorAll('.auth-tab').forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            const targetTab = e.target.dataset.tab;
+    // Auth tabs - handle switching between signin and signup forms
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const authForms = document.querySelectorAll('.auth-form');
 
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    authTabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-            e.target.classList.add('active');
-            document.getElementById(`${targetTab}Form`)?.classList.add('active');
+            const targetTab = this.dataset.tab;
+            if (!targetTab) return;
+
+            // Remove active from all tabs and forms
+            authTabs.forEach(t => t.classList.remove('active'));
+            authForms.forEach(f => f.classList.remove('active'));
+
+            // Add active to clicked tab
+            this.classList.add('active');
+
+            // Show corresponding form
+            const targetForm = document.getElementById(`${targetTab}Form`);
+            if (targetForm) {
+                targetForm.classList.add('active');
+            }
         });
     });
 
