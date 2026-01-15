@@ -573,29 +573,53 @@
                     <button type="submit" class="btn btn-primary btn-full">Sign In</button>
                 </form>
                 <form id="signupForm" class="auth-form">
-                    <div class="form-group">
-                        <label for="signupName">Full Name</label>
-                        <input type="text" id="signupName" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signupName">Full Name *</label>
+                            <input type="text" id="signupName" required placeholder="John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label for="signupJobTitle">Job Title</label>
+                            <input type="text" id="signupJobTitle" placeholder="IT Manager">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="signupEmail">Email</label>
-                        <input type="email" id="signupEmail" required>
+                        <label for="signupEmail">Work Email *</label>
+                        <input type="email" id="signupEmail" required placeholder="john.smith@agency.gov">
                     </div>
                     <div class="form-group">
-                        <label for="signupPassword">Password</label>
-                        <input type="password" id="signupPassword" required minlength="8">
+                        <label for="signupOrganization">Organization / Company *</label>
+                        <input type="text" id="signupOrganization" required placeholder="Department of Technology">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signupRole">Role *</label>
+                            <select id="signupRole" required>
+                                <option value="">Select your role</option>
+                                <option value="it_professional">IT Professional</option>
+                                <option value="line_manager">Line Manager</option>
+                                <option value="policy_advisor">Policy Advisor</option>
+                                <option value="executive">Executive / Director</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPhone">Phone (Optional)</label>
+                            <input type="tel" id="signupPhone" placeholder="+1 (555) 123-4567">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="signupRole">Role</label>
-                        <select id="signupRole" required>
-                            <option value="">Select your role</option>
-                            <option value="it_professional">IT Professional</option>
-                            <option value="line_manager">Line Manager</option>
-                            <option value="policy_advisor">Policy Advisor</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <label for="signupPassword">Password *</label>
+                        <input type="password" id="signupPassword" required minlength="8" placeholder="Minimum 8 characters">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="signupNewsletter" checked>
+                            <span>Send me updates about new courses and AI governance news</span>
+                        </label>
                     </div>
                     <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                    <p class="form-note">* Required fields</p>
                 </form>
             </div>
         </div>

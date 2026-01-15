@@ -852,6 +852,52 @@ main {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
+.form-group input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.form-row .form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.checkbox-group {
+    margin-bottom: var(--space-lg);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin-top: 2px;
+    accent-color: var(--primary-500);
+}
+
+.checkbox-label span {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.form-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: var(--space-md);
+}
+
 /* --- Toast Notifications --- */
 .toast {
     position: fixed;

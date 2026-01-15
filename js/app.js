@@ -1345,12 +1345,18 @@ function setupAuthForms() {
     // Sign up form
     document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = document.getElementById('signupName').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
-        const role = document.getElementById('signupRole').value;
+        const signupData = {
+            name: document.getElementById('signupName').value,
+            email: document.getElementById('signupEmail').value,
+            password: document.getElementById('signupPassword').value,
+            role: document.getElementById('signupRole').value,
+            jobTitle: document.getElementById('signupJobTitle')?.value || '',
+            organization: document.getElementById('signupOrganization')?.value || '',
+            phone: document.getElementById('signupPhone')?.value || '',
+            newsletter: document.getElementById('signupNewsletter')?.checked || false
+        };
 
-        await signUp(name, email, password, role);
+        await signUp(signupData);
     });
 }
 
@@ -1394,14 +1400,24 @@ async function signIn(email, password) {
     }
 }
 
-async function signUp(name, email, password, role) {
+async function signUp(signupData) {
+    const { name, email, password, role, jobTitle, organization, phone, newsletter } = signupData;
+
     if (appState.isSupabaseConnected && supabase) {
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
-                    data: { name, role }
+                    data: {
+                        name,
+                        role,
+                        job_title: jobTitle,
+                        organization,
+                        phone,
+                        newsletter_opt_in: newsletter,
+                        signup_date: new Date().toISOString()
+                    }
                 }
             });
 
@@ -1410,6 +1426,7 @@ async function signUp(name, email, password, role) {
             // Check if email confirmation is required
             if (data.user && !data.session) {
                 showToast('Account created! Please check your email to verify.', 'success');
+                hideAuthModal();
             } else if (data.session) {
                 appState.user = data.user;
                 hideAuthModal();
@@ -1417,14 +1434,20 @@ async function signUp(name, email, password, role) {
                 showToast('Account created successfully!', 'success');
                 navigateTo('dashboard');
             }
-
-            hideAuthModal();
         } catch (error) {
             showToast(error.message || 'Sign up failed', 'error');
         }
     } else {
         // Demo mode
-        demoStorage.user = { email, name, role };
+        demoStorage.user = {
+            email,
+            name,
+            role,
+            job_title: jobTitle,
+            organization,
+            phone,
+            newsletter_opt_in: newsletter
+        };
         appState.user = demoStorage.user;
         hideAuthModal();
         updateAuthUI();

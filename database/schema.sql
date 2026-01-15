@@ -22,9 +22,14 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
     email TEXT,
     full_name TEXT,
-    role TEXT CHECK (role IN ('it_professional', 'line_manager', 'policy_advisor', 'other')),
+    job_title TEXT,
+    role TEXT CHECK (role IN ('it_professional', 'line_manager', 'policy_advisor', 'executive', 'other')),
     organization TEXT,
     department TEXT,
+    phone TEXT,
+    -- Marketing fields
+    newsletter_opt_in BOOLEAN DEFAULT false,
+    signup_source TEXT,
     -- Tier/Payment fields
     tier_id TEXT,
     tier_level INTEGER DEFAULT 0,
@@ -54,11 +59,25 @@ CREATE POLICY "Users can insert own profile" ON public.profiles
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO public.profiles (id, full_name, role)
+    INSERT INTO public.profiles (
+        id,
+        email,
+        full_name,
+        job_title,
+        role,
+        organization,
+        phone,
+        newsletter_opt_in
+    )
     VALUES (
         NEW.id,
+        NEW.email,
         NEW.raw_user_meta_data->>'name',
-        NEW.raw_user_meta_data->>'role'
+        NEW.raw_user_meta_data->>'job_title',
+        NEW.raw_user_meta_data->>'role',
+        NEW.raw_user_meta_data->>'organization',
+        NEW.raw_user_meta_data->>'phone',
+        COALESCE((NEW.raw_user_meta_data->>'newsletter_opt_in')::boolean, false)
     );
     RETURN NEW;
 END;
