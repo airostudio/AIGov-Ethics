@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupMobileMenu();
     setupAuthForms();
+    setupUserDropdown();
 
     // Load initial content
     loadCoursesPreview();
@@ -36,6 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle browser back/forward
     window.addEventListener('popstate', handlePopState);
+
+    // Check URL params for initial page
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialPage = urlParams.get('page');
+    if (initialPage) {
+        const params = {};
+        urlParams.forEach((value, key) => {
+            if (key !== 'page') params[key] = value;
+        });
+        navigateTo(initialPage, params);
+    }
 
     console.log('AI Governance & Ethics Academy initialized');
 });
@@ -50,12 +62,26 @@ function setupNavigation() {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const page = e.target.dataset.page;
-            navigateTo(page);
+            if (page) {
+                navigateTo(page);
+            }
         });
+    });
+
+    // Logo click - go home
+    document.querySelector('.logo')?.addEventListener('click', () => {
+        navigateTo('home');
     });
 }
 
 function navigateTo(page, params = {}) {
+    // Check if page requires auth
+    const authRequiredPages = ['dashboard', 'profile', 'certificates', 'progress'];
+    if (authRequiredPages.includes(page) && !appState.user) {
+        showAuthModal();
+        return;
+    }
+
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
@@ -76,6 +102,9 @@ function navigateTo(page, params = {}) {
 
     // Handle special pages
     switch (page) {
+        case 'courses':
+            loadCoursesPage();
+            break;
         case 'course-detail':
             if (params.courseId) {
                 loadCourseDetail(params.courseId);
@@ -85,6 +114,15 @@ function navigateTo(page, params = {}) {
             if (params.subcourseId) {
                 loadLesson(params.subcourseId);
             }
+            break;
+        case 'dashboard':
+            loadDashboard();
+            break;
+        case 'profile':
+            loadProfile();
+            break;
+        case 'certificates':
+            loadCertificates();
             break;
         case 'progress':
             loadProgressDashboard();
@@ -101,6 +139,10 @@ function navigateTo(page, params = {}) {
 
     // Scroll to top
     window.scrollTo(0, 0);
+
+    // Close mobile menu if open
+    document.querySelector('.main-nav')?.classList.remove('active');
+    document.querySelector('.mobile-menu-toggle')?.classList.remove('active');
 }
 
 function handlePopState(event) {
@@ -124,9 +166,30 @@ function setupMobileMenu() {
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-            nav.classList.remove('active');
-            toggle.classList.remove('active');
+        if (!nav?.contains(e.target) && !toggle?.contains(e.target)) {
+            nav?.classList.remove('active');
+            toggle?.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// USER DROPDOWN
+// ============================================
+
+function setupUserDropdown() {
+    const toggle = document.getElementById('userDropdownToggle');
+    const dropdown = document.getElementById('userDropdown');
+
+    toggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown?.classList.toggle('active');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!dropdown?.contains(e.target)) {
+            dropdown?.classList.remove('active');
         }
     });
 }
@@ -227,14 +290,17 @@ function loadCourseDetail(courseId) {
     const container = document.getElementById('courseDetailContent');
     if (!container) return;
 
-    const subcoursesList = course.subcourses.map((sub, index) => `
-        <li class="module-nav-item">
-            <div class="module-nav-link" onclick="navigateTo('lesson', {subcourseId: '${sub.id}'})">
-                <span class="nav-icon">${index + 1}</span>
-                <span>${sub.title}</span>
-            </div>
-        </li>
-    `).join('');
+    const subcoursesList = course.subcourses.map((sub, index) => {
+        const isCompleted = appState.progress[sub.id]?.completed;
+        return `
+            <li class="module-nav-item">
+                <div class="module-nav-link ${isCompleted ? 'completed' : ''}" onclick="navigateTo('lesson', {subcourseId: '${sub.id}'})">
+                    <span class="nav-icon">${isCompleted ? '✓' : (index + 1)}</span>
+                    <span>${sub.title}</span>
+                </div>
+            </li>
+        `;
+    }).join('');
 
     container.innerHTML = `
         <div class="course-detail-header">
@@ -377,7 +443,7 @@ function loadLesson(subcourseId) {
             <li class="module-nav-item">
                 <div class="module-nav-link ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
                      onclick="navigateTo('lesson', {subcourseId: '${sub.id}'})">
-                    <span class="nav-icon">${isCompleted ? '&#10003;' : (index + 1)}</span>
+                    <span class="nav-icon">${isCompleted ? '✓' : (index + 1)}</span>
                     <span>${sub.title}</span>
                 </div>
             </li>
@@ -540,6 +606,530 @@ function markLessonComplete(subcourseId) {
 }
 
 // ============================================
+// DASHBOARD
+// ============================================
+
+function loadDashboard() {
+    const container = document.getElementById('dashboardContainer');
+    if (!container) return;
+
+    if (!appState.user) {
+        container.innerHTML = `
+            <div class="auth-required-message">
+                <svg viewBox="0 0 48 48" fill="none" class="auth-icon">
+                    <circle cx="24" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 42C8 34 15 28 24 28C33 28 40 34 40 42" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h3>Sign in to access your dashboard</h3>
+                <p>Create an account or sign in to track your progress, earn certificates, and more.</p>
+                <button class="btn btn-primary" onclick="showAuthModal()">Sign In</button>
+            </div>
+        `;
+        return;
+    }
+
+    const displayName = getUserDisplayName();
+    const initials = getInitials(displayName);
+
+    // Calculate stats
+    const totalModules = COURSE_DATA.courses.reduce((sum, c) => sum + c.subcourses.length, 0);
+    const completedModules = Object.values(appState.progress).filter(p => p.completed).length;
+    const inProgressCourses = getInProgressCourses();
+    const completedCourses = getCompletedCourses();
+
+    // Build continue learning cards
+    const continueLearning = inProgressCourses.slice(0, 3).map(course => {
+        const completed = course.subcourses.filter(s => appState.progress[s.id]?.completed).length;
+        const percentage = Math.round((completed / course.subcourses.length) * 100);
+        const nextSubcourse = course.subcourses.find(s => !appState.progress[s.id]?.completed) || course.subcourses[0];
+
+        return `
+            <div class="continue-card" onclick="navigateTo('lesson', {subcourseId: '${nextSubcourse.id}'})">
+                <div class="continue-card-icon" style="background: ${course.color}">${course.number}</div>
+                <div class="continue-card-content">
+                    <h4>${course.title}</h4>
+                    <p>Next: ${nextSubcourse.title}</p>
+                    <div class="continue-card-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <span>${percentage}%</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Build recent activity
+    const recentActivity = getRecentActivity();
+
+    container.innerHTML = `
+        <div class="dashboard-header">
+            <div class="dashboard-welcome">
+                <div class="dashboard-avatar">${initials}</div>
+                <div class="dashboard-welcome-text">
+                    <h1>Welcome back, ${displayName}!</h1>
+                    <p>Continue your AI governance learning journey</p>
+                </div>
+            </div>
+            <div class="dashboard-quick-stats">
+                <div class="quick-stat">
+                    <span class="quick-stat-value">${completedModules}</span>
+                    <span class="quick-stat-label">Completed</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value">${inProgressCourses.length}</span>
+                    <span class="quick-stat-label">In Progress</span>
+                </div>
+                <div class="quick-stat">
+                    <span class="quick-stat-value">${completedCourses.length}</span>
+                    <span class="quick-stat-label">Certificates</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-section">
+                <div class="dashboard-section-header">
+                    <h2>Continue Learning</h2>
+                    <a href="#" onclick="navigateTo('courses'); return false;">View All Courses</a>
+                </div>
+                <div class="continue-learning-list">
+                    ${continueLearning || `
+                        <div style="text-align: center; padding: var(--space-xl); color: var(--text-muted);">
+                            <p>Start a course to see your progress here!</p>
+                            <button class="btn btn-primary" onclick="navigateTo('courses')" style="margin-top: var(--space-md);">Browse Courses</button>
+                        </div>
+                    `}
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="dashboard-section-header">
+                    <h2>Recent Activity</h2>
+                </div>
+                <div class="activity-list">
+                    ${recentActivity || `
+                        <div style="text-align: center; padding: var(--space-lg); color: var(--text-muted);">
+                            <p>No recent activity yet</p>
+                        </div>
+                    `}
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-section" style="margin-top: var(--space-xl);">
+            <div class="dashboard-section-header">
+                <h2>Course Progress Overview</h2>
+            </div>
+            <div class="courses-container" style="gap: var(--space-lg);">
+                ${COURSE_DATA.courses.map(course => {
+                    const completed = course.subcourses.filter(s => appState.progress[s.id]?.completed).length;
+                    const percentage = Math.round((completed / course.subcourses.length) * 100);
+                    return `
+                        <div class="continue-card" onclick="navigateTo('course-detail', {courseId: '${course.id}'})">
+                            <div class="continue-card-icon" style="background: ${course.color}">${course.number}</div>
+                            <div class="continue-card-content">
+                                <h4>${course.title}</h4>
+                                <p>${course.level}</p>
+                                <div class="continue-card-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${percentage}%"></div>
+                                    </div>
+                                    <span>${completed}/${course.subcourses.length} modules</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function getInProgressCourses() {
+    return COURSE_DATA.courses.filter(course => {
+        const completed = course.subcourses.filter(s => appState.progress[s.id]?.completed).length;
+        return completed > 0 && completed < course.subcourses.length;
+    });
+}
+
+function getCompletedCourses() {
+    return COURSE_DATA.courses.filter(course => {
+        const completed = course.subcourses.filter(s => appState.progress[s.id]?.completed).length;
+        return completed === course.subcourses.length;
+    });
+}
+
+function getRecentActivity() {
+    const activities = [];
+
+    Object.entries(appState.progress).forEach(([subcourseId, data]) => {
+        if (data.completed && data.completedAt) {
+            // Find subcourse name
+            for (const course of COURSE_DATA.courses) {
+                const sub = course.subcourses.find(s => s.id === subcourseId);
+                if (sub) {
+                    activities.push({
+                        type: 'completed',
+                        title: sub.title,
+                        time: new Date(data.completedAt),
+                        icon: 'completed'
+                    });
+                    break;
+                }
+            }
+        } else if (data.viewedAt) {
+            for (const course of COURSE_DATA.courses) {
+                const sub = course.subcourses.find(s => s.id === subcourseId);
+                if (sub) {
+                    activities.push({
+                        type: 'started',
+                        title: sub.title,
+                        time: new Date(data.viewedAt),
+                        icon: 'started'
+                    });
+                    break;
+                }
+            }
+        }
+    });
+
+    // Sort by time, most recent first
+    activities.sort((a, b) => b.time - a.time);
+
+    return activities.slice(0, 5).map(activity => `
+        <div class="activity-item">
+            <div class="activity-icon ${activity.icon}">
+                ${activity.type === 'completed' ?
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17L4 12"/></svg>' :
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M12 5L19 12L12 19"/></svg>'
+                }
+            </div>
+            <div class="activity-content">
+                <p>${activity.type === 'completed' ? 'Completed' : 'Started'} <strong>${activity.title}</strong></p>
+            </div>
+            <div class="activity-time">${formatTimeAgo(activity.time)}</div>
+        </div>
+    `).join('');
+}
+
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
+}
+
+// ============================================
+// PROFILE PAGE
+// ============================================
+
+function loadProfile() {
+    const container = document.getElementById('profileContainer');
+    if (!container || !appState.user) return;
+
+    const displayName = getUserDisplayName();
+    const initials = getInitials(displayName);
+    const email = appState.user.email || 'user@example.com';
+    const role = appState.user.user_metadata?.role || appState.user.role || 'Not specified';
+
+    const roleLabels = {
+        'it_professional': 'IT Professional',
+        'line_manager': 'Line Manager',
+        'policy_advisor': 'Policy Advisor',
+        'other': 'Other'
+    };
+
+    container.innerHTML = `
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar-large">${initials}</div>
+                <div class="profile-info">
+                    <h2>${displayName}</h2>
+                    <p>${email}</p>
+                    <span class="profile-role-badge">${roleLabels[role] || role}</span>
+                </div>
+            </div>
+            <form class="profile-form" id="profileForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" value="${displayName}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" value="${email}" disabled>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="profileRole">Role</label>
+                        <select id="profileRole">
+                            <option value="it_professional" ${role === 'it_professional' ? 'selected' : ''}>IT Professional</option>
+                            <option value="line_manager" ${role === 'line_manager' ? 'selected' : ''}>Line Manager</option>
+                            <option value="policy_advisor" ${role === 'policy_advisor' ? 'selected' : ''}>Policy Advisor</option>
+                            <option value="other" ${role === 'other' ? 'selected' : ''}>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileOrg">Organization</label>
+                        <input type="text" id="profileOrg" value="${appState.user.user_metadata?.organization || ''}" placeholder="Your organization">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="navigateTo('dashboard')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="profile-card">
+            <div style="padding: var(--space-xl);">
+                <h3 style="margin-bottom: var(--space-lg);">Learning Statistics</h3>
+                <div class="dashboard-quick-stats" style="justify-content: flex-start; flex-wrap: wrap;">
+                    <div class="quick-stat">
+                        <span class="quick-stat-value">${Object.values(appState.progress).filter(p => p.completed).length}</span>
+                        <span class="quick-stat-label">Modules Completed</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="quick-stat-value">${getCompletedCourses().length}</span>
+                        <span class="quick-stat-label">Courses Completed</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="quick-stat-value">${getCompletedCourses().length}</span>
+                        <span class="quick-stat-label">Certificates Earned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Setup form submission
+    document.getElementById('profileForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await updateProfile();
+    });
+}
+
+async function updateProfile() {
+    const name = document.getElementById('profileName')?.value;
+    const role = document.getElementById('profileRole')?.value;
+    const organization = document.getElementById('profileOrg')?.value;
+
+    if (appState.isSupabaseConnected && supabase && appState.user) {
+        try {
+            const { error } = await supabase.auth.updateUser({
+                data: { name, role, organization }
+            });
+            if (error) throw error;
+
+            // Also update profiles table
+            await supabase.from('profiles').upsert({
+                id: appState.user.id,
+                full_name: name,
+                role: role,
+                organization: organization,
+                updated_at: new Date().toISOString()
+            });
+
+            appState.user.user_metadata = { ...appState.user.user_metadata, name, role, organization };
+            updateAuthUI();
+            showToast('Profile updated successfully!', 'success');
+        } catch (error) {
+            showToast('Failed to update profile', 'error');
+        }
+    } else {
+        // Demo mode
+        appState.user = { ...appState.user, name, role, organization };
+        demoStorage.user = appState.user;
+        updateAuthUI();
+        showToast('Profile updated (demo mode)', 'success');
+    }
+}
+
+// ============================================
+// CERTIFICATES PAGE
+// ============================================
+
+function loadCertificates() {
+    const container = document.getElementById('certificatesContainer');
+    if (!container) return;
+
+    if (!appState.user) {
+        container.innerHTML = `
+            <div class="auth-required-message">
+                <svg viewBox="0 0 48 48" fill="none" class="auth-icon">
+                    <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 24L22 30L34 18" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h3>Sign in to view your certificates</h3>
+                <p>Complete courses to earn certificates that demonstrate your AI governance expertise.</p>
+                <button class="btn btn-primary" onclick="showAuthModal()">Sign In</button>
+            </div>
+        `;
+        return;
+    }
+
+    const completedCourses = getCompletedCourses();
+
+    if (completedCourses.length === 0) {
+        container.innerHTML = `
+            <div class="no-certificates">
+                <svg viewBox="0 0 48 48" fill="none">
+                    <rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16 24L22 30L34 18" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                </svg>
+                <h3>No certificates yet</h3>
+                <p>Complete all modules in a course to earn your certificate. Keep learning!</p>
+                <button class="btn btn-primary" onclick="navigateTo('courses')">Browse Courses</button>
+            </div>
+        `;
+        return;
+    }
+
+    const certificatesHtml = completedCourses.map(course => `
+        <div class="certificate-card">
+            <div class="certificate-preview">
+                <div class="certificate-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 10L11 13L16 8"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="certificate-info">
+                <h3>${course.title}</h3>
+                <p>Successfully completed all ${course.subcourses.length} modules of the ${course.level} level course.</p>
+                <div class="certificate-meta">
+                    <span class="certificate-date">Completed: ${new Date().toLocaleDateString()}</span>
+                    <div class="certificate-actions">
+                        <button class="btn btn-secondary btn-icon" title="Download" onclick="downloadCertificate('${course.id}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V15"/>
+                                <path d="M7 10L12 15L17 10"/>
+                                <path d="M12 15V3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    container.innerHTML = `
+        <div class="certificates-grid">
+            ${certificatesHtml}
+        </div>
+    `;
+}
+
+function downloadCertificate(courseId) {
+    showToast('Certificate download coming soon!', 'info');
+}
+
+// ============================================
+// PROGRESS DASHBOARD
+// ============================================
+
+function loadProgressDashboard() {
+    const dashboard = document.getElementById('progressDashboard');
+    if (!dashboard) return;
+
+    if (!appState.user) {
+        dashboard.innerHTML = `
+            <div class="auth-required-message">
+                <svg viewBox="0 0 48 48" fill="none" class="auth-icon">
+                    <circle cx="24" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 42C8 34 15 28 24 28C33 28 40 34 40 42" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h3>Sign in to track your progress</h3>
+                <p>Create an account or sign in to save your progress across all courses and earn certificates.</p>
+                <button class="btn btn-primary" onclick="showAuthModal()">Sign In</button>
+            </div>
+        `;
+        return;
+    }
+
+    // Calculate progress for each course
+    const courseProgress = COURSE_DATA.courses.map(course => {
+        const completed = course.subcourses.filter(sub =>
+            appState.progress[sub.id]?.completed
+        ).length;
+        const total = course.subcourses.length;
+        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        return {
+            ...course,
+            completed,
+            total,
+            percentage
+        };
+    });
+
+    const progressCards = courseProgress.map(course => `
+        <div class="course-card" style="cursor: pointer;" onclick="navigateTo('course-detail', {courseId: '${course.id}'})">
+            <div class="course-card-header">
+                <div class="course-number" style="background: ${course.color}">${course.number}</div>
+                <div class="course-card-header-content">
+                    <h2>${course.title}</h2>
+                    <p>${course.subtitle}</p>
+                </div>
+            </div>
+            <div class="course-card-body">
+                <div class="progress-bar" style="height: 12px;">
+                    <div class="progress-fill" style="width: ${course.percentage}%"></div>
+                </div>
+                <div class="progress-stats" style="margin-top: var(--space-md);">
+                    <span>${course.completed} of ${course.total} modules completed</span>
+                    <span>${course.percentage}%</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Calculate overall stats
+    const totalModules = COURSE_DATA.courses.reduce((sum, c) => sum + c.subcourses.length, 0);
+    const completedModules = Object.values(appState.progress).filter(p => p.completed).length;
+    const overallPercentage = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0;
+
+    dashboard.innerHTML = `
+        <div class="progress-overview" style="margin-bottom: var(--space-2xl);">
+            <div class="assessment-intro">
+                <h2>Your Learning Journey</h2>
+                <p>Track your progress through the AI Governance & Ethics curriculum</p>
+                <div class="hero-stats" style="margin-top: var(--space-xl);">
+                    <div class="stat">
+                        <span class="stat-number">${completedModules}</span>
+                        <span class="stat-label">Modules Completed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">${totalModules - completedModules}</span>
+                        <span class="stat-label">Remaining</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">${overallPercentage}%</span>
+                        <span class="stat-label">Overall Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: var(--space-lg);">Course Progress</h2>
+        <div class="courses-container">
+            ${progressCards}
+        </div>
+    `;
+}
+
+// ============================================
 // ASSESSMENT SYSTEM
 // ============================================
 
@@ -661,7 +1251,6 @@ function checkAssessment() {
 document.addEventListener('click', (e) => {
     const option = e.target.closest('.question-option');
     if (option && !option.classList.contains('correct') && !option.classList.contains('incorrect')) {
-        const questionIndex = option.dataset.question;
         const card = option.closest('.question-card');
 
         // Deselect other options in this question
@@ -688,7 +1277,7 @@ function setupAuthForms() {
             document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
 
             e.target.classList.add('active');
-            document.getElementById(`${targetTab}Form`).classList.add('active');
+            document.getElementById(`${targetTab}Form`)?.classList.add('active');
         });
     });
 
@@ -714,11 +1303,11 @@ function setupAuthForms() {
 }
 
 function showAuthModal() {
-    document.getElementById('authModal').classList.add('active');
+    document.getElementById('authModal')?.classList.add('active');
 }
 
 function hideAuthModal() {
-    document.getElementById('authModal').classList.remove('active');
+    document.getElementById('authModal')?.classList.remove('active');
 }
 
 async function signIn(email, password) {
@@ -736,16 +1325,20 @@ async function signIn(email, password) {
             updateAuthUI();
             loadUserProgress();
             showToast('Welcome back!', 'success');
+
+            // Redirect to dashboard
+            navigateTo('dashboard');
         } catch (error) {
             showToast(error.message || 'Sign in failed', 'error');
         }
     } else {
         // Demo mode
-        demoStorage.user = { email, name: email.split('@')[0] };
+        demoStorage.user = { email, name: email.split('@')[0], role: 'it_professional' };
         appState.user = demoStorage.user;
         hideAuthModal();
         updateAuthUI();
         showToast('Signed in (demo mode)', 'success');
+        navigateTo('dashboard');
     }
 }
 
@@ -762,7 +1355,17 @@ async function signUp(name, email, password, role) {
 
             if (error) throw error;
 
-            showToast('Account created! Please check your email to verify.', 'success');
+            // Check if email confirmation is required
+            if (data.user && !data.session) {
+                showToast('Account created! Please check your email to verify.', 'success');
+            } else if (data.session) {
+                appState.user = data.user;
+                hideAuthModal();
+                updateAuthUI();
+                showToast('Account created successfully!', 'success');
+                navigateTo('dashboard');
+            }
+
             hideAuthModal();
         } catch (error) {
             showToast(error.message || 'Sign up failed', 'error');
@@ -774,6 +1377,7 @@ async function signUp(name, email, password, role) {
         hideAuthModal();
         updateAuthUI();
         showToast('Account created (demo mode)', 'success');
+        navigateTo('dashboard');
     }
 }
 
@@ -783,9 +1387,11 @@ async function signOut() {
     }
 
     appState.user = null;
+    appState.progress = {};
     demoStorage.user = null;
     updateAuthUI();
-    showToast('Signed out', 'success');
+    showToast('Signed out successfully', 'success');
+    navigateTo('home');
 }
 
 async function checkAuthState() {
@@ -799,24 +1405,58 @@ async function checkAuthState() {
     } else if (demoStorage.user) {
         appState.user = demoStorage.user;
         updateAuthUI();
+        // Load from localStorage in demo mode
+        const saved = localStorage.getItem('aiGovProgress');
+        if (saved) {
+            appState.progress = JSON.parse(saved);
+        }
     }
 }
 
 function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
-    if (loginBtn) {
-        if (appState.user) {
-            const displayName = appState.user.user_metadata?.name ||
-                appState.user.name ||
-                appState.user.email?.split('@')[0] ||
-                'User';
-            loginBtn.textContent = displayName;
-            loginBtn.onclick = signOut;
-        } else {
-            loginBtn.textContent = 'Sign In';
-            loginBtn.onclick = showAuthModal;
-        }
+    const userDropdown = document.getElementById('userDropdown');
+    const userAvatar = document.getElementById('userAvatar');
+    const userName = document.getElementById('userName');
+    const navAuthLinks = document.querySelectorAll('.nav-auth-only');
+
+    if (appState.user) {
+        const displayName = getUserDisplayName();
+        const initials = getInitials(displayName);
+
+        // Hide login button, show dropdown
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (userDropdown) userDropdown.style.display = 'block';
+        if (userAvatar) userAvatar.textContent = initials;
+        if (userName) userName.textContent = displayName;
+
+        // Show auth-only nav links
+        navAuthLinks.forEach(link => link.style.display = 'block');
+    } else {
+        // Show login button, hide dropdown
+        if (loginBtn) loginBtn.style.display = 'block';
+        if (userDropdown) userDropdown.style.display = 'none';
+
+        // Hide auth-only nav links
+        navAuthLinks.forEach(link => link.style.display = 'none');
     }
+}
+
+function getUserDisplayName() {
+    if (!appState.user) return 'User';
+    return appState.user.user_metadata?.name ||
+           appState.user.name ||
+           appState.user.email?.split('@')[0] ||
+           'User';
+}
+
+function getInitials(name) {
+    if (!name) return 'U';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
 }
 
 // ============================================
@@ -872,96 +1512,6 @@ async function loadUserProgress() {
             appState.progress = JSON.parse(saved);
         }
     }
-}
-
-function loadProgressDashboard() {
-    const dashboard = document.getElementById('progressDashboard');
-    if (!dashboard) return;
-
-    if (!appState.user) {
-        dashboard.innerHTML = `
-            <div class="auth-required-message">
-                <svg viewBox="0 0 48 48" fill="none" class="auth-icon">
-                    <circle cx="24" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
-                    <path d="M8 42C8 34 15 28 24 28C33 28 40 34 40 42" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <h3>Sign in to track your progress</h3>
-                <p>Create an account or sign in to save your progress across all courses and earn certificates.</p>
-                <button class="btn btn-primary" onclick="showAuthModal()">Sign In</button>
-            </div>
-        `;
-        return;
-    }
-
-    // Calculate progress for each course
-    const courseProgress = COURSE_DATA.courses.map(course => {
-        const completed = course.subcourses.filter(sub =>
-            appState.progress[sub.id]?.completed
-        ).length;
-        const total = course.subcourses.length;
-        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-        return {
-            ...course,
-            completed,
-            total,
-            percentage
-        };
-    });
-
-    const progressCards = courseProgress.map(course => `
-        <div class="course-card" style="cursor: pointer;" onclick="navigateTo('course-detail', {courseId: '${course.id}'})">
-            <div class="course-card-header">
-                <div class="course-number" style="background: ${course.color}">${course.number}</div>
-                <div class="course-card-header-content">
-                    <h2>${course.title}</h2>
-                    <p>${course.subtitle}</p>
-                </div>
-            </div>
-            <div class="course-card-body">
-                <div class="progress-bar" style="height: 12px;">
-                    <div class="progress-fill" style="width: ${course.percentage}%"></div>
-                </div>
-                <div class="progress-stats" style="margin-top: var(--space-md);">
-                    <span>${course.completed} of ${course.total} modules completed</span>
-                    <span>${course.percentage}%</span>
-                </div>
-            </div>
-        </div>
-    `).join('');
-
-    // Calculate overall stats
-    const totalModules = COURSE_DATA.courses.reduce((sum, c) => sum + c.subcourses.length, 0);
-    const completedModules = Object.values(appState.progress).filter(p => p.completed).length;
-    const overallPercentage = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0;
-
-    dashboard.innerHTML = `
-        <div class="progress-overview" style="margin-bottom: var(--space-2xl);">
-            <div class="assessment-intro">
-                <h2>Your Learning Journey</h2>
-                <p>Track your progress through the AI Governance & Ethics curriculum</p>
-                <div class="hero-stats" style="margin-top: var(--space-xl);">
-                    <div class="stat">
-                        <span class="stat-number">${completedModules}</span>
-                        <span class="stat-label">Modules Completed</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">${totalModules - completedModules}</span>
-                        <span class="stat-label">Remaining</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">${overallPercentage}%</span>
-                        <span class="stat-label">Overall Progress</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h2 style="margin-bottom: var(--space-lg);">Course Progress</h2>
-        <div class="courses-container">
-            ${progressCards}
-        </div>
-    `;
 }
 
 // ============================================
@@ -1023,3 +1573,4 @@ window.signOut = signOut;
 window.startCourse = startCourse;
 window.checkAssessment = checkAssessment;
 window.markLessonComplete = markLessonComplete;
+window.downloadCertificate = downloadCertificate;
