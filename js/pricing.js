@@ -22,7 +22,7 @@ const PRICING_TIERS = {
                 'Self-paced learning',
                 '12-month access'
             ],
-            stripePriceId: process.env?.STRIPE_PRICE_FOUNDATION || 'price_foundation',
+            stripePriceId: 'price_foundation', // Set via Stripe Dashboard
             popular: false
         },
         {
@@ -40,7 +40,7 @@ const PRICING_TIERS = {
                 'Progress tracking',
                 '18-month access'
             ],
-            stripePriceId: process.env?.STRIPE_PRICE_INTERMEDIATE || 'price_intermediate',
+            stripePriceId: 'price_intermediate',
             popular: false
         },
         {
@@ -58,7 +58,7 @@ const PRICING_TIERS = {
                 'NIST AI RMF frameworks',
                 '24-month access'
             ],
-            stripePriceId: process.env?.STRIPE_PRICE_ADVANCED || 'price_advanced',
+            stripePriceId: 'price_advanced',
             popular: true
         },
         {
@@ -76,7 +76,7 @@ const PRICING_TIERS = {
                 'Incident response planning',
                 'Lifetime access'
             ],
-            stripePriceId: process.env?.STRIPE_PRICE_PROFESSIONAL || 'price_professional',
+            stripePriceId: 'price_professional',
             popular: false
         },
         {
@@ -95,7 +95,7 @@ const PRICING_TIERS = {
                 'Priority support',
                 'Lifetime access'
             ],
-            stripePriceId: process.env?.STRIPE_PRICE_EXECUTIVE || 'price_executive',
+            stripePriceId: 'price_executive',
             popular: false
         }
     ],
