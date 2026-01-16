@@ -9,14 +9,14 @@ const CONFIG = {
     // Supabase Configuration
     // Replace these with your actual Supabase project credentials
     supabase: {
-        url: 'YOUR_SUPABASE_URL',  // e.g., 'https://xxxxx.supabase.co'
-        anonKey: 'YOUR_SUPABASE_ANON_KEY'  // Your project's anon/public key
+        url: 'https://towjjlbwnamvmexeyvtp.supabase.co',  // e.g., 'https://xxxxx.supabase.co'
+        anonKey: 'sb_publishable_OHXiIG8jMb3SBnLtZsX3XA_tU9HqnZQ'  // Your project's anon/public key
     },
 
     // Application Settings
     app: {
         name: 'AI Governance & Ethics Academy',
-        version: '1.0.0',
+        version: '1.65.0',
         environment: 'development'  // 'development' | 'production'
     },
 
