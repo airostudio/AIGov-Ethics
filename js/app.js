@@ -15,6 +15,16 @@ const appState = {
     isSupabaseConnected: false
 };
 
+// Fallback demoStorage if config.js didn't load
+if (typeof demoStorage === 'undefined') {
+    var demoStorage = {
+        user: null,
+        progress: {},
+        assessments: {},
+        userTier: null
+    };
+}
+
 // ============================================
 // INITIALIZATION
 // ============================================
