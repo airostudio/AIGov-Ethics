@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAuthForms();
         setupUserDropdown();
 
+        // Setup teaser video slideshows
+        setupTeaserVideos();
+
         // Load initial content (overview only on home page)
         loadCoursesPreview();
 
@@ -207,6 +210,69 @@ function handlePopState(event) {
     if (event.state) {
         navigateTo(event.state.page, event.state.params || {});
     }
+}
+
+// ============================================
+// COURSE TEASER VIDEOS
+// ============================================
+
+function setupTeaserVideos() {
+    document.querySelectorAll('.teaser-video').forEach(video => {
+        const playBtn = video.querySelector('.teaser-play-btn');
+        const slides = video.querySelectorAll('.teaser-slide');
+        let interval = null;
+        let currentSlide = 0;
+
+        if (!playBtn || slides.length === 0) return;
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('teaser-slide-active'));
+            slides[index].classList.add('teaser-slide-active');
+        }
+
+        function startSlideshow() {
+            video.classList.add('playing');
+            currentSlide = 0;
+            showSlide(0);
+
+            interval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 4000);
+        }
+
+        function stopSlideshow() {
+            video.classList.remove('playing');
+            clearInterval(interval);
+            interval = null;
+            currentSlide = 0;
+            showSlide(0);
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (interval) {
+                stopSlideshow();
+            } else {
+                // Stop any other playing teasers
+                document.querySelectorAll('.teaser-video.playing').forEach(other => {
+                    if (other !== video) {
+                        other.querySelector('.teaser-play-btn')?.click();
+                    }
+                });
+                startSlideshow();
+            }
+        });
+
+        // Stop on scroll away (intersection observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting && interval) {
+                    stopSlideshow();
+                }
+            });
+        }, { threshold: 0.3 });
+        observer.observe(video);
+    });
 }
 
 // ============================================
