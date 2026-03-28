@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAuthForms();
         setupUserDropdown();
 
+        // Setup hero background slideshow
+        setupHeroSlideshow();
+
         // Setup teaser video slideshows
         setupTeaserVideos();
 
@@ -210,6 +213,69 @@ function handlePopState(event) {
     if (event.state) {
         navigateTo(event.state.page, event.state.params || {});
     }
+}
+
+// ============================================
+// HERO SLIDESHOW
+// ============================================
+
+function setupHeroSlideshow() {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+
+    if (slides.length === 0) return;
+
+    let currentSlide = 0;
+    let interval = null;
+    const slideInterval = 5000; // 5 seconds per slide
+
+    function showSlide(index) {
+        // Remove active from all slides and dots
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+
+        // Add active to current slide and dot
+        slides[index].classList.add('active');
+        if (dots[index]) dots[index].classList.add('active');
+
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+    }
+
+    function startSlideshow() {
+        if (interval) clearInterval(interval);
+        interval = setInterval(nextSlide, slideInterval);
+    }
+
+    function stopSlideshow() {
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
+    }
+
+    // Dot click handlers
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            // Restart the interval after manual navigation
+            startSlideshow();
+        });
+    });
+
+    // Pause on hover (optional - better UX)
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.addEventListener('mouseenter', stopSlideshow);
+        hero.addEventListener('mouseleave', startSlideshow);
+    }
+
+    // Start the slideshow
+    startSlideshow();
 }
 
 // ============================================
