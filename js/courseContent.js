@@ -2226,6 +2226,188 @@ const COURSE_5_CONTENT = {
     }
 };
 
+// ============================================
+// COURSE 4-6: Operations Assessment & Certification
+// ============================================
+Object.assign(COURSE_4_CONTENT, {
+    'course-4-6': {
+        title: 'Operations Assessment & Certification',
+        sections: [
+            {
+                title: 'Course 4 Review: AI Implementation & Operations',
+                content: `<p>This capstone module consolidates operational governance knowledge from Course 4. Review the key concepts before attempting the certification assessment.</p>
+
+                <h3>Module Summary</h3>
+                <table class="content-table">
+                    <thead><tr><th>Module</th><th>Core Concept</th><th>Key Requirement</th></tr></thead>
+                    <tbody>
+                        <tr><td>4.1 Procurement</td><td>AI procurement needs specialist governance criteria</td><td>Pre-defined performance and fairness thresholds; AI-specific contract clauses</td></tr>
+                        <tr><td>4.2 Human Oversight</td><td>Human-in-the-loop must be genuine, not rubber-stamping</td><td>Meaningful review with authority to override; right to contest</td></tr>
+                        <tr><td>4.3 Monitoring</td><td>Monitoring must cover performance, fairness, drift, and quality</td><td>Defined alert thresholds, escalation paths, and governance reporting cadence</td></tr>
+                        <tr><td>4.4 Incident Response</td><td>AI incidents require structured response and remediation of affected individuals</td><td>72-hour ICO reporting for data breaches; five-phase response process</td></tr>
+                        <tr><td>4.5 Change Management</td><td>Context changes are highest-risk AI change type</td><td>Change control process covering all change types; decommissioning governance</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Certification Standard</div>
+                    <p>Score 80% or above on the assessment to earn the Course 4 certificate. Questions test integrated operational governance judgement across the full AI lifecycle.</p>
+                </div>`
+            },
+            {
+                title: 'Integrated Operations Scenario',
+                content: `<p>Review this scenario before the assessment. It draws on all five Course 4 modules.</p>
+
+                <h3>Scenario: AI Fraud Detection in Procurement</h3>
+                <p>A central government procurement team has deployed an AI system that flags potentially fraudulent supplier bids for human review. Eighteen months post-deployment, the monitoring dashboard shows: (1) overall accuracy is within thresholds; (2) supplier bids from SMEs are flagged at 2.3x the rate of large corporations; (3) one procurement officer is overriding 67% of AI flags without documentation; (4) the vendor has issued a model update notification for next month.</p>
+
+                <h3>Analysis by Module</h3>
+                <ul>
+                    <li><strong>4.3 Monitoring:</strong> The SME disparity exceeds fair treatment thresholds — escalate as a warning/critical alert. The 67% override rate requires investigation — is the model misaligned with policy, or is the officer avoiding scrutiny?</li>
+                    <li><strong>4.4 Incident Response:</strong> The SME disparity is a potential fairness incident. Log formally; investigate whether SMEs have been disadvantaged; assess whether affected bids need re-review.</li>
+                    <li><strong>4.5 Change Management:</strong> The vendor's model update requires change control. Commission impact assessment before the update is applied; do not accept the update without fresh fairness testing.</li>
+                    <li><strong>4.2 Oversight:</strong> The officer's undocumented overrides are a governance failure. Audit override records; require documentation for all overrides; brief the team on human oversight obligations.</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A monitoring dashboard shows an AI procurement system flags SME bids at 2.3x the rate of large corporations. The correct immediate response is:',
+                    options: [
+                        'Ignore the disparity as it may reflect genuine risk differences between SMEs and large firms',
+                        'Escalate as a potential fairness incident; investigate whether the disparity reflects bias or legitimate risk signals',
+                        'Retrain the model immediately to equalise flag rates',
+                        'Disable the AI system until the disparity is resolved'
+                    ],
+                    correct: 1,
+                    explanation: 'A 2.3x disparity warrants investigation, not immediate action either way. The disparity could reflect genuine risk differences OR bias in the training data. A formal investigation — examining the model\'s feature weights, training data coverage of SMEs, and impact on real decisions — is required before conclusions are drawn.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Before applying a vendor\'s model update notification, what governance step is mandatory?',
+                    options: [
+                        'Notify the ICO that a model update is occurring',
+                        'Complete the change control process including impact assessment and fairness testing of the updated model',
+                        'Obtain approval from the Cabinet Office digital team',
+                        'Publish a public notice of the model update on the department\'s website'
+                    ],
+                    correct: 1,
+                    explanation: 'Every model update must pass through the change control process: impact assessment, testing (including fairness and subgroup analysis), comparison against the previous baseline, and formal approval before deployment to production.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'As AI Operations Lead, you have just been notified that an AI used to screen job applications for a government department has been running for six months without any monitoring in place. Describe your response and the governance gaps this reveals.',
+                    sampleAnswer: 'Immediate response: (1) Pause further automated screening decisions immediately pending review; (2) Commission an emergency audit of all decisions made over the six months — run fairness analysis across protected characteristics on the full output dataset; (3) If any significant disparities are found, treat as a fairness incident: log formally, escalate to SRO, and commence incident response; (4) Assess whether any individuals may have been disadvantaged — if so, re-review affected applications manually and consider notification. Governance gaps revealed: Absence of a monitoring plan at deployment — a fundamental violation of governance standards; no defined system owner with operational responsibility; no escalation path, meaning problems could not have been reported; likely gaps in documentation (model card, DPIA) if monitoring was not established at deployment; possibly no change management or review schedule. Remediation: Establish monitoring immediately with all required metrics and alert thresholds; conduct a full governance retrospective to understand how this was allowed; update the AI register with correct status; complete or update all documentation; brief the team responsible on operational governance obligations; consider whether existing approvals (DPIA, AIA) need to be re-assessed given the undocumented operation period.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 5-2: Leading Ethical AI Culture
+// ============================================
+Object.assign(COURSE_5_CONTENT, {
+    'course-5-2': {
+        title: 'Leading Ethical AI Culture',
+        sections: [
+            {
+                title: 'Culture as the Foundation of AI Governance',
+                content: `<p>Technical controls and documentation frameworks are necessary but insufficient for responsible AI. An organisation can have comprehensive policies and still deploy harmful AI systems if the culture does not support raising concerns, questioning assumptions, or prioritising ethics alongside efficiency.</p>
+
+                <h3>What AI Culture Looks Like in Practice</h3>
+                <table class="content-table">
+                    <thead><tr><th>Dimension</th><th>Weak Culture</th><th>Strong Culture</th></tr></thead>
+                    <tbody>
+                        <tr><td>Psychological safety</td><td>Staff fear reprisal for raising concerns about AI systems</td><td>Staff at all levels feel safe flagging ethics concerns without fear</td></tr>
+                        <tr><td>Leadership signals</td><td>Leaders prioritise delivery speed; governance seen as bureaucracy</td><td>Leaders publicly champion responsible AI; delay a project when ethics concerns arise</td></tr>
+                        <tr><td>Incentive structures</td><td>Teams rewarded only for delivery pace and cost; ethics not measured</td><td>Ethics performance is part of team and individual objectives</td></tr>
+                        <tr><td>Learning orientation</td><td>Incidents are suppressed or minimised</td><td>Near-misses are actively shared as learning opportunities</td></tr>
+                        <tr><td>Diversity of perspective</td><td>AI teams are homogeneous; affected communities not consulted</td><td>Diverse teams; structured engagement with affected communities</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The Leader's Role</div>
+                    <p>Culture is set by what leaders do, not what they say. If senior leaders override governance processes for convenience, bypass reviews under time pressure, or minimise ethics incidents, the organisation will quickly learn that governance is optional.</p>
+                </div>`
+            },
+            {
+                title: 'Building Psychological Safety for AI Ethics',
+                content: `<p>Psychological safety — the belief that you will not be punished for speaking up — is the single most important cultural enabler of AI governance. Without it, governance bodies receive filtered information and concerns are suppressed until they become incidents.</p>
+
+                <h3>Practical Leadership Actions</h3>
+                <ul>
+                    <li><strong>Model vulnerability:</strong> Leaders who acknowledge uncertainty about AI and openly ask ethical questions create permission for others to do the same</li>
+                    <li><strong>Celebrate raising concerns:</strong> Publicly acknowledge and thank staff who flag governance issues, even when it creates inconvenience</li>
+                    <li><strong>Separate learning from blame:</strong> Post-incident reviews should focus on system and process improvement, not individual culpability (except in cases of deliberate misconduct)</li>
+                    <li><strong>Create safe channels:</strong> Provide mechanisms (formal and informal) for staff to raise concerns without direct line manager involvement</li>
+                    <li><strong>Follow through:</strong> Concerns that are raised but ignored corrode psychological safety faster than no mechanism at all</li>
+                </ul>
+
+                <h3>Ethics Champions</h3>
+                <p>Designating AI ethics champions within teams — individuals with informal authority to raise ethics questions during project delivery — creates distributed ethical oversight that supplements formal governance processes.</p>`
+            },
+            {
+                title: 'Embedding Ethics in Team Processes',
+                content: `<p>Culture is built through habits and routines, not declarations. Embedding ethics into the way teams work daily is more effective than periodic ethics training alone.</p>
+
+                <h3>Ethics Integration Points</h3>
+                <ul>
+                    <li><strong>Project inception:</strong> Ethics canvas exercise at kick-off — who could be harmed, what could go wrong, what assumptions are we making?</li>
+                    <li><strong>Sprint reviews:</strong> Standing question: "What ethics risks have we observed this sprint?"</li>
+                    <li><strong>Architecture decisions:</strong> Ethics review as part of design authority process</li>
+                    <li><strong>Deployment gates:</strong> Ethics sign-off as a mandatory gate alongside technical and security sign-off</li>
+                    <li><strong>Post-deployment reviews:</strong> Ethics review included in operational performance reviews</li>
+                </ul>
+
+                <h3>Avoiding Ethics Theatre</h3>
+                <p>Ethics theatre is the performance of ethical process without substantive ethical reasoning. Signs include: ethics reviews that always conclude "no concerns"; governance bodies that approve all submissions; ethics documentation completed after the fact to justify already-made decisions. Counter-theatre by requiring substantive written analysis, tracking concerns raised, and measuring whether governance bodies ever stop or modify projects.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Measurement</div>
+                    <p>What you measure shapes culture. Track and report: number of ethics concerns raised per quarter; percentage of AI projects that were modified or delayed due to ethics review; percentage of ethics champion roles filled; training completion rates by team.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Which indicator most strongly suggests "ethics theatre" rather than genuine ethical governance?',
+                    options: [
+                        'Ethics reviews consistently take longer than technical reviews',
+                        'A governance body has never modified or rejected a project proposal',
+                        'The ethics team is smaller than the technical team',
+                        'Ethics training completion rates are below 100%'
+                    ],
+                    correct: 1,
+                    explanation: 'A governance body that approves every submission is likely conducting ethics theatre — the process creates an appearance of oversight without substantive challenge. Genuine governance bodies modify or reject some proposals; a 100% approval rate is evidence that the review is not functioning as intended.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A team member raises an ethics concern about a high-priority AI project two weeks before its planned launch. The correct leadership response is:',
+                    options: [
+                        'Thank them privately but proceed with launch to avoid delay',
+                        'Launch on schedule; review ethics concerns in the first post-deployment review',
+                        'Investigate the concern seriously, and be prepared to delay or modify the launch if the concern is substantiated',
+                        'Escalate the concern to the ethics committee for resolution at their next quarterly meeting'
+                    ],
+                    correct: 2,
+                    explanation: 'A substantive ethics concern before deployment must be investigated before launch, not after. Proceeding with launch when a concern has been raised — and not yet addressed — is a governance failure that also destroys psychological safety for future concern-raising.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You are leading a government department\'s AI ethics culture programme. Describe three concrete actions you would take in the first 90 days to build genuine ethical culture rather than ethics theatre.',
+                    sampleAnswer: 'Action 1 — Leadership behaviour: Work with the Director General to publicly delay or modify one visible AI project based on an ethics review finding. Nothing signals genuine commitment like a senior leader demonstrating that governance has real consequences. Avoid the temptation to pick a low-stakes example — use a real project where delivery pressure exists. Action 2 — Embed in process: Add a mandatory ethics checkpoint to the project gateway process with a requirement for substantive written analysis (not a checkbox). Track and report the number of projects modified at each gate. If every project passes unchanged, investigate whether the checkpoint is functioning. Action 3 — Safety infrastructure: Launch a named Ethics Concerns channel with a clear process and a commitment that all concerns will receive a written response within 10 working days. Designate ethics champions in each AI team. In the first quarterly report, publicly share (anonymised) examples of concerns raised and how they were addressed — demonstrating that raising concerns leads to action, not silence.'
+                }
+            ]
+        }
+    }
+});
+
 // Merge additional content into course data
 if (typeof window !== 'undefined' && window.COURSE_DATA) {
     // Add content to Course 2 subcourses
