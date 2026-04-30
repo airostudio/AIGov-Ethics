@@ -2,15 +2,25 @@
  * AI Governance & Ethics Academy
  * Configuration File
  *
- * Replace with your actual Supabase credentials
+ * SECURITY: Do NOT commit real credentials here.
+ * Supabase credentials should be injected at build/deploy time, e.g. via
+ * Vercel environment variables and a build step that replaces these
+ * placeholders, OR by serving config values from a lightweight API endpoint
+ * that reads from server-side env vars.
+ *
+ * The anon key is a publishable key (safe for client-side use) but the
+ * specific project URL + key pair should not be committed to source control
+ * as it permanently couples this repo to a specific Supabase project and
+ * makes credential rotation harder.
  */
 
 const CONFIG = {
-    // Supabase Configuration
-    // Replace these with your actual Supabase project credentials
+    // Supabase Configuration — replace placeholders before deployment.
+    // In Vercel: set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY env vars
+    // and inject them during the build step.
     supabase: {
-        url: 'https://towjjlbwnamvmexeyvtp.supabase.co',  // e.g., 'https://xxxxx.supabase.co'
-        anonKey: 'sb_publishable_OHXiIG8jMb3SBnLtZsX3XA_tU9HqnZQ'  // Your project's anon/public key
+        url: 'YOUR_SUPABASE_URL',       // e.g., 'https://xxxxx.supabase.co'
+        anonKey: 'YOUR_SUPABASE_ANON_KEY'  // Your project's anon/public key
     },
 
     // Application Settings

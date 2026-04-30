@@ -252,9 +252,11 @@ CREATE INDEX idx_analytics_events_date ON public.analytics_events(created_at);
 -- Enable Row Level Security
 ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
 
--- Policy - only allow inserts, admin-only reads
-CREATE POLICY "Anyone can log events" ON public.analytics_events
-    FOR INSERT WITH CHECK (true);
+-- Only authenticated users may log analytics events; unauthenticated inserts
+-- are rejected to prevent event spam from bots and external actors.
+CREATE POLICY "Authenticated users can log events" ON public.analytics_events
+    FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+-- Reads are intentionally not permitted via RLS; use service role for reporting.
 
 -- ============================================
 -- PURCHASES
