@@ -2102,19 +2102,23 @@ async function loadTierFromSupabase() {
 function checkPaymentSuccess() {
     const urlParams = new URLSearchParams(window.location.search);
     const paymentStatus = urlParams.get('payment');
+    const sessionId = urlParams.get('session_id');
 
     if (paymentStatus === 'success') {
-        showToast('Payment successful! Welcome to the Academy.', 'success');
-        // Reload user tier
-        loadUserTier();
-        // Clean URL
+        // Only show success when there is a Stripe session_id present.
+        // The actual tier grant comes from the Stripe webhook → Supabase;
+        // the toast + tier reload are cosmetic confirmation only.
+        if (sessionId) {
+            showToast('Payment successful! Welcome to the Academy.', 'success');
+            loadUserTier();
+        }
+        // Clean URL regardless (remove even spoofed params)
         const url = new URL(window.location);
         url.searchParams.delete('payment');
         url.searchParams.delete('session_id');
         window.history.replaceState({}, '', url);
     } else if (paymentStatus === 'cancelled') {
         showToast('Payment was cancelled.', 'info');
-        // Clean URL
         const url = new URL(window.location);
         url.searchParams.delete('payment');
         window.history.replaceState({}, '', url);

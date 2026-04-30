@@ -170,8 +170,14 @@ ALTER TABLE public.certificates ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own certificates" ON public.certificates
     FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY "Public can verify certificates" ON public.certificates
-    FOR SELECT USING (true);
+-- Certificate verification: only expose certificate_number and course_id
+-- (not user_id or pdf_url) to unauthenticated verification requests.
+-- Use a separate verification function/endpoint rather than a blanket policy.
+-- The open USING (true) policy below is intentionally removed to prevent
+-- unauthenticated enumeration of all user certificates.
+-- Implement a verification endpoint that accepts a certificate_number and
+-- returns only: exists (bool), course_id, issued_at — via a security-definer
+-- function, not a direct table SELECT.
 
 -- ============================================
 -- BOOKMARKS / NOTES
@@ -287,17 +293,41 @@ CREATE POLICY "Users can view own purchases" ON public.purchases
 -- HELPER FUNCTIONS
 -- ============================================
 
--- Function to generate certificate number
+-- Function to generate certificate number using gen_random_uuid() for
+-- cryptographic randomness instead of RANDOM() which gave only 100k values.
+-- Format: AIGOV-YY-<8 hex chars from UUID> giving 4 billion unique values/year.
 CREATE OR REPLACE FUNCTION generate_certificate_number()
 RETURNS TEXT AS $$
 DECLARE
     prefix TEXT := 'AIGOV';
     year_part TEXT := TO_CHAR(NOW(), 'YY');
-    random_part TEXT := LPAD(FLOOR(RANDOM() * 100000)::TEXT, 5, '0');
+    random_part TEXT := UPPER(SUBSTRING(gen_random_uuid()::TEXT, 1, 8));
 BEGIN
     RETURN prefix || '-' || year_part || '-' || random_part;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Safe certificate verification function (SECURITY DEFINER runs as owner,
+-- bypasses RLS but returns only the minimum necessary fields — no user_id
+-- or pdf_url is exposed to callers). Use this from an API endpoint instead
+-- of allowing direct table SELECT to unauthenticated users.
+CREATE OR REPLACE FUNCTION verify_certificate(p_certificate_number TEXT)
+RETURNS TABLE(is_valid BOOLEAN, course_id TEXT, issued_at TIMESTAMPTZ)
+LANGUAGE plpgsql SECURITY DEFINER AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        TRUE,
+        c.course_id,
+        c.issued_at
+    FROM public.certificates c
+    WHERE c.certificate_number = p_certificate_number;
+END;
+$$;
+
+-- Revoke direct execute from public; grant only to authenticated role
+REVOKE EXECUTE ON FUNCTION verify_certificate(TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION verify_certificate(TEXT) TO authenticated;
 
 -- Function to update timestamps
 CREATE OR REPLACE FUNCTION update_updated_at()
