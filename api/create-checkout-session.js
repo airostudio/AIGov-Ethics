@@ -84,6 +84,11 @@ module.exports = async (req, res) => {
             return res.status(500).json({ error: 'Price not configured for this tier' });
         }
 
+        // Build fallback URLs — VERCEL_URL contains only the hostname, no protocol
+        const baseUrl = process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : 'http://localhost:3000';
+
         // Create Stripe Checkout Session
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -101,13 +106,14 @@ module.exports = async (req, res) => {
                 tierName: metadata.name,
                 userEmail: userEmail
             },
-            success_url: successUrl || `${process.env.VERCEL_URL || 'http://localhost:3000'}/?page=dashboard&payment=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: cancelUrl || `${process.env.VERCEL_URL || 'http://localhost:3000'}/?page=pricing&payment=cancelled`
+            success_url: successUrl || `${baseUrl}/?page=dashboard&payment=success&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: cancelUrl || `${baseUrl}/?page=pricing&payment=cancelled`
         });
 
         return res.status(200).json({ sessionId: session.id });
     } catch (error) {
         console.error('Stripe checkout error:', error);
-        return res.status(500).json({ error: error.message });
+        // Return a generic message — never expose raw Stripe error details to the client
+        return res.status(500).json({ error: 'Failed to create checkout session. Please try again.' });
     }
 };
