@@ -516,6 +516,215 @@ Object.assign(COURSE_2_CONTENT, {
     }
 });
 
+// ============================================
+// COURSE 2-5: Testing & Validation for AI
+// ============================================
+Object.assign(COURSE_2_CONTENT, {
+    'course-2-5': {
+        title: 'Testing & Validation for AI',
+        sections: [
+            {
+                title: 'Why AI Testing Differs from Traditional Software Testing',
+                content: `<p>Traditional software testing verifies that code produces correct outputs for defined inputs — the logic is deterministic. AI systems are fundamentally different: their behaviour emerges from data, not explicit rules, making them probabilistic, context-sensitive, and capable of unexpected failures.</p>
+
+                <h3>Key Differences</h3>
+                <table class="content-table">
+                    <thead><tr><th>Aspect</th><th>Traditional Software</th><th>AI Systems</th></tr></thead>
+                    <tbody>
+                        <tr><td>Correctness</td><td>Pass/fail against specification</td><td>Statistical accuracy across distributions</td></tr>
+                        <tr><td>Test coverage</td><td>Code branches</td><td>Input space (effectively infinite)</td></tr>
+                        <tr><td>Failure mode</td><td>Errors or exceptions</td><td>Silent degradation, edge-case failures, drift</td></tr>
+                        <tr><td>Reproducibility</td><td>Deterministic</td><td>May vary with hardware, random seeds, data order</td></tr>
+                        <tr><td>Regression</td><td>New code changes old behaviour</td><td>New data changes model behaviour</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">EU AI Act Requirement</div>
+                    <p>High-risk AI systems must undergo testing "to identify the most appropriate risk management measures" and must be tested against "realistic conditions." Validation must be documented before deployment.</p>
+                </div>`
+            },
+            {
+                title: 'Core Validation Techniques',
+                content: `<p>A robust validation regime combines multiple complementary techniques.</p>
+
+                <h3>Hold-Out Testing & Cross-Validation</h3>
+                <p>The model is evaluated on data it never saw during training. A hold-out test set should mirror the real deployment distribution. K-fold cross-validation reduces variance in the estimate by rotating which portion is withheld.</p>
+
+                <h3>Subgroup Analysis</h3>
+                <p>Aggregate accuracy metrics can mask poor performance on minority subgroups. Always disaggregate results by protected characteristics (age, gender, ethnicity, disability status) and decision-relevant variables. A model with 92% overall accuracy may have only 71% accuracy for a specific demographic group.</p>
+
+                <h3>Adversarial Testing</h3>
+                <p>Deliberately attempt to cause failures by crafting unusual inputs, edge cases, and worst-case scenarios. Red-teaming — having a separate team try to break the system — is increasingly required for high-risk AI in government.</p>
+
+                <h3>Robustness Testing</h3>
+                <p>Test performance under realistic distribution shifts: data collected at different times, from different regions, or under different conditions than the training data. Many deployed models fail silently when the world changes.</p>`
+            },
+            {
+                title: 'Monitoring & Continuous Validation',
+                content: `<p>Validation does not end at deployment. AI models can degrade without any code change, simply because the world changes.</p>
+
+                <h3>Data Drift</h3>
+                <p>The statistical distribution of inputs shifts over time. Example: an employment-risk model trained on pre-pandemic labour market data may perform poorly as job patterns change. Detect by monitoring input feature distributions against training baselines.</p>
+
+                <h3>Concept Drift</h3>
+                <p>The relationship between inputs and the correct output changes. Example: fraud patterns evolve as fraudsters adapt. Detect by monitoring prediction accuracy against ground truth labels as they become available.</p>
+
+                <h3>Monitoring Dashboard Essentials</h3>
+                <ul>
+                    <li>Prediction distribution (are outputs shifting from historical norms?)</li>
+                    <li>Feature distribution vs training baseline</li>
+                    <li>Performance metrics disaggregated by demographic group</li>
+                    <li>Alert thresholds with defined escalation paths</li>
+                    <li>Retrain triggers — clear criteria for when retraining is required</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Governance Rule</div>
+                    <p>Define monitoring responsibilities, thresholds, and retraining criteria before deployment, not after. A model without a defined review schedule should not be approved for production.</p>
+                </div>`
+            },
+            {
+                title: 'Documentation & Audit Trails',
+                content: `<p>Reproducibility and accountability require that the full lifecycle of a model is documented and traceable.</p>
+
+                <h3>Minimum Required Documentation</h3>
+                <ul>
+                    <li><strong>Data provenance:</strong> Where did training data come from? How was it cleaned and labelled?</li>
+                    <li><strong>Model card:</strong> Intended use, performance metrics by subgroup, known limitations</li>
+                    <li><strong>Training run log:</strong> Algorithm, hyperparameters, random seed, infrastructure</li>
+                    <li><strong>Validation report:</strong> Test methodology, metrics, subgroup results, sign-off</li>
+                    <li><strong>Deployment record:</strong> Version, date, approver, integration points</li>
+                    <li><strong>Change log:</strong> All updates, retrains, and configuration changes with rationale</li>
+                </ul>
+
+                <h3>Version Control for Models</h3>
+                <p>Treat model artefacts like code: version-controlled, tagged, with roll-back capability. If a deployed model causes harm, you must be able to reproduce the exact version and understand exactly what data it was trained on.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'An AI model for assessing benefit eligibility achieves 94% accuracy overall. Why is this metric alone insufficient for governance approval?',
+                    options: [
+                        'Government systems require 99% accuracy as a minimum',
+                        'Aggregate accuracy may hide poor performance on specific demographic subgroups',
+                        'The model should be tested on a different dataset before approval',
+                        '94% is below the industry benchmark for classification models'
+                    ],
+                    correct: 1,
+                    explanation: 'Aggregate accuracy conceals subgroup disparities. A model could perform well on the majority while failing significantly on minority groups — creating discriminatory outcomes. Subgroup analysis is essential.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'What is "concept drift" in the context of deployed AI models?',
+                    options: [
+                        'The model\'s code degrades over time due to technical debt',
+                        'The underlying relationship between inputs and correct outputs changes after deployment',
+                        'The model becomes biased after processing too many requests',
+                        'Input data formats change, causing parsing errors'
+                    ],
+                    correct: 1,
+                    explanation: 'Concept drift occurs when the real-world relationship the model learned changes — for example, fraud patterns evolving or regulations changing what counts as a valid claim. The model\'s predictions become increasingly misaligned without any code change.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You are approving a facial recognition system for use at a government building entrance. Describe the testing regime you would require before granting sign-off.',
+                    sampleAnswer: 'Requirements should include: accuracy testing across all demographic groups (age, gender, ethnicity) to identify disparate error rates; adversarial testing with variations in lighting, angle, glasses, masks, and similar faces; performance benchmarking at the target hardware specifications and throughput; false positive and false negative rate analysis with explicit thresholds (e.g., false acceptance rate ≤ 0.1%); red-team exercise attempting to defeat or spoof the system; a documented monitoring plan covering drift detection and regular revalidation; and a data protection impact assessment covering biometric data processing. Sign-off requires all results to be documented in a validation report approved by both technical and governance leads.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 2-6: Technical Assessment & Certification
+// ============================================
+Object.assign(COURSE_2_CONTENT, {
+    'course-2-6': {
+        title: 'Technical Assessment & Certification',
+        sections: [
+            {
+                title: 'Course 2 Review: Technical AI Ethics & Safety',
+                content: `<p>This final module consolidates the technical knowledge from Course 2. Before attempting the certification assessment, review these core concepts.</p>
+
+                <h3>Module Summary</h3>
+                <table class="content-table">
+                    <thead><tr><th>Module</th><th>Core Concept</th><th>Key Requirement</th></tr></thead>
+                    <tbody>
+                        <tr><td>2.1 Algorithmic Bias</td><td>Bias emerges from data and design choices, not just intent</td><td>Subgroup testing across protected characteristics</td></tr>
+                        <tr><td>2.2 Fairness Metrics</td><td>Multiple competing definitions of fairness exist</td><td>Choose metrics aligned with the use case and consult ethicists</td></tr>
+                        <tr><td>2.3 Explainability</td><td>Post-hoc explanations approximate model behaviour</td><td>Audience-appropriate explanations at every decision level</td></tr>
+                        <tr><td>2.4 Privacy-Preserving AI</td><td>Training data patterns can be extracted from models</td><td>DPIA before training; differential privacy or federated learning where appropriate</td></tr>
+                        <tr><td>2.5 Testing & Validation</td><td>AI testing requires continuous monitoring, not just pre-deployment checks</td><td>Defined monitoring schedule, drift detection, retrain criteria</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Certification Requirement</div>
+                    <p>To earn the Course 2 certificate, you must score at least 80% on the assessment below. The assessment tests applied knowledge, not just recall — you will be presented with scenarios requiring technical judgement.</p>
+                </div>`
+            },
+            {
+                title: 'Applying Technical Ethics: Case Studies',
+                content: `<p>The following scenarios integrate multiple concepts from Course 2. Consider how you would approach each before reading the analysis.</p>
+
+                <h3>Case Study 1: Predictive Policing</h3>
+                <p>A police force deploys an AI that predicts areas of likely criminal activity to allocate patrol resources. The system is trained on five years of arrest records.</p>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Key Issues</div>
+                    <ul>
+                        <li><strong>Bias:</strong> Arrest records reflect historical policing patterns, not actual crime distribution. Over-policed areas generate more arrests, creating a self-reinforcing feedback loop.</li>
+                        <li><strong>Explainability:</strong> Officers and communities have a right to understand why an area is flagged. A black-box prediction of "high risk" without explanation is not auditable.</li>
+                        <li><strong>Privacy:</strong> Training on location and demographic data creates significant re-identification risk and disproportionate surveillance of specific communities.</li>
+                        <li><strong>Validation:</strong> Success metrics (reduced crime vs increased arrests) need careful definition to avoid measuring the wrong thing.</li>
+                    </ul>
+                </div>
+
+                <h3>Case Study 2: Automated Medical Triage</h3>
+                <p>An NHS trust uses an AI to prioritise GP appointment slots based on symptom descriptions and patient history. Patients assessed as low-urgency wait longer.</p>
+
+                <p>Technical considerations: (1) Symptom descriptions vary by health literacy and first language — creating representation bias. (2) Urgency decisions have direct health consequences — explainability is both a legal right and clinical necessity. (3) Model drift is a real risk as disease patterns change seasonally or during outbreaks. (4) A DPIA is mandatory as this is large-scale processing of health data with automated effects on individuals.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A model card for a government AI system must include:',
+                    options: [
+                        'The model\'s source code and training scripts',
+                        'Performance metrics disaggregated by demographic group and known limitations',
+                        'The names of all engineers who built the system',
+                        'A comparison with all commercially available alternatives'
+                    ],
+                    correct: 1,
+                    explanation: 'Model cards document intended use, performance metrics by subgroup, known limitations, and recommended deployment conditions. They enable informed governance decisions and are increasingly required by AI regulations.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which combination of controls would best address both privacy and fairness concerns when training a government AI on demographic data?',
+                    options: [
+                        'Encrypt the data and run accuracy tests on the full population',
+                        'Apply differential privacy during training AND conduct subgroup performance analysis after',
+                        'Remove all demographic fields from the training data entirely',
+                        'Limit access to the model to senior analysts only'
+                    ],
+                    correct: 1,
+                    explanation: 'Differential privacy protects individual privacy during training, while subgroup analysis after training ensures the model is not producing disparate outcomes. Removing demographic fields (option C) prevents fairness testing and can make bias worse through proxy variables.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You are the technical AI ethics lead for a local council that wants to use an AI to prioritise housing repair requests. Describe how you would address bias, explainability, privacy, and validation for this system.',
+                    sampleAnswer: 'Bias: Audit historical repair data for patterns that may reflect differential service levels by area or property type; ensure training data represents all housing stock; conduct subgroup analysis disaggregated by postcode (as a proxy for demographics) and property age. Explainability: Use an interpretable model (decision tree or logistic regression) if performance is adequate, or apply SHAP if a more complex model is required; ensure tenants can receive plain-language explanations of their priority score and what they could change. Privacy: Conduct a DPIA before training; apply data minimisation — use only repair history and property characteristics, not personal financial data; establish data retention limits. Validation: Define accuracy and fairness thresholds before training; conduct continuous monitoring for drift (e.g., seasonal variation in repair types); set clear retraining triggers and assign monitoring responsibility to a named team.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 3: Regulatory Compliance
 const COURSE_3_CONTENT = {
     'course-3-1': {
