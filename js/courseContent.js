@@ -262,6 +262,260 @@ const COURSE_2_CONTENT = {
     }
 };
 
+// ============================================
+// COURSE 2-3: Explainability & Interpretability
+// ============================================
+Object.assign(COURSE_2_CONTENT, {
+    'course-2-3': {
+        title: 'Explainability & Interpretability',
+        sections: [
+            {
+                title: 'Why Explainability Matters in Government AI',
+                content: `<p>Explainability is the ability to describe how and why an AI system produced a particular output in terms that humans can understand. In government contexts, it is not merely a technical preference — it is frequently a legal and ethical obligation.</p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Legal Duty to Explain</div>
+                    <p>The EU AI Act requires high-risk AI systems to be sufficiently transparent to allow users to interpret the system's output. Similarly, GDPR Article 22 grants individuals the right not to be subject to solely automated decisions with significant effects, and the right to an explanation.</p>
+                </div>
+
+                <h3>Key Terms</h3>
+                <table class="content-table">
+                    <thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead>
+                    <tbody>
+                        <tr><td>Interpretability</td><td>How easily a human can understand the internal mechanics of a model</td><td>A decision tree is interpretable; a deep neural network is not</td></tr>
+                        <tr><td>Explainability</td><td>The degree to which a model's outputs can be explained post-hoc</td><td>SHAP values explaining why a loan was denied</td></tr>
+                        <tr><td>Transparency</td><td>Openness about how a system was built and trained</td><td>Publishing training data sources and model architecture</td></tr>
+                        <tr><td>Auditability</td><td>Ability of third parties to verify model behaviour</td><td>Access logs, version control, reproducible results</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'Intrinsically Interpretable Models',
+                content: `<p>Some model types are inherently understandable because their decision logic can be read directly.</p>
+
+                <h3>Decision Trees</h3>
+                <p>Each decision is a branch: "If income &gt; £30,000 AND no missed payments → approve". The entire logic can be printed and reviewed by a non-technical manager. Suitable for eligibility decisions where the rules must be auditable.</p>
+
+                <h3>Linear & Logistic Regression</h3>
+                <p>Each feature is assigned a coefficient (weight). A positive coefficient means the feature increases the predicted value; negative means it decreases it. The contribution of each variable is directly readable.</p>
+
+                <h3>Rule-Based Systems</h3>
+                <p>Explicit IF-THEN rules written by experts. Fully transparent by design, though they can become brittle as rules multiply.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Governance Principle</div>
+                    <p>For high-stakes government decisions (benefits, enforcement, public safety), prefer intrinsically interpretable models unless a demonstrable performance gap justifies greater complexity — and even then, layer on post-hoc explanations.</p>
+                </div>`
+            },
+            {
+                title: 'Post-Hoc Explanation Techniques',
+                content: `<p>When a complex model is already deployed or delivers significantly better performance, post-hoc techniques generate explanations without changing the model.</p>
+
+                <h3>LIME (Local Interpretable Model-Agnostic Explanations)</h3>
+                <p>LIME perturbs the input slightly and observes how the prediction changes, then fits a simple interpretable model locally around that prediction. It answers: "For this specific case, which features mattered most?"</p>
+
+                <h3>SHAP (SHapley Additive exPlanations)</h3>
+                <p>Based on game theory, SHAP assigns each feature a contribution score (Shapley value) that fairly distributes credit for the prediction. SHAP is considered the gold standard because it satisfies mathematical fairness properties.</p>
+
+                <h3>Counterfactual Explanations</h3>
+                <p>Rather than explaining what did happen, counterfactuals explain what would need to change: "Your application was denied. If your declared income were £5,000 higher, it would have been approved." This is the most actionable format for individuals subject to decisions.</p>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Limitations of Post-Hoc Methods</div>
+                    <p>Post-hoc explanations approximate what the model does — they are not the model itself. They can be unfaithful, unstable between similar inputs, or manipulated. Never treat an explanation as proof that the model is behaving ethically.</p>
+                </div>`
+            },
+            {
+                title: 'Implementing Explainability in Practice',
+                content: `<p>Explainability needs to be designed in from the start, not retrofitted at deployment.</p>
+
+                <h3>Audience-Appropriate Explanations</h3>
+                <ul>
+                    <li><strong>Citizens:</strong> Plain language — "Your application was scored lower because the system detected three missed payment records."</li>
+                    <li><strong>Case workers:</strong> Feature-level summaries — "Top factors: payment history (−32%), income stability (+18%)"</li>
+                    <li><strong>Technical reviewers:</strong> Full SHAP plots, model cards, data provenance documentation</li>
+                    <li><strong>Auditors:</strong> Reproducible logs, version-controlled models, full training pipeline documentation</li>
+                </ul>
+
+                <h3>Model Cards</h3>
+                <p>A model card is a short document describing a model's intended use, performance across demographic groups, known limitations, and recommended deployment conditions. Publishing model cards is now considered a baseline requirement for responsible government AI.</p>
+
+                <h3>Procurement Checklist</h3>
+                <ul>
+                    <li>Can the vendor provide explanations at the individual decision level?</li>
+                    <li>Is the explanation method audited and documented?</li>
+                    <li>Can explanations be generated in real time or on demand?</li>
+                    <li>Does the contract grant you access to retrain or audit the model?</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A citizen appeals a benefits decision made partly by an AI. Under GDPR Article 22, what must the government department provide?',
+                    options: [
+                        'The full training dataset used to build the model',
+                        'A meaningful explanation of the logic involved in the decision',
+                        'Access to the model\'s source code',
+                        'A guarantee that a human made the final decision'
+                    ],
+                    correct: 1,
+                    explanation: 'GDPR Article 22 gives individuals the right to receive meaningful information about the logic involved in automated decisions, enabling them to challenge the outcome.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which explanation technique produces a counterfactual — telling a user what they could change to get a different outcome?',
+                    options: [
+                        'LIME',
+                        'SHAP values',
+                        'Counterfactual explanations',
+                        'Decision tree visualisation'
+                    ],
+                    correct: 2,
+                    explanation: 'Counterfactual explanations explicitly describe the minimum change to an input that would flip the model\'s decision, making them the most actionable for individuals.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'A procurement team wants to replace a transparent decision-tree model with a neural network that is 4% more accurate. What arguments should the governance board consider before approving?',
+                    sampleAnswer: 'The board should weigh the performance gain against the loss of intrinsic interpretability. Key considerations: Is 4% accuracy worth the inability to audit individual decisions? Can SHAP or LIME produce adequate post-hoc explanations? Does the use case require legal explainability (e.g., high-risk decisions under EU AI Act)? What is the cost of unexplainable errors? They should require the vendor to demonstrate explanation quality before approving the switch.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 2-4: Privacy-Preserving AI
+// ============================================
+Object.assign(COURSE_2_CONTENT, {
+    'course-2-4': {
+        title: 'Privacy-Preserving AI',
+        sections: [
+            {
+                title: 'Privacy Risks Unique to AI Systems',
+                content: `<p>AI systems introduce privacy risks beyond traditional data processing. Training a model on personal data embeds patterns from that data into the model's weights — and those patterns can sometimes be extracted by an adversary, even when the original data is never directly shared.</p>
+
+                <h3>Specific AI Privacy Threats</h3>
+                <table class="content-table">
+                    <thead><tr><th>Attack Type</th><th>Description</th><th>Government Example</th></tr></thead>
+                    <tbody>
+                        <tr><td>Membership inference</td><td>Determining whether a specific individual's data was in the training set</td><td>Confirming whether someone's health record was used to train a disease-risk model</td></tr>
+                        <tr><td>Model inversion</td><td>Reconstructing training data from model outputs</td><td>Recovering medical images from a diagnostic AI</td></tr>
+                        <tr><td>Data poisoning</td><td>Injecting malicious records to manipulate model behaviour</td><td>Skewing a fraud-detection model to miss certain patterns</td></tr>
+                        <tr><td>Linkage attack</td><td>Combining model outputs with external data to re-identify individuals</td><td>Cross-referencing predictions with public social media</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Anonymisation Is Not Sufficient</div>
+                    <p>Removing names and obvious identifiers does not make data safe for AI training. Research has shown that supposedly anonymised datasets can be re-identified using combinations of features. Purpose limitation and data minimisation are the stronger controls.</p>
+                </div>`
+            },
+            {
+                title: 'Privacy by Design for AI',
+                content: `<p>Privacy by design means building privacy protections into the system architecture from the beginning, not patching them in later.</p>
+
+                <h3>The Seven Foundational Principles</h3>
+                <ol>
+                    <li><strong>Proactive not reactive:</strong> Anticipate privacy risks before they occur</li>
+                    <li><strong>Privacy as the default:</strong> No action required by the individual to protect their privacy</li>
+                    <li><strong>Privacy embedded into design:</strong> Not a bolt-on feature</li>
+                    <li><strong>Full functionality:</strong> Avoid false trade-offs between privacy and functionality</li>
+                    <li><strong>End-to-end security:</strong> Secure lifecycle for all personal data</li>
+                    <li><strong>Visibility and transparency:</strong> Verifiable by any stakeholder</li>
+                    <li><strong>Respect for user privacy:</strong> User-centric architecture</li>
+                </ol>
+
+                <h3>Applied to AI Pipelines</h3>
+                <ul>
+                    <li>Minimise the data collected and retained for training</li>
+                    <li>Separate training from inference environments</li>
+                    <li>Use synthetic data where real personal data is not strictly necessary</li>
+                    <li>Implement access controls and logging on all model endpoints</li>
+                </ul>`
+            },
+            {
+                title: 'Differential Privacy & Federated Learning',
+                content: `<p>Two technical approaches allow models to learn from sensitive data while providing mathematical guarantees against leaking individual records.</p>
+
+                <h3>Differential Privacy (DP)</h3>
+                <p>DP adds carefully calibrated random noise to data or to model updates during training. The result: an adversary who sees the model's outputs cannot determine with confidence whether any specific individual's record was in the training set.</p>
+
+                <p>The privacy guarantee is expressed as epsilon (ε): lower ε means stronger privacy but typically lower model accuracy. Setting ε requires a governance decision balancing utility against risk.</p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Real-World Use</div>
+                    <p>Apple uses differential privacy to collect usage statistics from iPhones without linking data to individuals. The US Census Bureau used DP in the 2020 Census release. Several NHS data initiatives are exploring DP for research sharing.</p>
+                </div>
+
+                <h3>Federated Learning</h3>
+                <p>Instead of centralising data, federated learning trains a model by sending it to where the data lives. Each local node (e.g., a hospital, a local authority) computes model updates on its own data. Only those updates — not the raw data — are sent to a central server to improve the shared model.</p>
+
+                <p>Benefits for government: agencies can collaborate on a shared model without pooling sensitive records across departmental or jurisdictional boundaries.</p>`
+            },
+            {
+                title: 'GDPR Compliance for AI Systems',
+                content: `<p>GDPR applies to any AI system that processes personal data of EU residents. Key obligations are more demanding for AI than for traditional databases.</p>
+
+                <h3>Lawful Basis for AI Training</h3>
+                <p>Training on personal data requires a lawful basis. Consent is usually impractical for large training datasets. Government bodies most commonly rely on <em>public task</em> (Article 6(1)(e)) or <em>legitimate interests</em>, though the latter carries more risk and requires a balancing test.</p>
+
+                <h3>Data Protection Impact Assessments (DPIAs)</h3>
+                <p>A DPIA is mandatory before deploying AI that is likely to result in high risk to individuals (Article 35). This includes systematic profiling, large-scale processing of sensitive data, and automated decision-making with legal or significant effects.</p>
+
+                <h3>DPIA Checklist for AI Projects</h3>
+                <ul>
+                    <li>Describe the nature, scope, context, and purposes of processing</li>
+                    <li>Assess necessity and proportionality</li>
+                    <li>Identify risks to individuals' rights and freedoms</li>
+                    <li>Define measures to address the risks (technical and organisational)</li>
+                    <li>Consult the Data Protection Officer (DPO)</li>
+                    <li>Review and update the DPIA as the system evolves</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">DPO Involvement</div>
+                    <p>Engage your DPO at the outset of any AI project, not after a system is already built. Retrofitting privacy controls is significantly more expensive and less effective.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Federated learning primarily protects privacy by:',
+                    options: [
+                        'Encrypting all data before it is sent to the cloud',
+                        'Keeping raw data on local devices and sharing only model updates',
+                        'Adding random noise to training data to prevent re-identification',
+                        'Limiting access to the model to authorised users only'
+                    ],
+                    correct: 1,
+                    explanation: 'In federated learning, raw data never leaves the local environment. Only model parameter updates are shared, which significantly reduces privacy exposure compared to centralising training data.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Under GDPR, when is a Data Protection Impact Assessment (DPIA) mandatory?',
+                    options: [
+                        'Whenever any personal data is used',
+                        'Only when processing children\'s data',
+                        'Before processing that is likely to result in high risk to individuals',
+                        'Only when the data controller is a public authority'
+                    ],
+                    correct: 2,
+                    explanation: 'Article 35 of GDPR requires a DPIA prior to processing that is likely to result in high risk to individuals\' rights and freedoms. This includes systematic profiling and large-scale automated decision-making.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your department wants to train a fraud-detection AI on five years of benefits transaction data. Describe three specific privacy controls you would require before approving training.',
+                    sampleAnswer: 'Acceptable controls include: (1) Conduct a DPIA identifying risks and mitigations before any processing begins; (2) Apply data minimisation — use only fields strictly necessary for the fraud signal, removing unnecessary personal identifiers; (3) Use differential privacy during training to prevent membership inference attacks; (4) Implement federated learning if data sits across multiple systems to avoid centralising records; (5) Establish strict access controls and audit logging on the trained model and any outputs containing personal data; (6) Define a data retention schedule for both training data and model artefacts.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 3: Regulatory Compliance
 const COURSE_3_CONTENT = {
     'course-3-1': {
