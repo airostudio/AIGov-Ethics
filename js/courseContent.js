@@ -1837,6 +1837,214 @@ Object.assign(COURSE_4_CONTENT, {
     }
 });
 
+// ============================================
+// COURSE 4-4: Incident Response & Remediation
+// ============================================
+Object.assign(COURSE_4_CONTENT, {
+    'course-4-4': {
+        title: 'Incident Response & Remediation',
+        sections: [
+            {
+                title: 'Defining AI Incidents',
+                content: `<p>An AI incident is any event where an AI system behaves in an unintended way that causes or risks causing harm to individuals, organisations, or society. This definition is deliberately broad — not every incident causes harm, but near-misses are as important as actual harms for learning and prevention.</p>
+
+                <h3>AI Incident Taxonomy</h3>
+                <table class="content-table">
+                    <thead><tr><th>Category</th><th>Examples</th><th>Typical Severity</th></tr></thead>
+                    <tbody>
+                        <tr><td>Performance failure</td><td>Accuracy degrades below threshold; model produces incorrect outputs at scale</td><td>High</td></tr>
+                        <tr><td>Fairness violation</td><td>Discriminatory outcomes identified across protected groups</td><td>Critical</td></tr>
+                        <tr><td>Privacy breach</td><td>Model outputs leak personal data; training data exposed</td><td>Critical</td></tr>
+                        <tr><td>Security incident</td><td>Model manipulation, data poisoning, adversarial attack</td><td>Critical</td></tr>
+                        <tr><td>Operational failure</td><td>System unavailability; integration errors</td><td>Variable</td></tr>
+                        <tr><td>Governance failure</td><td>Decision made without required human review; documentation not followed</td><td>Medium-High</td></tr>
+                        <tr><td>Near-miss</td><td>Potential harm identified and prevented before it occurred</td><td>Low (but high learning value)</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Mandatory Reporting</div>
+                    <p>Some AI incidents have mandatory reporting obligations. A privacy breach involving personal data must be reported to the ICO within 72 hours under UK GDPR Article 33. Some sector regulators have additional AI incident reporting requirements. Know your reporting obligations before an incident occurs.</p>
+                </div>`
+            },
+            {
+                title: 'Incident Response Phases',
+                content: `<p>A structured incident response process reduces harm, enables faster recovery, and generates the evidence needed for accountability and learning.</p>
+
+                <h3>Phase 1: Detection and Triage</h3>
+                <p>Incidents can be detected through: automated monitoring alerts, user complaints, staff observations, external reports (media, researchers, regulators). All potential incidents should be logged immediately on detection. Triage determines severity and activates the appropriate response level.</p>
+
+                <h3>Phase 2: Containment</h3>
+                <p>The immediate priority is limiting ongoing harm. Depending on severity, containment actions may include: increasing human oversight for affected decisions; pausing automated outputs while investigation proceeds; suspending the system; issuing communications to affected parties.</p>
+
+                <h3>Phase 3: Investigation</h3>
+                <p>Determine root cause: Is this a data problem, a model problem, a deployment problem, or a governance failure? Preserve evidence — model version, input data at time of incident, outputs, logs. Assign a named incident lead with authority to direct the response.</p>
+
+                <h3>Phase 4: Remediation</h3>
+                <p>Implement the fix. For model issues: retrain, recalibrate, or replace. For data issues: correct the data and assess impact. For governance failures: update procedures and re-train staff. Verify the fix resolves the issue before returning to full operation.</p>
+
+                <h3>Phase 5: Recovery and Review</h3>
+                <p>Return the system to operation with increased monitoring. Conduct a post-incident review within 30 days. Publish a lessons-learned report internally. Update the AI register, model card, and risk documentation to reflect the incident and its resolution.</p>`
+            },
+            {
+                title: 'Remediation of Affected Individuals',
+                content: `<p>When an AI incident has adversely affected individuals, remediation is not optional — it is a legal and ethical obligation.</p>
+
+                <h3>Identifying Affected Individuals</h3>
+                <p>A forensic review of decisions made during the affected period is required. This involves: reconstructing the model's behaviour during the incident window; identifying all decisions that may have been affected; cross-referencing with individual records to locate affected parties.</p>
+
+                <h3>Remediation Approaches</h3>
+                <ul>
+                    <li><strong>Review and overturn decisions:</strong> Manually re-assess all affected decisions using corrected processes</li>
+                    <li><strong>Redress:</strong> Where harm has occurred (e.g., wrongly denied benefit), provide appropriate remedy (payment, reinstatement, written apology)</li>
+                    <li><strong>Notification:</strong> Inform affected individuals of the incident, its impact, and the remediation steps taken</li>
+                    <li><strong>Appeals support:</strong> Facilitate appeals for those who believe they were affected but are not in the identified population</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Legal Obligations</div>
+                    <p>Failure to notify affected individuals of a material AI incident — particularly one involving personal data processing — may constitute a breach of UK GDPR obligations. Seek legal advice early in the incident response process to understand notification and remediation obligations.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'An AI benefits system is found to have incorrectly denied payments to approximately 200 individuals over a three-month period due to a model error. What must happen first?',
+                    options: [
+                        'Retrain the model before taking any other action',
+                        'Report the incident to the ICO before investigating',
+                        'Contain ongoing harm — suspend automated decisions for affected case types while investigating',
+                        'Communicate to the media to manage reputational risk'
+                    ],
+                    correct: 2,
+                    explanation: 'Containment is the immediate priority — stopping ongoing harm while investigation proceeds. Retraining comes in the remediation phase after root cause is established. ICO reporting obligations exist but are assessed during investigation. Media management follows, not precedes, harm containment.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A privacy breach involving AI processing of personal data must be reported to the ICO within:',
+                    options: ['24 hours', '48 hours', '72 hours', '7 days'],
+                    correct: 2,
+                    explanation: 'UK GDPR Article 33 requires reporting a personal data breach to the ICO without undue delay and, where feasible, within 72 hours of becoming aware. AI incidents involving personal data — including unauthorised exposure of training data or model outputs — are subject to this requirement.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Six months after deploying an AI triage system for social care referrals, an analysis reveals that referrals from one postcode area have been disproportionately flagged as low-priority, resulting in delayed interventions. Describe your full incident response.',
+                    sampleAnswer: 'Detection and triage: Log the incident immediately; classify as critical (fairness violation with potential harm to vulnerable individuals); escalate to system owner and senior leadership; appoint an incident lead. Containment: Immediately increase human oversight for all cases from the affected postcode — suspend automated low-priority classifications for these referrals pending review; brief social care team leads on the issue without causing alarm. Investigation: Reconstruct model behaviour for the affected period; determine root cause (training data coverage of the postcode, proxy variable for socioeconomic characteristics, or other bias source); identify all cases that received low-priority classification from the affected area. Remediation: Re-review all identified cases manually; prioritise and escalate any that should have received urgent intervention; provide additional social care resource to address the backlog; notify affected individuals appropriately; report to the ICO if personal data processing obligations were breached. Recovery: Retrain or recalibrate the model with corrected or augmented training data; verify fairness metrics across all postcodes before redeployment; increase monitoring frequency for geographic fairness indicators. Post-incident: Publish internal lessons-learned report; update the model card, DPIA, and AIA to reflect the incident; review whether other AI systems in the portfolio have similar geographic data coverage gaps; consider whether affected individuals require formal redress.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 4-5: Change Management & System Updates
+// ============================================
+Object.assign(COURSE_4_CONTENT, {
+    'course-4-5': {
+        title: 'Change Management & System Updates',
+        sections: [
+            {
+                title: 'Why AI Change Management is Different',
+                content: `<p>In traditional software, a change is a modification to code or configuration. In AI, a change can also be a modification to training data, a retrain of an existing model on new data, or a shift in the deployment context — none of which involve touching the code at all. AI change management must cover all of these categories.</p>
+
+                <h3>Types of AI System Changes</h3>
+                <table class="content-table">
+                    <thead><tr><th>Change Type</th><th>Example</th><th>Governance Risk</th></tr></thead>
+                    <tbody>
+                        <tr><td>Code change</td><td>New feature, bug fix, framework upgrade</td><td>May affect model behaviour indirectly</td></tr>
+                        <tr><td>Model update</td><td>Retrain on more recent data; new algorithm</td><td>Can significantly change fairness and performance profile</td></tr>
+                        <tr><td>Data change</td><td>New data sources added to training pipeline</td><td>May introduce new biases or shift distribution</td></tr>
+                        <tr><td>Configuration change</td><td>Decision threshold adjusted</td><td>Direct impact on outcomes; may require new approval</td></tr>
+                        <tr><td>Context change</td><td>System used for a new use case or population</td><td>Original validation may not apply; full re-assessment needed</td></tr>
+                        <tr><td>Regulatory change</td><td>New law affects what the system can legally do</td><td>May require immediate system modification or suspension</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Context Changes are High-Risk</div>
+                    <p>Extending an AI system to a new population or use case without reassessment is one of the highest-risk governance failures. A model validated on one context may perform poorly or discriminate in another.</p>
+                </div>`
+            },
+            {
+                title: 'Change Control Process',
+                content: `<p>Every material change to an AI system should pass through a defined change control process before being deployed to production.</p>
+
+                <h3>Change Control Stages</h3>
+                <ol>
+                    <li><strong>Change request:</strong> Document what is changing, why, and what the expected impact is. Assign a change owner.</li>
+                    <li><strong>Impact assessment:</strong> Evaluate technical, performance, fairness, privacy, and governance impacts. Determine whether existing approvals (DPIA, AIA) remain valid or need updating.</li>
+                    <li><strong>Testing:</strong> Run the full validation suite against the changed system, including fairness and subgroup analysis. Compare results to the previous baseline.</li>
+                    <li><strong>Approval:</strong> Obtain sign-off at the appropriate authority level. Minor changes may be approved by the system owner; major changes require governance board review.</li>
+                    <li><strong>Deployment:</strong> Deploy with rollback capability. Increase monitoring intensity post-deployment.</li>
+                    <li><strong>Review:</strong> Confirm post-deployment performance matches testing results. Update documentation.</li>
+                </ol>
+
+                <h3>What Constitutes a Major Change?</h3>
+                <p>Define major change criteria upfront. Typical triggers: model algorithm changes; retraining on substantially different data; threshold adjustments affecting more than X% of decisions; extension to new populations or use cases; changes affecting compliance with legal obligations.</p>`
+            },
+            {
+                title: 'Decommissioning AI Systems',
+                content: `<p>AI systems have an end of life, and decommissioning must be as carefully governed as deployment. Poorly managed decommissioning can leave data exposed, create service gaps, or abandon affected individuals without recourse.</p>
+
+                <h3>Decommissioning Triggers</h3>
+                <ul>
+                    <li>System no longer serves its intended purpose or is superseded by a better system</li>
+                    <li>Performance has degraded below acceptable thresholds and cannot be restored</li>
+                    <li>Legal or regulatory requirements have changed, making operation non-compliant</li>
+                    <li>Data on which the model depends is no longer available or valid</li>
+                    <li>Risk level has increased beyond organisational tolerance</li>
+                </ul>
+
+                <h3>Decommissioning Checklist</h3>
+                <ul>
+                    <li>Communicate decommissioning date to all stakeholders with adequate notice</li>
+                    <li>Ensure a transition process exists for affected services and individuals</li>
+                    <li>Archive model artefacts, documentation, and logs per retention policy</li>
+                    <li>Delete personal data per GDPR obligations (or fulfil archiving obligations for specified datasets)</li>
+                    <li>Update the AI register to reflect decommissioned status</li>
+                    <li>Conduct a decommissioning review: what worked, what did not, what would you do differently?</li>
+                    <li>Preserve lessons learned to inform future AI deployments</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A government AI system validated for assessing grant applications is proposed for use in assessing loan applications from the same population. What change category does this represent?',
+                    options: [
+                        'Minor configuration change — no reassessment needed',
+                        'Code change — only technical review required',
+                        'Context change — full re-assessment including fairness testing and DPIA update required',
+                        'Data change — only training data review needed'
+                    ],
+                    correct: 2,
+                    explanation: 'Extending an AI system to a new use case (grants to loans) is a context change — one of the highest-risk change types. The original validation was for grant assessment; loan assessment involves different risk profiles, legal obligations, and outcome impacts. A full re-assessment is required.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Before decommissioning an AI system that has made decisions affecting citizens, what must be ensured?',
+                    options: [
+                        'The model weights are published as open source',
+                        'A transition process exists for affected services and individuals, and data is handled per GDPR obligations',
+                        'The system is replaced by a newer AI model before being switched off',
+                        'All accuracy metrics have been re-run and documented for the final version'
+                    ],
+                    correct: 1,
+                    explanation: 'Decommissioning must protect affected individuals (transition process, ability to submit ongoing complaints or appeals), comply with GDPR obligations (data deletion or archiving), and update the AI register. Replacing with another AI model or publishing model weights are not required.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your AI model for prioritising housing repairs is due to be retrained on two years of additional repair data. Describe the change control process you would follow.',
+                    sampleAnswer: 'Change request: Document the proposed retrain — what data is being added, the date range, any preprocessing changes, and why the retrain is needed. Assign a change owner (AI system owner) and log in the change management system. Impact assessment: Assess whether the new data introduces new geographic coverage, changes the distribution of repair types, or includes any events (e.g., major weather events) that could create unusual patterns; evaluate whether existing DPIA and AIA remain valid; flag if any new data sources constitute a change in lawful basis for processing. Testing: Run full validation suite including: accuracy and subgroup performance analysis, fairness metrics disaggregated by postcode and property type, robustness testing, comparison of new model outputs vs current model on a shared test set; document all results and compare to approved baseline. Approval: Present test results to system owner and governance board; obtain formal sign-off with documented rationale; update model card with new version, training data period, and updated performance metrics. Deployment: Deploy with rollback to current model version available; increase monitoring frequency for the first month post-deployment to confirm production performance matches test results. Post-deployment review: After 30 days, confirm performance and fairness metrics are within approved thresholds; update the AI register with new version details and deployment date; archive previous model version per retention policy.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 5: Leadership
 const COURSE_5_CONTENT = {
     'course-5-1': {
