@@ -2408,6 +2408,206 @@ Object.assign(COURSE_5_CONTENT, {
     }
 });
 
+// ============================================
+// COURSE 5-3: Stakeholder Communication
+// ============================================
+Object.assign(COURSE_5_CONTENT, {
+    'course-5-3': {
+        title: 'Stakeholder Communication',
+        sections: [
+            {
+                title: 'Mapping AI Stakeholders',
+                content: `<p>Effective stakeholder communication starts with understanding who your stakeholders are, what they need to know, and what level of detail they can absorb. Different audiences require fundamentally different communication approaches — not just in tone, but in content and emphasis.</p>
+
+                <h3>Stakeholder Map for Government AI</h3>
+                <table class="content-table">
+                    <thead><tr><th>Stakeholder Group</th><th>Primary Concern</th><th>Information Need</th></tr></thead>
+                    <tbody>
+                        <tr><td>Ministers and SROs</td><td>Risk, accountability, public trust</td><td>Strategic risk summary, compliance status, significant incidents</td></tr>
+                        <tr><td>Frontline staff</td><td>How to use it, when to override, who to call</td><td>Operational procedures, override authority, escalation path</td></tr>
+                        <tr><td>Citizens and service users</td><td>Whether the AI treats them fairly and how to challenge decisions</td><td>Plain language: what the AI does, how it affects them, how to appeal</td></tr>
+                        <tr><td>Parliament and oversight bodies</td><td>Legal compliance, public interest, accountability</td><td>Policy framework, governance structure, incident reports</td></tr>
+                        <tr><td>Media</td><td>Newsworthy risks, failures, and government accountability</td><td>Accessible narrative: what, why, safeguards, who is accountable</td></tr>
+                        <tr><td>Technical teams</td><td>Implementation requirements, quality standards</td><td>Specifications, governance requirements, review processes</td></tr>
+                        <tr><td>Regulators</td><td>Compliance with legal obligations</td><td>Documentation, evidence of controls, incident notifications</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'Communicating with Citizens',
+                content: `<p>Citizens affected by government AI have both legal rights (to explanations, to appeal) and a democratic expectation of transparency. Communication to citizens must be honest, accessible, and actionable.</p>
+
+                <h3>Principles of Citizen-Facing AI Communication</h3>
+                <ul>
+                    <li><strong>Proactive disclosure:</strong> Tell citizens when AI is involved in decisions that affect them — do not wait to be asked</li>
+                    <li><strong>Plain language:</strong> Avoid technical jargon. Use Plain English standards. Test communication with members of the affected public.</li>
+                    <li><strong>Honest about limitations:</strong> Acknowledge that AI can make mistakes and explain what happens when it does</li>
+                    <li><strong>Clear route to challenge:</strong> Make the appeals process visible and accessible — not buried in terms and conditions</li>
+                    <li><strong>Culturally appropriate:</strong> Ensure communications are accessible across languages, literacy levels, and digital capability</li>
+                </ul>
+
+                <h3>Example: Benefits Decision Notice</h3>
+                <p><em>Poor practice:</em> "Your claim has been assessed using an automated eligibility determination system."</p>
+                <p><em>Good practice:</em> "We used an automated system to review your Universal Credit application. The system scored your application based on your income, housing situation, and employment status. Your application received a score that means it was not approved at this time. If you think this is wrong, you can ask us to have a person look at it again — call 0800 XXX XXXX or visit [website]."</p>`
+            },
+            {
+                title: 'Communicating Incidents and Failures',
+                content: `<p>How an organisation communicates about AI failures is a test of its governance maturity. The instinct to minimise or delay is understandable, but transparency — delivered promptly and with substance — is both the ethical requirement and the better strategic choice.</p>
+
+                <h3>Incident Communication Principles</h3>
+                <ul>
+                    <li><strong>Promptness:</strong> Communicate as soon as material facts are known — don't wait for a complete picture before making any disclosure</li>
+                    <li><strong>Candour:</strong> Acknowledge what went wrong honestly, without minimising harm or deflecting responsibility</li>
+                    <li><strong>Remediation focus:</strong> Lead with what you are doing to fix the problem and prevent recurrence, not just what happened</li>
+                    <li><strong>Affected individuals first:</strong> Notify individuals directly affected before or simultaneously with public disclosure</li>
+                    <li><strong>No spin:</strong> Framing failures as "learning opportunities" before acknowledging harm is seen as evasive and damages trust</li>
+                </ul>
+
+                <h3>Preparing in Advance</h3>
+                <p>Draft communications templates for common AI incident scenarios before they happen — performance failure, fairness incident, data breach. A crisis is the wrong time to compose the first draft. Templates should be reviewed by legal, communications, and the DPO as part of the incident response plan.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Trust Research</div>
+                    <p>Research consistently shows that public trust in institutions that acknowledge mistakes promptly and transparently recovers faster than trust in institutions perceived to have concealed or minimised problems. Transparency is not just ethically required — it is strategically rational.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A minister asks for a briefing on the department\'s AI governance posture ahead of a parliamentary question. What should the briefing prioritise?',
+                    options: [
+                        'Detailed technical specifications of each deployed AI system',
+                        'Strategic risk summary, compliance status, significant incidents, and accountability structure',
+                        'A comparison of the department\'s AI maturity with other departments',
+                        'Training data sources and model performance metrics for each system'
+                    ],
+                    correct: 1,
+                    explanation: 'Ministers need strategic-level information: what risks exist, whether the department is compliant with legal obligations, what incidents have occurred and how they were handled, and who is accountable. Technical details belong in supporting annexes, not the main briefing.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A citizen\'s housing application has been scored by an AI and declined. Under good communication practice, the decision notice must:',
+                    options: [
+                        'Include the model\'s accuracy statistics and training data description',
+                        'State that an automated system was used, explain what factors contributed, and give a clear route to challenge',
+                        'Assure the citizen that the decision was reviewed by a human official',
+                        'Direct the citizen to the department\'s AI transparency webpage for further information'
+                    ],
+                    correct: 1,
+                    explanation: 'Good citizen communication discloses AI involvement, explains the factors that influenced the decision in plain language, and provides a clear, accessible route to challenge. Accuracy statistics and technical details are not appropriate for citizen notices.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your department\'s AI benefits system incorrectly denied payments to 180 individuals due to a model error. Draft the key messages for the public communication and describe the order in which stakeholders should be informed.',
+                    sampleAnswer: 'Key messages: (1) We have identified an error in our automated benefits system that incorrectly affected 180 people\'s payments; (2) We are deeply sorry for the hardship this has caused; (3) We are contacting every affected person individually to explain what happened and to arrange correct payment; (4) We have paused the automated system while we fix the error; (5) Anyone who believes they may have been affected and has not heard from us should call [number]; (6) We will publish a full account of what happened and how we are preventing recurrence. Stakeholder communication order: (1) Brief the minister and permanent secretary before any public disclosure — they must not hear this from the media; (2) Notify the ICO if personal data processing obligations were breached (within 72 hours of establishing a breach); (3) Contact affected individuals directly — phone where possible, letter otherwise — before public announcement; (4) Issue press notice simultaneously with or immediately after individual notifications; (5) Brief Parliament if the minister expects a parliamentary question; (6) Publish a detailed incident report within 30 days including root cause, remediation steps, and prevention measures.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 5-4: Strategic AI Risk Management
+// ============================================
+Object.assign(COURSE_5_CONTENT, {
+    'course-5-4': {
+        title: 'Strategic AI Risk Management',
+        sections: [
+            {
+                title: 'AI Risk at the Enterprise Level',
+                content: `<p>Strategic AI risk management shifts the perspective from individual system governance to portfolio-level oversight. Senior leaders need to understand the aggregate risk exposure from all AI deployments, not just manage each system in isolation.</p>
+
+                <h3>Strategic Risk Dimensions</h3>
+                <table class="content-table">
+                    <thead><tr><th>Risk Category</th><th>Description</th><th>Board-Level Indicator</th></tr></thead>
+                    <tbody>
+                        <tr><td>Concentration risk</td><td>Over-dependence on a single AI vendor or platform</td><td>% of critical decisions dependent on a single vendor</td></tr>
+                        <tr><td>Compliance risk</td><td>Gap between current practice and regulatory requirements</td><td>Number of high-risk systems without compliant documentation</td></tr>
+                        <tr><td>Reputational risk</td><td>Public loss of trust following an AI incident</td><td>Number of open fairness incidents; media sentiment</td></tr>
+                        <tr><td>Capability risk</td><td>Insufficient expertise to govern AI responsibly</td><td>AI governance roles filled; training completion rates</td></tr>
+                        <tr><td>Mission risk</td><td>AI failure undermines delivery of public services</td><td>Operational continuity plans for AI-dependent services</td></tr>
+                        <tr><td>Ethics risk</td><td>AI systems causing harm to individuals or groups</td><td>Active AIAs; incident rates by harm category</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Aggregate View</div>
+                    <p>A department with thirty AI systems, each assessed individually as medium-risk, may have a portfolio that is collectively high-risk — particularly if multiple systems share the same vendor, data source, or failure mode. Strategic risk management requires looking across the portfolio, not just at each system.</p>
+                </div>`
+            },
+            {
+                title: 'AI Risk Appetite and Governance Thresholds',
+                content: `<p>Risk appetite is the level of risk an organisation is willing to accept in pursuit of its objectives. For AI, risk appetite must be defined explicitly — implicit risk appetite leads to inconsistent decisions and accountability gaps.</p>
+
+                <h3>Defining AI Risk Appetite</h3>
+                <p>A risk appetite statement for AI should specify: types of AI use that are approved, restricted, or prohibited; maximum tolerable error rates for different decision types; fairness thresholds below which deployment is not permitted; data governance requirements that cannot be waived; and human oversight requirements by risk tier.</p>
+
+                <h3>Translating Appetite into Thresholds</h3>
+                <p>Risk appetite must be translated into operational thresholds that governance bodies can apply consistently. Example: "We will not deploy AI for consequential individual decisions without human review" becomes a gateway requirement. "We will not tolerate more than a 15% disparity in outcomes between demographic groups" becomes a measurable monitoring threshold.</p>
+
+                <h3>Regular Appetite Review</h3>
+                <p>Risk appetite is not fixed. Changes in regulation, technology capability, public expectations, and organisational strategy all affect what levels of risk are appropriate. Review the AI risk appetite statement annually, and after any significant incident or regulatory change.</p>`
+            },
+            {
+                title: 'Board-Level AI Governance',
+                content: `<p>Effective AI governance requires engagement at board and executive level, not delegation entirely to technical or compliance functions.</p>
+
+                <h3>What Boards Need</h3>
+                <ul>
+                    <li><strong>Portfolio visibility:</strong> Aggregate view of AI deployments, risk levels, and compliance status</li>
+                    <li><strong>Incident awareness:</strong> Timely reporting of significant incidents with clear accountability</li>
+                    <li><strong>Forward-looking indicators:</strong> Early warning signals — compliance gaps, capability shortfalls, vendor concentration — before they become incidents</li>
+                    <li><strong>Strategic alignment:</strong> Assurance that AI adoption aligns with public service values and legal obligations</li>
+                    <li><strong>Decision authority:</strong> Clear escalation paths for decisions beyond executive authority</li>
+                </ul>
+
+                <h3>AI in the Annual Report</h3>
+                <p>Increasingly, public sector organisations are expected to disclose AI use in annual reports and accounts. This includes: a description of significant AI deployments, governance arrangements, significant incidents, and plans for responsible AI adoption. This transparency reinforces accountability and public trust.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Governance Maturity Levels</div>
+                    <p>The Alan Turing Institute's "Responsible AI in Government" framework defines governance maturity levels from nascent to leading. Use it to benchmark your organisation's current position and prioritise improvements.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A government department has thirty AI systems, all assessed individually as medium-risk. What strategic risk does this portfolio present that individual assessments may miss?',
+                    options: [
+                        'None — if each system is medium-risk, the portfolio is medium-risk',
+                        'Aggregate and concentration risks — shared vendors, data sources, or failure modes could create systemic exposure',
+                        'The department should not have more than ten AI systems at medium-risk level',
+                        'Medium-risk systems always become high-risk when deployed at scale'
+                    ],
+                    correct: 1,
+                    explanation: 'Portfolio-level risk can exceed the sum of individual system risks. Shared dependencies (same vendor, same training data, same failure mode) mean that a single event could cascade across multiple systems simultaneously. Strategic risk management requires an aggregate portfolio view.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'An AI risk appetite statement specifying "We will not deploy AI for consequential individual decisions without human review" is best implemented through:',
+                    options: [
+                        'A training session reminding all AI teams of the principle',
+                        'A mandatory gateway requirement in the project approval process, with compliance verified by an independent review',
+                        'An annual survey asking teams to self-certify compliance',
+                        'Publication of the statement on the department\'s intranet'
+                    ],
+                    correct: 1,
+                    explanation: 'Risk appetite statements are only effective when translated into enforceable requirements with independent verification. A gateway requirement that blocks deployment without human oversight specification, verified by governance review, turns a statement into a control.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You are preparing the AI governance section of your department\'s annual report. What content should it include, and why does public disclosure of AI governance matter?',
+                    sampleAnswer: 'Annual report AI governance content should include: (1) Overview of significant AI deployments and their purposes — helping the public understand where AI is used in government decision-making; (2) Governance framework — describing the oversight structures, accountability, and policies in place; (3) Risk appetite statement — publishing the department\'s stated thresholds for AI use demonstrates genuine commitment rather than aspirational language; (4) Compliance status — confirming alignment with relevant legal requirements (UK GDPR, sector regulation); (5) Significant incidents — honest disclosure of any material AI incidents, their impact, and remediation steps taken; (6) Forward plans — describing how the department intends to develop AI use responsibly over the coming year. Why public disclosure matters: democratic accountability — citizens have a right to know how government uses AI to make decisions about them; public trust — transparency builds trust, opacity erodes it; parliamentary oversight — accurate disclosure enables effective parliamentary scrutiny; regulatory relationships — proactive disclosure demonstrates governance maturity to regulators; deterrence — knowing that failures will be publicly reported creates stronger internal incentives for responsible AI governance; learning — published incident reports and lessons learned contribute to sector-wide improvement.'
+                }
+            ]
+        }
+    }
+});
+
 // Merge additional content into course data
 if (typeof window !== 'undefined' && window.COURSE_DATA) {
     // Add content to Course 2 subcourses
