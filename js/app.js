@@ -3,6 +3,19 @@
  * Main Application JavaScript
  */
 
+// Escape HTML special characters to prevent XSS when inserting user-supplied
+// data into innerHTML. Always use this for any value that came from user input
+// or external data before inserting into a template literal passed to innerHTML.
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+}
+
 // Application State
 const appState = {
     currentPage: 'home',
@@ -841,8 +854,8 @@ function loadDashboard() {
         return;
     }
 
-    const displayName = getUserDisplayName();
-    const initials = getInitials(displayName);
+    const displayName = escapeHtml(getUserDisplayName());
+    const initials = escapeHtml(getInitials(getUserDisplayName()));
 
     // Calculate stats
     const totalModules = COURSE_DATA.courses.reduce((sum, c) => sum + c.subcourses.length, 0);
@@ -1049,10 +1062,12 @@ function loadProfile() {
     const container = document.getElementById('profileContainer');
     if (!container || !appState.user) return;
 
-    const displayName = getUserDisplayName();
-    const initials = getInitials(displayName);
-    const email = appState.user.email || 'user@example.com';
+    const rawDisplayName = getUserDisplayName();
+    const displayName = escapeHtml(rawDisplayName);
+    const initials = escapeHtml(getInitials(rawDisplayName));
+    const email = escapeHtml(appState.user.email || 'user@example.com');
     const role = appState.user.user_metadata?.role || appState.user.role || 'Not specified';
+    const org = escapeHtml(appState.user.user_metadata?.organization || '');
 
     const roleLabels = {
         'it_professional': 'IT Professional',
@@ -1060,6 +1075,7 @@ function loadProfile() {
         'policy_advisor': 'Policy Advisor',
         'other': 'Other'
     };
+    const safeRoleLabel = escapeHtml(roleLabels[role] || role);
 
     container.innerHTML = `
         <div class="profile-card">
@@ -1068,7 +1084,7 @@ function loadProfile() {
                 <div class="profile-info">
                     <h2>${displayName}</h2>
                     <p>${email}</p>
-                    <span class="profile-role-badge">${roleLabels[role] || role}</span>
+                    <span class="profile-role-badge">${safeRoleLabel}</span>
                 </div>
             </div>
             <form class="profile-form" id="profileForm">
@@ -1094,7 +1110,7 @@ function loadProfile() {
                     </div>
                     <div class="form-group">
                         <label for="profileOrg">Organization</label>
-                        <input type="text" id="profileOrg" value="${appState.user.user_metadata?.organization || ''}" placeholder="Your organization">
+                        <input type="text" id="profileOrg" value="${org}" placeholder="Your organization">
                     </div>
                 </div>
                 <div class="form-actions">
@@ -1658,7 +1674,12 @@ async function checkAuthState() {
         // Load from localStorage in demo mode
         const saved = localStorage.getItem('aiGovProgress');
         if (saved) {
-            appState.progress = JSON.parse(saved);
+            try {
+                appState.progress = JSON.parse(saved);
+            } catch (e) {
+                console.warn('Corrupt progress data in localStorage, resetting');
+                localStorage.removeItem('aiGovProgress');
+            }
         }
     }
 }
@@ -1759,7 +1780,12 @@ async function loadUserProgress() {
         // Load from localStorage in demo mode
         const saved = localStorage.getItem('aiGovProgress');
         if (saved) {
-            appState.progress = JSON.parse(saved);
+            try {
+                appState.progress = JSON.parse(saved);
+            } catch (e) {
+                console.warn('Corrupt progress data in localStorage, resetting');
+                localStorage.removeItem('aiGovProgress');
+            }
         }
     }
 }
@@ -2037,8 +2063,14 @@ function loadUserTier() {
         // Demo mode - load from localStorage
         const savedTier = localStorage.getItem('aiGovUserTier');
         if (savedTier) {
-            appState.userTier = parseInt(savedTier);
-            demoStorage.userTier = appState.userTier;
+            const parsed = parseInt(savedTier, 10);
+            // Accept only valid tier levels 1-5 to prevent localStorage manipulation
+            if (Number.isInteger(parsed) && parsed >= 1 && parsed <= 5) {
+                appState.userTier = parsed;
+                demoStorage.userTier = appState.userTier;
+            } else {
+                localStorage.removeItem('aiGovUserTier');
+            }
         }
     }
 }
