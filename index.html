@@ -3,6 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Content Security Policy: restrict resource origins to reduce XSS impact.
+         'unsafe-inline' for style-src is required for inline styles used throughout
+         the dynamic rendering; script-src kept tight to CDN origins only. -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://cdn.jsdelivr.net https://js.stripe.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: blob: https://ai-gov-ethics.vercel.app;
+        connect-src 'self' https://*.supabase.co https://api.stripe.com;
+        frame-src https://js.stripe.com https://hooks.stripe.com;
+        object-src 'none';
+        base-uri 'self';
+        form-action 'self';
+    ">
     <meta name="description" content="Professional AI Governance & Ethics Training Platform for Government IT Professionals and Line Managers. Comprehensive courses on EU AI Act, NIST AI RMF, and responsible AI.">
     <meta name="keywords" content="AI Governance, AI Ethics, Government Training, EU AI Act, NIST AI RMF, Machine Learning Ethics, AI Compliance">
     <meta name="author" content="AI Governance & Ethics Academy">
