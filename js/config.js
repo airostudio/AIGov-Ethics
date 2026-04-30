@@ -16,8 +16,8 @@ const CONFIG = {
     // Application Settings
     app: {
         name: 'AI Governance & Ethics Academy',
-        version: '1.65.0',
-        environment: 'development'  // 'development' | 'production'
+        version: '1.0.0',
+        environment: 'production'  // 'development' | 'production'
     },
 
     // Feature Flags

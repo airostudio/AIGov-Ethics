@@ -32,8 +32,17 @@ const TIER_METADATA = {
 };
 
 module.exports = async (req, res) => {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // CORS headers - restrict to allowed origins in production
+    const allowedOrigins = [
+        'https://ai-gov-ethics.vercel.app',
+        'https://ai-gov-ethics-airostudios-projects.vercel.app',
+        process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+    ].filter(Boolean);
+
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -51,6 +60,21 @@ module.exports = async (req, res) => {
         // Validate tier
         if (!tierId || !TIER_PRICES[tierId]) {
             return res.status(400).json({ error: 'Invalid tier selected' });
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!userEmail || !emailRegex.test(userEmail)) {
+            return res.status(400).json({ error: 'Invalid email address' });
+        }
+
+        // Validate URLs if provided (must be from same origin)
+        const validUrlPattern = /^https?:\/\/(ai-gov-ethics.*\.vercel\.app|localhost)/;
+        if (successUrl && !validUrlPattern.test(successUrl)) {
+            return res.status(400).json({ error: 'Invalid success URL' });
+        }
+        if (cancelUrl && !validUrlPattern.test(cancelUrl)) {
+            return res.status(400).json({ error: 'Invalid cancel URL' });
         }
 
         const priceId = TIER_PRICES[tierId];
