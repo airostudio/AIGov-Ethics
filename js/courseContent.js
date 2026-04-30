@@ -903,6 +903,249 @@ const COURSE_3_CONTENT = {
     }
 };
 
+// ============================================
+// COURSE 3-2: NIST AI Risk Management Framework
+// ============================================
+Object.assign(COURSE_3_CONTENT, {
+    'course-3-2': {
+        title: 'NIST AI Risk Management Framework',
+        sections: [
+            {
+                title: 'Overview of the NIST AI RMF',
+                content: `<p>The NIST AI Risk Management Framework (AI RMF 1.0), published in January 2023, is a voluntary framework designed to help organisations manage AI risks throughout the AI lifecycle. Although voluntary in the US, it has become an internationally referenced standard and is increasingly cited by UK and EU guidance documents.</p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Why NIST RMF Matters for UK Government</div>
+                    <p>The UK's AI regulatory approach and the ISO/IEC 42001 AI management system standard draw heavily on NIST concepts. Familiarity with the RMF equips you to work across international AI governance contexts and to engage with vendors who have implemented it.</p>
+                </div>
+
+                <h3>Four Core Functions</h3>
+                <p>The AI RMF is organised around four functions that together describe a complete risk management cycle:</p>
+                <table class="content-table">
+                    <thead><tr><th>Function</th><th>Purpose</th><th>Key Activities</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>GOVERN</strong></td><td>Build organisational culture and accountability for risk</td><td>Policies, roles, incentives, risk tolerance statements</td></tr>
+                        <tr><td><strong>MAP</strong></td><td>Identify and categorise AI risks in context</td><td>Use case definition, stakeholder identification, impact assessment</td></tr>
+                        <tr><td><strong>MEASURE</strong></td><td>Analyse and quantify identified risks</td><td>Metrics, testing, benchmarking, documentation</td></tr>
+                        <tr><td><strong>MANAGE</strong></td><td>Prioritise and treat risks</td><td>Controls, mitigation plans, monitoring, response procedures</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'GOVERN — Building Organisational Foundations',
+                content: `<p>GOVERN is the foundational function. Without it, MAP, MEASURE, and MANAGE are ad hoc activities rather than a systematic programme.</p>
+
+                <h3>What GOVERN Requires</h3>
+                <ul>
+                    <li><strong>Risk tolerance statements:</strong> What levels of AI risk is the organisation willing to accept? This must be defined explicitly by leadership, not assumed.</li>
+                    <li><strong>Clear accountability:</strong> Named individuals responsible for AI risk at portfolio, programme, and system levels</li>
+                    <li><strong>AI policies:</strong> Documented requirements for AI development, procurement, deployment, and monitoring</li>
+                    <li><strong>Workforce training:</strong> All staff involved with AI have adequate competencies for their role</li>
+                    <li><strong>Engagement processes:</strong> Mechanisms to surface concerns from frontline staff and affected communities</li>
+                </ul>
+
+                <h3>Operationalising Risk Tolerance</h3>
+                <p>A risk tolerance statement defines thresholds at which action is required. Example: "AI systems that make consequential decisions about individuals without human review are not acceptable. Systems with a false positive rate exceeding 5% on any demographic subgroup require additional mitigation before deployment."</p>`
+            },
+            {
+                title: 'MAP — Contextualising Risk',
+                content: `<p>The MAP function ensures risks are identified in relation to specific use cases, affected populations, and organisational context. The same AI technology may carry very different risks in different deployments.</p>
+
+                <h3>MAP Activities</h3>
+                <ol>
+                    <li><strong>Define the AI system and use case:</strong> What exactly is the system doing? Who are the deployers, operators, and affected individuals?</li>
+                    <li><strong>Categorise the system:</strong> Using a risk taxonomy (e.g., EU AI Act categories or internal classification), determine the system's risk tier</li>
+                    <li><strong>Identify stakeholders and harms:</strong> Who could be harmed, how, and how severely? Include second-order effects.</li>
+                    <li><strong>Assess context factors:</strong> Deployment environment, user characteristics, existing safeguards</li>
+                    <li><strong>Document assumptions and limitations:</strong> What is the system designed for, and what is it not designed for?</li>
+                </ol>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tool</div>
+                    <p>NIST publishes the AI RMF Playbook, a companion document with specific suggested actions for each function. Government teams can use it as a checklist when assessing new AI projects. It is freely available at airc.nist.gov.</p>
+                </div>`
+            },
+            {
+                title: 'MEASURE & MANAGE — Quantify and Control',
+                content: `<p>MEASURE turns identified risks into quantified assessments. MANAGE turns those assessments into controlled, monitored outcomes.</p>
+
+                <h3>MEASURE: Key Activities</h3>
+                <ul>
+                    <li>Select metrics for trustworthiness properties: accuracy, fairness, robustness, explainability, privacy</li>
+                    <li>Establish baselines and thresholds before testing</li>
+                    <li>Test across realistic distributions and subgroups</li>
+                    <li>Document all results and make them available to decision-makers</li>
+                    <li>Use independent review for high-risk systems</li>
+                </ul>
+
+                <h3>MANAGE: Key Activities</h3>
+                <ul>
+                    <li>Prioritise risks by impact and likelihood</li>
+                    <li>Select treatment options: accept, mitigate, transfer, avoid</li>
+                    <li>Implement controls and verify their effectiveness</li>
+                    <li>Establish incident response procedures</li>
+                    <li>Monitor continuously and adjust as conditions change</li>
+                    <li>Retire systems that can no longer be managed to acceptable risk levels</li>
+                </ul>
+
+                <h3>Integrating with Existing Government Frameworks</h3>
+                <p>NIST AI RMF is designed to complement, not replace, existing risk frameworks. In UK government, it maps closely to the HMG Cyber Security Risk Assessment approach and to the principles of PRINCE2 project risk management. AI governance leads should integrate AI RMF activities into standard project governance gates.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'In the NIST AI RMF, which function is responsible for establishing the organisation\'s policies, roles, and risk tolerance for AI?',
+                    options: ['MAP', 'MEASURE', 'MANAGE', 'GOVERN'],
+                    correct: 3,
+                    explanation: 'GOVERN is the foundational function that builds organisational capacity to manage AI risks — including policies, accountability structures, workforce competencies, and risk tolerance statements. Without GOVERN, the other functions lack the authority and structure to be effective.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A government department has identified that an AI procurement system might give lower scores to suppliers from certain regions. At which NIST RMF stage should this concern be formally documented?',
+                    options: [
+                        'GOVERN — as it requires a policy decision',
+                        'MAP — as it is an identified contextual risk to specific stakeholders',
+                        'MEASURE — as it needs to be quantified through testing',
+                        'MANAGE — as a control needs to be applied immediately'
+                    ],
+                    correct: 1,
+                    explanation: 'MAP is the function for identifying and documenting risks in context, including who may be harmed and how. Once documented in MAP, the risk would then be quantified in MEASURE and controlled in MANAGE.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Describe how you would use the GOVERN function to prepare your department to responsibly deploy AI for the first time.',
+                    sampleAnswer: 'GOVERN activities to establish AI readiness include: (1) Draft an AI risk tolerance statement agreed by the Senior Responsible Owner, specifying what types of AI use are acceptable and what conditions require escalation; (2) Define accountability — assign an AI risk owner at leadership level and AI leads at project level; (3) Establish an AI review process as a mandatory gate in the project lifecycle for all AI initiatives; (4) Create or adapt existing policies to cover AI procurement, development, deployment, and decommissioning requirements; (5) Assess workforce competency and deliver training to fill gaps; (6) Create a reporting mechanism for staff to raise concerns about AI behaviour without fear of reprisal; (7) Engage affected communities to understand their priorities and concerns before deploying AI that affects them.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 3-3: Data Protection & AI
+// ============================================
+Object.assign(COURSE_3_CONTENT, {
+    'course-3-3': {
+        title: 'Data Protection & AI',
+        sections: [
+            {
+                title: 'UK GDPR and the AI Data Lifecycle',
+                content: `<p>UK GDPR applies to any processing of personal data, and AI systems process personal data at every stage: collection, storage, training, inference, and output. Each stage carries distinct compliance obligations.</p>
+
+                <h3>AI Lifecycle Data Obligations</h3>
+                <table class="content-table">
+                    <thead><tr><th>Stage</th><th>Key Obligation</th><th>Common Failure</th></tr></thead>
+                    <tbody>
+                        <tr><td>Data collection</td><td>Lawful basis, transparency, purpose limitation</td><td>Scraping public data without considering privacy expectations</td></tr>
+                        <tr><td>Training data storage</td><td>Data minimisation, security, retention limits</td><td>Retaining training data indefinitely "in case we need to retrain"</td></tr>
+                        <tr><td>Model training</td><td>DPIA if high-risk; consider privacy-enhancing technologies</td><td>Training on data beyond its original purpose without reassessment</td></tr>
+                        <tr><td>Inference / prediction</td><td>Lawful basis for processing input data</td><td>Processing data the user did not knowingly provide</td></tr>
+                        <tr><td>Output / decisions</td><td>Article 22 rights for automated decisions; right to explanation</td><td>Consequential decisions without human review mechanism</td></tr>
+                        <tr><td>Logging and audit</td><td>Security; purpose limitation for logs</td><td>Storing detailed inference logs longer than necessary</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'Special Category Data in AI',
+                content: `<p>Special category data under UK GDPR (Article 9) receives enhanced protection because of its sensitivity. In AI systems, this data presents particular challenges because it can appear explicitly or be inferred from seemingly innocuous inputs.</p>
+
+                <h3>Special Categories</h3>
+                <ul>
+                    <li>Racial or ethnic origin</li>
+                    <li>Political opinions</li>
+                    <li>Religious or philosophical beliefs</li>
+                    <li>Trade union membership</li>
+                    <li>Genetic data</li>
+                    <li>Biometric data (where used to uniquely identify a person)</li>
+                    <li>Health data</li>
+                    <li>Sex life or sexual orientation</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Inference Risk</div>
+                    <p>AI models can infer special category data from non-special category inputs. A mobility app can infer disability. Purchasing patterns can infer religion (e.g., halal food, religious texts). Facial recognition can infer ethnicity. Processing that produces inferred special category data may itself require Article 9 compliance, even if you did not collect special category data directly.</p>
+                </div>
+
+                <h3>Conditions for Processing Special Category Data</h3>
+                <p>Processing requires both a lawful basis under Article 6 AND a specific Article 9 condition. For government AI, the most relevant conditions are: explicit consent; vital interests; public task with substantial public interest; and archiving/research purposes. The substantial public interest condition requires a Data Protection Policy document.</p>`
+            },
+            {
+                title: 'Individual Rights and AI Systems',
+                content: `<p>UK GDPR grants individuals a set of rights that AI systems must be designed to support.</p>
+
+                <h3>Rights Summary for AI Contexts</h3>
+                <table class="content-table">
+                    <thead><tr><th>Right</th><th>AI Implication</th><th>System Design Requirement</th></tr></thead>
+                    <tbody>
+                        <tr><td>Right to information</td><td>Individuals must know when AI processes their data and for what purpose</td><td>Privacy notices updated to describe AI use clearly</td></tr>
+                        <tr><td>Right of access (SAR)</td><td>Individuals can request their data including data used by the AI</td><td>Ability to extract individual's data from training sets and inference logs</td></tr>
+                        <tr><td>Right to rectification</td><td>Inaccurate data must be corrected — including training data if identified</td><td>Process to correct training data and assess impact on model</td></tr>
+                        <tr><td>Right to erasure</td><td>Data must be deleted on valid request — complex for trained models</td><td>Retention controls; assess whether model needs retraining after erasure</td></tr>
+                        <tr><td>Right to object</td><td>Individuals can object to processing based on public task/legitimate interests</td><td>Process to handle objections and pause processing</td></tr>
+                        <tr><td>Article 22 rights</td><td>Right not to be subject to solely automated consequential decisions</td><td>Human review mechanism; right to request human reconsideration</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'Data Sharing and Third-Party AI',
+                content: `<p>Many government AI systems involve third-party vendors, cloud providers, or data sharing with other public bodies. Each relationship introduces additional compliance obligations.</p>
+
+                <h3>Data Processing Agreements</h3>
+                <p>When a vendor processes personal data on behalf of your organisation, a Data Processing Agreement (DPA) is mandatory under Article 28. For AI vendors, the DPA must address: what data is used for training and fine-tuning; whether the vendor retains data to improve their own models; where data is processed (international transfers); and what happens to data when the contract ends.</p>
+
+                <h3>AI-Specific DPA Clauses to Require</h3>
+                <ul>
+                    <li>Prohibition on using your data to train vendor's general-purpose models without explicit consent</li>
+                    <li>Guaranteed data deletion or return at contract termination</li>
+                    <li>Notification requirements if a model update materially changes how your data is processed</li>
+                    <li>Right to audit the vendor's compliance with the DPA</li>
+                    <li>Transparency about subprocessors who may also access the data</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Guidance</div>
+                    <p>The ICO has published specific guidance on AI and data protection. The ICO's "Explaining decisions made with AI" guidance and "AI and data protection risk toolkit" are essential references for teams implementing or procuring AI in UK public sector contexts.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A government health app uses AI to predict users\' stress levels based on their movement patterns and app usage. What data protection concern does this raise?',
+                    options: [
+                        'Movement data is not personal data and does not need protection',
+                        'The app may be inferring health data (a special category) from non-special category inputs',
+                        'The data is only special category if the user self-reports their stress level',
+                        'Predictions do not constitute processing of personal data'
+                    ],
+                    correct: 1,
+                    explanation: 'Health data is a special category under Article 9. An AI that infers health-related information (such as stress or mental health status) from behavioural data may be producing special category data even if the inputs were not themselves special category. This requires heightened protections.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Under UK GDPR Article 22, what must a government department provide when an AI system makes a consequential automated decision about an individual?',
+                    options: [
+                        'The full technical specification of the AI model',
+                        'A mechanism for the individual to request human reconsideration',
+                        'A guarantee that the AI decision will be overturned if challenged',
+                        'Access to all data used to train the model'
+                    ],
+                    correct: 1,
+                    explanation: 'Article 22 requires that individuals have the right to obtain human intervention, express their point of view, and contest automated decisions. Practically, this means a process for human review must exist and be accessible to affected individuals.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your department is procuring a cloud-based AI service that will process caseworkers\' notes containing personal and potentially special category data. What data protection clauses must the contract include?',
+                    sampleAnswer: 'The contract must include: a Data Processing Agreement compliant with Article 28 UK GDPR; clear specification that the vendor may not use the data to train their own general-purpose models; data residency requirements confirming processing within the UK or an adequate country, or Standard Contractual Clauses for international transfers; mandatory data deletion or return within a specified period after contract termination; notification requirements for data breaches within 72 hours; subprocessor disclosure and restrictions; audit rights enabling the department or ICO to verify compliance; provisions for supporting subject access requests and other individual rights; and specific controls for special category data, including encryption at rest and in transit, access controls, and a named Data Protection Officer contact. A DPIA should be completed before any data is shared.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 4: Implementation
 const COURSE_4_CONTENT = {
     'course-4-2': {
