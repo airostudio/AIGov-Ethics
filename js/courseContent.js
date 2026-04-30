@@ -1146,6 +1146,250 @@ Object.assign(COURSE_3_CONTENT, {
     }
 });
 
+// ============================================
+// COURSE 3-4: Global Regulatory Landscape
+// ============================================
+Object.assign(COURSE_3_CONTENT, {
+    'course-3-4': {
+        title: 'Global Regulatory Landscape',
+        sections: [
+            {
+                title: 'The EU AI Act: International Benchmark',
+                content: `<p>The EU AI Act, in force from August 2024, is the world's first comprehensive binding legal framework for AI. Its extraterritorial scope means it applies to any AI system whose outputs are used within the EU — including systems developed by UK organisations serving European users.</p>
+
+                <h3>Risk Tiers at a Glance</h3>
+                <table class="content-table">
+                    <thead><tr><th>Tier</th><th>Examples</th><th>Requirements</th></tr></thead>
+                    <tbody>
+                        <tr><td>Unacceptable Risk (banned)</td><td>Social scoring by government; real-time remote biometric surveillance in public spaces (with narrow exceptions); subliminal manipulation</td><td>Prohibited outright</td></tr>
+                        <tr><td>High Risk</td><td>Critical infrastructure; education and employment decisions; benefits and public services; law enforcement; border control; justice</td><td>Conformity assessment, registration, human oversight, robustness, transparency obligations</td></tr>
+                        <tr><td>Limited Risk</td><td>Chatbots, emotion recognition, deep fakes</td><td>Transparency/disclosure requirements only</td></tr>
+                        <tr><td>Minimal Risk</td><td>Spam filters, AI in video games</td><td>Voluntary codes of practice</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">UK Post-Brexit Position</div>
+                    <p>The UK has chosen a pro-innovation, principles-based approach rather than adopting the EU AI Act. UK regulators apply existing sector-specific laws with AI guidance layered on top. However, UK organisations providing services to EU users must still comply with the EU AI Act — creating a dual-compliance burden for many government departments with European partnerships.</p>
+                </div>`
+            },
+            {
+                title: 'UK AI Regulatory Approach',
+                content: `<p>The UK Government published its AI Regulation White Paper in 2023, confirmed in 2024, establishing a framework based on five cross-sector principles applied by existing regulators.</p>
+
+                <h3>The Five Principles</h3>
+                <ol>
+                    <li><strong>Safety, security, and robustness:</strong> AI should function securely and not cause harm</li>
+                    <li><strong>Transparency and explainability:</strong> Users should know when AI is being used and how</li>
+                    <li><strong>Fairness:</strong> AI should not infringe on individuals' rights or discriminate unlawfully</li>
+                    <li><strong>Accountability and governance:</strong> Appropriate oversight and responsibility structures</li>
+                    <li><strong>Contestability and redress:</strong> Mechanisms to challenge AI decisions</li>
+                </ol>
+
+                <h3>Sector Regulators' Role</h3>
+                <p>Each regulator applies these principles within their domain. The FCA governs AI in financial services, Ofcom in media and communications, the CQC in health and social care, and the ICO across data-processing AI. Government departments must understand which regulators oversee their AI deployments.</p>
+
+                <h3>AI Safety Institute</h3>
+                <p>The UK's AI Safety Institute (AISI) focuses on evaluating frontier AI models for safety risks at the national level. While primarily focused on general-purpose AI, its work is increasingly relevant to government procurement of large language models and foundation models.</p>`
+            },
+            {
+                title: 'United States AI Policy',
+                content: `<p>The US has taken a sector-by-sector, agency-led approach to AI governance, with no single comprehensive federal AI law equivalent to the EU AI Act.</p>
+
+                <h3>Executive Order on AI (October 2023)</h3>
+                <p>President Biden's Executive Order directed federal agencies to develop AI safety standards, conduct risk assessments, and promote trustworthy AI. It gave NIST responsibility for developing standards for AI safety. The new administration has taken a different approach, focusing on maintaining US AI leadership over precautionary regulation.</p>
+
+                <h3>State-Level Regulation</h3>
+                <p>In the absence of federal law, US states are active. Colorado, Illinois, and others have AI-specific laws, particularly around automated employment decisions and AI in healthcare. This creates a complex patchwork for organisations operating nationally.</p>
+
+                <h3>NIST AI RMF</h3>
+                <p>The NIST AI Risk Management Framework (covered in Course 3.2) has become a de facto US standard, widely adopted voluntarily and referenced in federal procurement requirements.</p>`
+            },
+            {
+                title: 'International Frameworks and Standards',
+                content: `<p>Beyond the EU and US, a growing body of international frameworks shapes global AI governance.</p>
+
+                <h3>OECD AI Principles</h3>
+                <p>Adopted by 46 countries, the OECD Principles provide a baseline for responsible AI: inclusive growth, human-centred values, transparency, robustness, and accountability. They inform many national regulatory approaches including the UK's five principles.</p>
+
+                <h3>ISO/IEC 42001:2023</h3>
+                <p>The first international standard for AI management systems. Modelled on ISO 27001 (information security), it specifies requirements for establishing, implementing, maintaining, and continually improving an AI management system. Certification provides independent assurance of AI governance maturity.</p>
+
+                <h3>G7 Hiroshima AI Process</h3>
+                <p>The G7 agreed a Code of Conduct for advanced AI developers in 2023, focusing on safety evaluations, transparency, and information sharing about serious incidents. This is relevant to government procurement of advanced AI systems.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Implication</div>
+                    <p>For UK government departments, the most operationally relevant frameworks are: UK GDPR and ICO guidance, the UK AI regulatory principles, and (for any EU-facing work) the EU AI Act. ISO/IEC 42001 certification is becoming a meaningful quality signal in AI procurement.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A UK government agency uses an AI system to assess asylum applications. Under the EU AI Act, this system would be classified as:',
+                    options: [
+                        'Minimal risk — government systems are exempt',
+                        'Limited risk — because it involves text analysis',
+                        'High risk — border control and migration management is explicitly listed',
+                        'Unacceptable risk — automated immigration decisions are banned'
+                    ],
+                    correct: 2,
+                    explanation: 'The EU AI Act explicitly classifies AI used in migration, asylum, and border control as high-risk, requiring conformity assessment, human oversight, and transparency obligations. Note: the EU AI Act would apply if the system\'s outputs affect EU residents, regardless of where it was built.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which international standard provides a certifiable AI management system framework modelled on ISO 27001?',
+                    options: [
+                        'NIST AI RMF 1.0',
+                        'ISO/IEC 42001:2023',
+                        'OECD AI Principles',
+                        'EU AI Act Annex IX'
+                    ],
+                    correct: 1,
+                    explanation: 'ISO/IEC 42001:2023 is the first international standard for AI management systems, enabling organisations to seek third-party certification of their AI governance practices. NIST AI RMF is a framework, not a certifiable standard.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your department is procuring an AI system from a US vendor. Describe the regulatory considerations you would need to assess before signing the contract.',
+                    sampleAnswer: 'Considerations include: (1) EU AI Act applicability — if any outputs affect EU residents or the system processes EU personal data, EU Act obligations apply; (2) UK GDPR compliance — data processing agreement required, international transfer mechanism for US data transfers (adequacy decision or SCCs), and confirmation the vendor will not use data for general model training; (3) UK AI principles alignment — assess the vendor\'s documentation of safety, transparency, fairness, accountability, and contestability; (4) NIST AI RMF or ISO 42001 compliance — consider requiring vendor to demonstrate alignment with one of these frameworks as evidence of governance maturity; (5) Sector-specific regulation — identify which UK regulator oversees this type of AI and what their guidance requires; (6) Contract clauses — audit rights, incident notification, data deletion, and prohibition on use of your data for model training beyond the contracted purpose.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 3-5: Compliance Documentation & Auditing
+// ============================================
+Object.assign(COURSE_3_CONTENT, {
+    'course-3-5': {
+        title: 'Compliance Documentation & Auditing',
+        sections: [
+            {
+                title: 'The Role of Documentation in AI Compliance',
+                content: `<p>In AI governance, documentation is not bureaucratic overhead — it is the mechanism through which accountability is exercised. Without documentation, claims about an AI system's safety, fairness, or compliance are assertions that cannot be verified or challenged.</p>
+
+                <h3>Why Documentation Matters</h3>
+                <ul>
+                    <li><strong>Legal defensibility:</strong> Demonstrates due diligence if a system causes harm and is challenged</li>
+                    <li><strong>Auditability:</strong> Enables internal and external review of system behaviour and governance decisions</li>
+                    <li><strong>Reproducibility:</strong> Allows a past system state to be reconstructed for investigation</li>
+                    <li><strong>Knowledge transfer:</strong> Preserves institutional knowledge when staff change</li>
+                    <li><strong>Regulatory compliance:</strong> Many frameworks (EU AI Act, UK GDPR) explicitly require certain documents</li>
+                </ul>
+
+                <h3>Documentation Hierarchy</h3>
+                <table class="content-table">
+                    <thead><tr><th>Level</th><th>Document Type</th><th>Audience</th></tr></thead>
+                    <tbody>
+                        <tr><td>Strategic</td><td>AI policy, risk tolerance statement</td><td>Leadership, board</td></tr>
+                        <tr><td>Programme</td><td>AI register, portfolio risk assessment</td><td>Governance function, DPO</td></tr>
+                        <tr><td>Project</td><td>DPIA, algorithmic impact assessment, system design document</td><td>Project team, legal, compliance</td></tr>
+                        <tr><td>Technical</td><td>Model card, training data documentation, test results, monitoring reports</td><td>Technical team, auditors</td></tr>
+                    </tbody>
+                </table>`
+            },
+            {
+                title: 'The AI Register',
+                content: `<p>An AI register is a centralised inventory of all AI systems used by an organisation. It is the foundation of portfolio-level governance — you cannot manage what you have not identified.</p>
+
+                <h3>What an AI Register Should Contain</h3>
+                <ul>
+                    <li>System name and unique identifier</li>
+                    <li>Brief description of purpose and function</li>
+                    <li>Risk classification (e.g., EU AI Act tier, internal risk rating)</li>
+                    <li>Data processed (types, sources, special categories)</li>
+                    <li>Decision type (advisory, automated, human-in-the-loop)</li>
+                    <li>Affected populations</li>
+                    <li>Named system owner and responsible team</li>
+                    <li>Deployment date and version</li>
+                    <li>Review schedule and last review date</li>
+                    <li>Links to associated DPIAs, model cards, and test reports</li>
+                    <li>Current status (active, under review, decommissioned)</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Starting Small</div>
+                    <p>Many organisations begin their AI register as a spreadsheet. The priority is completeness and currency — knowing what systems exist and who is responsible for them — rather than the sophistication of the tool. Automate and improve the register process once the discipline is established.</p>
+                </div>`
+            },
+            {
+                title: 'Algorithmic Impact Assessments',
+                content: `<p>An Algorithmic Impact Assessment (AIA) is a structured evaluation of the risks and impacts of an AI system before deployment, equivalent to a DPIA but scoped to the full range of potential harms, not just privacy.</p>
+
+                <h3>AIA vs DPIA</h3>
+                <p>A DPIA focuses specifically on privacy risks and is required by UK GDPR. An AIA is broader, addressing fairness, rights, economic, and social impacts. For high-risk systems, both should be completed — the DPIA addresses data protection obligations, the AIA addresses the wider ethical and rights implications.</p>
+
+                <h3>AIA Structure</h3>
+                <ol>
+                    <li><strong>System description:</strong> Scope, purpose, stakeholders, alternatives considered</li>
+                    <li><strong>Impact identification:</strong> Systematic mapping of potential harms across affected groups</li>
+                    <li><strong>Severity assessment:</strong> Likelihood and magnitude of each harm, with evidence</li>
+                    <li><strong>Mitigation measures:</strong> Controls to address each identified harm</li>
+                    <li><strong>Residual risk:</strong> Assessment of remaining risk after mitigations</li>
+                    <li><strong>Consultation record:</strong> Who was consulted, what they said, how concerns were addressed</li>
+                    <li><strong>Decision:</strong> Proceed / proceed with conditions / do not proceed, with named approver</li>
+                    <li><strong>Review trigger:</strong> Conditions that would require the AIA to be updated</li>
+                </ol>`
+            },
+            {
+                title: 'Internal Auditing of AI Systems',
+                content: `<p>Regular internal audits verify that AI systems continue to perform as intended, comply with governance requirements, and remain within approved risk parameters.</p>
+
+                <h3>Audit Scope</h3>
+                <ul>
+                    <li><strong>Documentation review:</strong> Are all required documents current, complete, and accessible?</li>
+                    <li><strong>Technical review:</strong> Do current performance metrics match the approved baseline? Has drift occurred?</li>
+                    <li><strong>Governance review:</strong> Are review schedules being followed? Are escalations being made appropriately?</li>
+                    <li><strong>Compliance review:</strong> Have regulatory requirements changed? Is the system still compliant?</li>
+                    <li><strong>Incident review:</strong> Have any complaints, errors, or near-misses been logged and resolved?</li>
+                </ul>
+
+                <h3>Audit Frequency</h3>
+                <p>Audit frequency should reflect system risk level. High-risk systems should be audited at least annually, with continuous automated monitoring between audits. Lower-risk systems may require less frequent review. Triggers for unscheduled audits include: significant incidents, regulatory changes, substantial changes to the system or its data, or changes in the deployment context.</p>
+
+                <h3>Independence</h3>
+                <p>Internal audit provides accountability, but it is not independent of the organisation. For high-risk or controversial systems, external audit or independent assurance provides stronger accountability and public credibility.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What is the primary difference between a DPIA and an Algorithmic Impact Assessment?',
+                    options: [
+                        'A DPIA is required by law; an AIA is never legally required',
+                        'A DPIA focuses specifically on privacy risks; an AIA assesses the broader range of potential harms',
+                        'A DPIA is for large AI systems; an AIA is for small or experimental ones',
+                        'A DPIA is completed after deployment; an AIA is completed before'
+                    ],
+                    correct: 1,
+                    explanation: 'A DPIA is mandated by UK GDPR and specifically addresses privacy risks. An AIA is broader, covering fairness, rights, economic, and social impacts. Both are typically required for high-risk government AI systems.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'An AI register entry for a benefits assessment system should include:',
+                    options: [
+                        'The model\'s source code and hyperparameters',
+                        'The names of all citizens whose data was used in training',
+                        'The system owner, risk classification, affected populations, and review schedule',
+                        'A comparison of the AI system\'s cost against manual processing'
+                    ],
+                    correct: 2,
+                    explanation: 'An AI register captures governance-relevant information: ownership, purpose, risk level, data processed, affected populations, and review schedule. It enables portfolio oversight without requiring technical detail at the register level.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your internal audit of a two-year-old benefits fraud detection AI finds that: (1) the model card is outdated, (2) the system has not been reviewed since deployment, and (3) complaints have been received but not formally logged. What immediate actions would you take and what does this indicate about governance maturity?',
+                    sampleAnswer: 'Immediate actions: (1) Escalate to the system owner and Senior Responsible Owner — unreviewed high-risk AI is a compliance risk; (2) Commission an immediate technical review to assess whether model performance has drifted since deployment; (3) Formally log and investigate all received complaints, including assessing whether any individuals were adversely affected and require redress; (4) Update the model card with current performance data and any changes since deployment; (5) Establish a review schedule with named owners and calendar commitments. Governance maturity assessment: these findings indicate immature governance — specifically, failure of the MANAGE function (no monitoring or review schedule), absence of incident management processes, and documentation that is treated as a one-time task rather than a living record. The organisation needs foundational governance controls: a live AI register, assigned system owners with review responsibilities, an incident reporting process, and regular audit cycles.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 4: Implementation
 const COURSE_4_CONTENT = {
     'course-4-2': {
