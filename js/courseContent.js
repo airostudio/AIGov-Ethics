@@ -2608,6 +2608,194 @@ Object.assign(COURSE_5_CONTENT, {
     }
 });
 
+// ============================================
+// COURSE 5-5: Future of AI Governance
+// ============================================
+Object.assign(COURSE_5_CONTENT, {
+    'course-5-5': {
+        title: 'Future of AI Governance',
+        sections: [
+            {
+                title: 'Emerging AI Capabilities and Their Governance Challenges',
+                content: `<p>AI governance frameworks were largely designed around narrow, task-specific AI systems. Emerging AI capabilities present governance challenges that existing frameworks are not fully equipped to address.</p>
+
+                <h3>Generative AI and Large Language Models</h3>
+                <p>Generative AI (text, image, code generation) is increasingly deployed in government contexts — drafting correspondence, summarising documents, supporting decision-making. Governance challenges include: hallucination (confident generation of false information); lack of auditability of individual outputs; copyright and IP concerns; prompt injection attacks; and the difficulty of applying existing accuracy metrics to generative outputs.</p>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Human Review Imperative</div>
+                    <p>For generative AI used in consequential government processes, every output that affects citizens or policy must be reviewed by a human before use. Generative AI is a drafting aid, not an autonomous decision-maker. This is both a governance principle and, for many applications, a legal obligation.</p>
+                </div>
+
+                <h3>Autonomous AI Agents</h3>
+                <p>AI agents can take sequences of actions, use tools, and make decisions over extended time horizons with minimal human intervention. In government, this raises profound questions: at what point in an agent's action chain is a human still meaningfully "in the loop"? How is accountability attributed when an agent takes unexpected actions? Current governance frameworks need significant development to address agentic AI.</p>
+
+                <h3>Foundation Models in Procurement</h3>
+                <p>Many AI products are now built on foundation models (large general-purpose AI systems) from a handful of vendors. This creates concentration risk — organisations may not know which foundation model underpins a procured system, or whether that model changes without notice.</p>`
+            },
+            {
+                title: 'Regulatory Evolution',
+                content: `<p>The AI regulatory landscape is developing rapidly. Government professionals must track regulatory changes and anticipate how they will affect AI deployments.</p>
+
+                <h3>EU AI Act Implementation Timeline</h3>
+                <p>The EU AI Act is phased: general-purpose AI model provisions apply from 2025; high-risk system requirements from 2026; certain provisions for existing systems by 2027. Organisations deploying EU-facing AI need to plan for compliance across this timeline, not wait for 2026.</p>
+
+                <h3>UK Regulatory Development</h3>
+                <p>The UK's pro-innovation approach is evolving. The government has signalled that sector regulators will receive additional guidance and potentially new powers for AI oversight. The ICO, FCA, CMA, and others are actively developing AI-specific frameworks. Government professionals should monitor their sector regulator's AI publications.</p>
+
+                <h3>International Divergence</h3>
+                <p>The US, EU, UK, and other jurisdictions are taking different approaches to AI regulation. As AI systems become more globally deployed, managing multi-jurisdictional compliance will require dedicated expertise and potentially specialist legal advice. The risk of compliance gaps increases as the regulatory landscape fragments.</p>
+
+                <h3>Standards Development</h3>
+                <p>ISO/IEC standards for AI governance are developing rapidly. ISO 42001 (AI management systems) is now published; further standards covering AI explainability, bias mitigation, and robustness are in development. Early adopters of emerging standards often find they are well-positioned when standards become regulatory requirements.</p>`
+            },
+            {
+                title: 'Preparing for the Future',
+                content: `<p>Governance professionals who thrive in the evolving AI landscape will be those who build adaptable systems rather than rigid compliance checklists.</p>
+
+                <h3>Principles for Future-Ready AI Governance</h3>
+                <ul>
+                    <li><strong>Invest in principles over rules:</strong> Rules become outdated; a team that understands the why behind governance can adapt to new circumstances</li>
+                    <li><strong>Build scanning capability:</strong> Assign responsibility for monitoring regulatory, technological, and societal developments to named individuals</li>
+                    <li><strong>Engage with developers:</strong> Participate in regulatory consultations and standards bodies — government voices shape the frameworks that will govern AI</li>
+                    <li><strong>Scenario planning:</strong> Conduct periodic exercises on "what would we do if" — advanced AI autonomy, major incident, rapid regulatory change</li>
+                    <li><strong>Invest in people:</strong> AI governance capability in people outlasts any particular tool or framework. Build expertise, not dependence on external consultants.</li>
+                    <li><strong>Collaborate across government:</strong> AI governance challenges are shared. Cross-departmental communities of practice accelerate learning and reduce duplicated effort.</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Community of Practice</div>
+                    <p>The cross-government AI community (accessible through GDS and the Central Digital and Data Office) provides a forum for sharing AI governance learning, accessing model documentation templates, and connecting with peers facing similar challenges. Joining and contributing to this community is one of the highest-leverage actions a government AI governance professional can take.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A government team wants to use a large language model to draft responses to citizen enquiries, to be sent without human review. The primary governance concern is:',
+                    options: [
+                        'The model may be too slow to meet response time targets',
+                        'LLMs can hallucinate — generating confident but false information — and all consequential outputs must have human review before use',
+                        'The model\'s outputs are copyrighted by the vendor',
+                        'Citizens may prefer human-written responses aesthetically'
+                    ],
+                    correct: 1,
+                    explanation: 'Hallucination — the generation of plausible but false information — is a defining risk of large language models. For government communications that affect citizens, every output must be reviewed by a human before sending. Automated dispatch without review is both a governance failure and potentially a legal one.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which approach best prepares an organisation for an evolving AI regulatory landscape?',
+                    options: [
+                        'Wait for regulations to be finalised before investing in compliance infrastructure',
+                        'Build governance capability around principles and adaptable processes, and assign responsibility for regulatory scanning',
+                        'Implement the strictest possible controls to ensure compliance with any future framework',
+                        'Outsource all AI governance to specialist consultants who track regulatory change'
+                    ],
+                    correct: 1,
+                    explanation: 'Principle-based governance adapts to regulatory change better than rule-based compliance. Assigned regulatory scanning ensures the organisation tracks developments proactively. Waiting for finalised regulations leads to rushed, expensive remediation; maximum controls create unnecessary friction; outsourcing builds vendor dependence rather than organisational capability.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your department is considering deploying an AI agent that can autonomously access multiple government databases, draft correspondence, and update case records. What governance questions must be answered before this is approved?',
+                    sampleAnswer: 'Core governance questions: (1) What actions can the agent take autonomously, and at what point is a human required to review or approve before action? Define the boundary explicitly — it should not be "in most cases" but a clear specification. (2) How is accountability attributed if the agent takes an unexpected or harmful action? Who is responsible — the deploying team, the vendor, the individual who triggered the agent? (3) What is the audit trail? Can every action the agent takes be logged, reviewed, and explained after the fact? (4) What are the access controls? The agent will have broad database access — what prevents it from accessing data beyond its intended scope, or from being manipulated via prompt injection? (5) What is the containment strategy if the agent behaves unexpectedly? Can it be paused mid-action? What is the rollback capability? (6) What personal data does the agent access, and does the DPIA cover agentic processing patterns? (7) What is the failure mode if the agent\'s decisions are incorrect — how quickly would this be detected, and what is the remediation path? (8) Has the vendor\'s approach to safety and controllability been independently assessed? Agentic AI is a developing area — require vendor evidence of safety testing, not just capability claims. The agent should not be approved until all of these questions have satisfactory, documented answers, and a human oversight mechanism for all consequential actions is in place.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 5-6: Leadership Assessment & Certification
+// ============================================
+Object.assign(COURSE_5_CONTENT, {
+    'course-5-6': {
+        title: 'Leadership Assessment & Certification',
+        sections: [
+            {
+                title: 'Full Programme Review: AI Governance & Ethics Academy',
+                content: `<p>You have reached the capstone of the AI Governance & Ethics Academy. This final module consolidates learning across all five courses, preparing you for the Leadership Certification and for ongoing professional practice.</p>
+
+                <h3>Programme Summary</h3>
+                <table class="content-table">
+                    <thead><tr><th>Course</th><th>Core Theme</th><th>Key Outcome</th></tr></thead>
+                    <tbody>
+                        <tr><td>1: AI Governance Foundations</td><td>Understanding AI and its governance context</td><td>Ability to describe AI risks and governance requirements to any audience</td></tr>
+                        <tr><td>2: Technical AI Ethics & Safety</td><td>Bias, fairness, explainability, privacy, testing</td><td>Technical governance requirements for safe, fair, explainable AI</td></tr>
+                        <tr><td>3: Regulatory Compliance & Risk</td><td>EU AI Act, UK GDPR, NIST RMF, documentation</td><td>Full compliance framework for government AI</td></tr>
+                        <tr><td>4: Implementation & Operations</td><td>Procurement, oversight, monitoring, incidents, change</td><td>Operational governance across the AI lifecycle</td></tr>
+                        <tr><td>5: Leadership & Strategy</td><td>Governance structures, culture, communication, strategy</td><td>Senior leadership of responsible AI at organisational scale</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Leadership Certification Standard</div>
+                    <p>To earn the Academy Leadership Certificate, score 80% or above on the final assessment. Questions integrate concepts across all five courses and test strategic-level governance judgement.</p>
+                </div>`
+            },
+            {
+                title: 'Your Professional Development Journey',
+                content: `<p>Completing this programme is the beginning of your AI governance journey, not the end. The field is developing rapidly, and ongoing learning is essential.</p>
+
+                <h3>Applying Your Learning</h3>
+                <ul>
+                    <li><strong>Immediate actions:</strong> Review your organisation's AI register — is it current? Is there a named owner for each system? Are review dates set?</li>
+                    <li><strong>Short term (3 months):</strong> Champion one governance improvement in your team — a new monitoring metric, a cleaner escalation path, a more accessible citizen notice</li>
+                    <li><strong>Medium term (6-12 months):</strong> Participate in an AI project from inception to deployment, applying the full governance lifecycle</li>
+                    <li><strong>Longer term:</strong> Contribute to your organisation's AI governance maturity — lead a training initiative, join the cross-government AI community, mentor colleagues</li>
+                </ul>
+
+                <h3>Continuing Professional Development</h3>
+                <ul>
+                    <li>Monitor ICO AI guidance updates (ico.org.uk/ai)</li>
+                    <li>Follow the Central Digital and Data Office for government AI policy</li>
+                    <li>Track the EU AI Act implementation timeline for any EU-facing work</li>
+                    <li>Consider ISO/IEC 42001 certification for your organisation</li>
+                    <li>Engage with the Alan Turing Institute's public sector AI research</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">The Governance Mindset</div>
+                    <p>The most valuable outcome of this programme is not the certificate — it is the habit of asking governance questions before they become governance problems. "Who could be harmed? How would we know? What would we do? Who is accountable?" These questions, asked early and consistently, are the foundation of responsible AI in government.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A permanent secretary asks: "Are we managing AI responsibly?" What is the most important single piece of evidence you would provide?',
+                    options: [
+                        'A list of all AI systems the department uses and their accuracy statistics',
+                        'A current AI register with risk classifications, named owners, review schedules, and compliance status for all systems',
+                        'Confirmation that all AI vendors are ISO 27001 certified',
+                        'Training completion rates for the AI ethics programme'
+                    ],
+                    correct: 1,
+                    explanation: 'A current, complete AI register with ownership and compliance status is the foundational evidence of responsible AI governance. It demonstrates that the organisation knows what AI it has, who is responsible for it, how risky it is, and whether it is being reviewed. Without this, no other governance claim can be verified.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Six months into an AI deployment, a junior analyst flags that the system may be producing racially biased outcomes. The correct sequence of actions is:',
+                    options: [
+                        'Commission an independent review; meanwhile continue normal operation',
+                        'Dismiss the concern until it can be verified with statistical evidence',
+                        'Thank the analyst; immediately investigate; apply containment measures while investigating; escalate if concern is substantiated',
+                        'Suspend the system immediately pending a full audit lasting 6-8 weeks'
+                    ],
+                    correct: 2,
+                    explanation: 'A substantive bias concern requires immediate investigation with proportionate containment — not dismissal (option B), not unlimited continuation while waiting for perfect evidence (option A), and not disproportionate blanket suspension while a lengthy audit proceeds (option D). Thanking the analyst is also important — it reinforces psychological safety.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You have been appointed as your department\'s first Chief AI Governance Officer. Describe your priorities for the first six months.',
+                    sampleAnswer: 'Month 1 — Know what you have: Commission a full audit of all AI systems in the department to build or validate the AI register. Identify: (1) systems that have no named owner; (2) high-risk systems without a current DPIA or AIA; (3) systems running without a monitoring plan; (4) vendor contracts without adequate AI governance clauses. This creates the evidence base for all subsequent work. Month 2 — Establish accountability: Present the audit findings to the Permanent Secretary and recommend a governance structure — AI board or equivalent with named senior responsible owners for the highest-risk systems. Publish the AI risk tolerance statement (or draft one for leadership approval). Month 3 — Fix the highest risks: Prioritise remediation of the highest-risk gaps identified in the audit — unmonitored high-risk systems, missing documentation for systems affecting large numbers of citizens, contracts without data protection provisions. Month 4 — Embed in process: Work with the project governance team to add AI governance gates to the project approval process. Develop and distribute a simple guide for project teams on AI governance requirements. Month 5 — Build capability: Launch AI governance training programme for all staff involved in AI projects. Designate ethics champions in key teams. Establish a community of practice for sharing learning. Month 6 — Communicate and measure: Publish the department\'s first AI transparency report for the intranet (as a precursor to annual report disclosure). Establish the governance metrics that will be reported to the board quarterly: AI register currency, compliance status, incidents, training completion. Review risk appetite statement in light of the first six months\' learning.'
+                }
+            ]
+        }
+    }
+});
+
 // Merge additional content into course data
 if (typeof window !== 'undefined' && window.COURSE_DATA) {
     // Add content to Course 2 subcourses
