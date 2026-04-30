@@ -1614,6 +1614,229 @@ const COURSE_4_CONTENT = {
     }
 };
 
+// ============================================
+// COURSE 4-1: AI Procurement & Vendor Management
+// ============================================
+Object.assign(COURSE_4_CONTENT, {
+    'course-4-1': {
+        title: 'AI Procurement & Vendor Management',
+        sections: [
+            {
+                title: 'Why AI Procurement Needs Specialist Governance',
+                content: `<p>Procuring an AI system is not the same as procuring traditional software. AI systems are probabilistic, data-dependent, and capable of perpetuating or amplifying bias. Standard IT procurement frameworks were not designed for these characteristics, and applying them without adaptation creates significant governance gaps.</p>
+
+                <h3>Unique Challenges in AI Procurement</h3>
+                <table class="content-table">
+                    <thead><tr><th>Challenge</th><th>Traditional IT</th><th>AI Systems</th></tr></thead>
+                    <tbody>
+                        <tr><td>Performance specification</td><td>Functional requirements are deterministic</td><td>Performance is probabilistic and may degrade without code changes</td></tr>
+                        <tr><td>Explainability</td><td>Outputs follow documented logic</td><td>Complex models may not be explainable to the required standard</td></tr>
+                        <tr><td>Fairness</td><td>Not typically a procurement criterion</td><td>Must be tested across demographic groups before acceptance</td></tr>
+                        <tr><td>Data dependency</td><td>System is independent of training data</td><td>Performance is inseparable from training data quality and coverage</td></tr>
+                        <tr><td>Ongoing governance</td><td>Maintenance defined upfront</td><td>Monitoring, drift detection, and retraining are ongoing requirements</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Cabinet Office Guidance</div>
+                    <p>The UK Government's "Guidelines for AI procurement" (2020, updated guidance ongoing) sets out principles for responsible AI acquisition in the public sector. These principles should be embedded in all procurement documentation for AI systems.</p>
+                </div>`
+            },
+            {
+                title: 'Pre-Market Engagement and Requirements',
+                content: `<p>Effective AI procurement starts well before issuing an Invitation to Tender. Pre-market engagement helps define realistic requirements and identifies what responsible AI looks like in this context.</p>
+
+                <h3>Requirements Definition</h3>
+                <ul>
+                    <li><strong>Use case definition:</strong> What decision is the AI supporting? What is the consequence of errors?</li>
+                    <li><strong>Performance thresholds:</strong> Define minimum acceptable accuracy and fairness metrics before engaging suppliers — not after seeing what they offer</li>
+                    <li><strong>Explainability requirements:</strong> Specify the level of explanation required at citizen, caseworker, and auditor levels</li>
+                    <li><strong>Data requirements:</strong> What training data provenance documentation is required? What ongoing data access is needed?</li>
+                    <li><strong>Human oversight specification:</strong> Define the human-in-the-loop requirements upfront, not as an afterthought</li>
+                </ul>
+
+                <h3>Market Sounding Questions</h3>
+                <p>When engaging with potential suppliers before formal procurement, ask: Can you provide a model card for a comparable deployment? How do you test for bias? Can you demonstrate explanation capability? What is your data retention policy? Have you been independently audited?</p>`
+            },
+            {
+                title: 'Evaluation and Selection',
+                content: `<p>Traditional supplier evaluation criteria — price, technical capability, track record — are necessary but insufficient for AI. Governance and ethics criteria must be weighted explicitly.</p>
+
+                <h3>Recommended Evaluation Criteria</h3>
+                <ul>
+                    <li><strong>Technical performance:</strong> Does the system meet accuracy and performance thresholds on representative test data provided by the buyer?</li>
+                    <li><strong>Fairness:</strong> Does the supplier provide disaggregated performance metrics? Are disparate impact rates within acceptable thresholds?</li>
+                    <li><strong>Explainability:</strong> Can the system generate explanations at the required levels? Are these meaningful, not just outputs that label themselves as explanations?</li>
+                    <li><strong>Transparency:</strong> Does the supplier provide training data documentation, a model card, and a technical architecture overview?</li>
+                    <li><strong>Governance maturity:</strong> Does the supplier have an AI ethics policy? ISO 42001 certification? Named AI ethics responsibility?</li>
+                    <li><strong>Post-deployment support:</strong> Are monitoring, drift detection, and retraining services included and costed?</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Include Governance in Scoring</div>
+                    <p>Allocate at least 20% of evaluation scoring to governance, ethics, and transparency criteria. If these are listed but not scored, suppliers will deprioritise them in their response.</p>
+                </div>`
+            },
+            {
+                title: 'Contract Terms and Ongoing Management',
+                content: `<p>The contract is the mechanism through which governance obligations are enforced throughout the system's life. Generic IT contracts are inadequate for AI — bespoke clauses are required.</p>
+
+                <h3>Essential AI Contract Clauses</h3>
+                <ul>
+                    <li><strong>Performance warranties:</strong> Minimum performance metrics that are warranted and trigger remediation if not met</li>
+                    <li><strong>Fairness obligations:</strong> Defined thresholds for demographic parity or other fairness metrics, with testing requirements</li>
+                    <li><strong>Data ownership and use:</strong> Explicit statement that all training data derived from your organisation remains yours; vendor cannot use it for general model training</li>
+                    <li><strong>Audit rights:</strong> Right to audit model performance, data practices, and governance processes, including rights to appoint a third-party auditor</li>
+                    <li><strong>Model change notification:</strong> Mandatory notification (with minimum notice period) before any material model update or retraining</li>
+                    <li><strong>Incident reporting:</strong> Required notification timeframes and process for AI-related incidents</li>
+                    <li><strong>Decommissioning:</strong> Data deletion requirements and transition support at contract end</li>
+                </ul>
+
+                <h3>Ongoing Vendor Management</h3>
+                <p>AI vendor management requires regular performance reviews against agreed metrics, governance reviews when the system is updated, and escalation procedures when performance degrades or concerns arise. Assign a named AI contract manager responsible for these activities.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'When should minimum performance and fairness thresholds be defined in an AI procurement?',
+                    options: [
+                        'After reviewing supplier proposals, to ensure realistic targets',
+                        'By the technical team during implementation, once the model is trained',
+                        'Before issuing the Invitation to Tender, as part of requirements definition',
+                        'At the post-deployment review, once real-world performance data is available'
+                    ],
+                    correct: 2,
+                    explanation: 'Defining thresholds after seeing supplier proposals creates a race to the bottom, as buyers will be tempted to accept what is offered rather than what is required. Pre-defined thresholds, established before procurement, are the standard for responsible AI acquisition.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'An AI vendor\'s contract does not contain a model change notification clause. What risk does this create?',
+                    options: [
+                        'The vendor could upgrade the system without charging for it',
+                        'The model could be updated in ways that degrade fairness or performance without the buyer\'s knowledge or consent',
+                        'The contract would become automatically void if the model is updated',
+                        'The buyer would be unable to claim under warranty for performance failures'
+                    ],
+                    correct: 1,
+                    explanation: 'Without a model change notification clause, a vendor can retrain or update the model — potentially changing its behaviour, bias profile, or performance characteristics — without informing the buyer. This undermines governance and could result in undetected harm.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'You are drafting evaluation criteria for procuring an AI triage tool for a government complaints system. The tool will prioritise which complaints are escalated urgently. Describe the governance-related evaluation criteria you would include and how you would weight them.',
+                    sampleAnswer: 'Governance criteria (suggested weight: 25-30% of total score): (1) Fairness testing — supplier must provide disaggregated performance data across protected characteristics (age, gender, disability, ethnicity) and commit to maximum acceptable disparate impact ratios (e.g., no demographic group may have escalation rates more than 15% below the average); (2) Explainability — demonstrate the system can generate plain-language explanations for triage decisions accessible to citizens and caseworkers; (3) Transparency documentation — require a model card, training data provenance documentation, and validation report as mandatory submission attachments; (4) Governance maturity — assess the supplier\'s AI ethics policy, ISO 42001 certification or equivalent, and named AI ethics accountability; (5) Post-deployment commitments — score the quality and scope of monitoring, drift detection, and retraining services included in the proposal. Also require mandatory contractual terms covering audit rights, model change notification (minimum 30 days), incident reporting within 24 hours, and data deletion on contract termination.'
+                }
+            ]
+        }
+    }
+});
+
+// ============================================
+// COURSE 4-3: Monitoring & Performance Management
+// ============================================
+Object.assign(COURSE_4_CONTENT, {
+    'course-4-3': {
+        title: 'Monitoring & Performance Management',
+        sections: [
+            {
+                title: 'Designing a Monitoring Framework',
+                content: `<p>Effective monitoring of deployed AI is not just about detecting when things go wrong — it is about maintaining ongoing visibility of system behaviour so that governance decisions are grounded in evidence, not assumption.</p>
+
+                <h3>What to Monitor</h3>
+                <table class="content-table">
+                    <thead><tr><th>Dimension</th><th>Metrics</th><th>Alert Condition</th></tr></thead>
+                    <tbody>
+                        <tr><td>Performance</td><td>Accuracy, precision, recall, F1 against ground truth</td><td>Metric drops below approved threshold</td></tr>
+                        <tr><td>Fairness</td><td>Demographic parity ratio, equal opportunity rate by subgroup</td><td>Subgroup disparity exceeds agreed tolerance</td></tr>
+                        <tr><td>Input data quality</td><td>Missing value rate, out-of-range values, schema violations</td><td>Data quality score drops below baseline</td></tr>
+                        <tr><td>Input distribution</td><td>Statistical distance (KL divergence, PSI) from training distribution</td><td>Significant distributional shift detected</td></tr>
+                        <tr><td>Output distribution</td><td>Prediction distribution, confidence score distribution</td><td>Unusual shift in prediction patterns</td></tr>
+                        <tr><td>System health</td><td>Latency, error rate, throughput</td><td>SLA breach or unusual error patterns</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Ground Truth Lag</div>
+                    <p>Many AI systems make predictions where the correct answer only becomes known weeks or months later (e.g., whether a fraud flag was correct). Design monitoring to account for this lag — use proxy metrics and early indicators where ground truth is not yet available.</p>
+                </div>`
+            },
+            {
+                title: 'Alert Management and Escalation',
+                content: `<p>Monitoring without defined responses is merely observation. Every alert condition must have a documented response procedure and a named escalation path.</p>
+
+                <h3>Alert Severity Levels</h3>
+                <ul>
+                    <li><strong>Informational:</strong> Metric approaching threshold; no immediate action required but increased scrutiny warranted. Log and review at next scheduled review.</li>
+                    <li><strong>Warning:</strong> Metric has crossed threshold; investigation required within defined SLA (e.g., 5 business days). May require temporary manual review increase.</li>
+                    <li><strong>Critical:</strong> Significant performance degradation or fairness violation. Escalate to system owner immediately. Consider pausing automated decisions pending investigation.</li>
+                    <li><strong>Incident:</strong> Known harm has occurred or is imminent. Invoke incident response procedure. Consider system suspension.</li>
+                </ul>
+
+                <h3>Escalation Paths</h3>
+                <p>Define clearly: who receives each alert level, what action they are expected to take, what their decision authority is, and who they escalate to if the issue cannot be resolved at their level. Ambiguous escalation paths result in alerts being acknowledged but not acted upon.</p>`
+            },
+            {
+                title: 'Performance Reviews and Governance Reporting',
+                content: `<p>Monitoring generates data; governance reporting turns that data into accountable decisions.</p>
+
+                <h3>Regular Review Cadence</h3>
+                <ul>
+                    <li><strong>Automated daily/weekly:</strong> Dashboards reviewed by operational team; anomalies flagged</li>
+                    <li><strong>Monthly:</strong> System owner reviews performance trends, fairness metrics, and incident log</li>
+                    <li><strong>Quarterly:</strong> Governance board receives summary report covering performance, fairness, incidents, and any material changes</li>
+                    <li><strong>Annual:</strong> Comprehensive review including revalidation against current data, regulatory compliance check, and go/no-go decision for continued operation</li>
+                </ul>
+
+                <h3>What a Governance Report Should Contain</h3>
+                <ul>
+                    <li>Period performance metrics vs approved thresholds (pass/fail)</li>
+                    <li>Fairness metrics by demographic subgroup</li>
+                    <li>Data quality trends</li>
+                    <li>Drift indicators and any distribution changes</li>
+                    <li>Incidents and near-misses with outcomes</li>
+                    <li>Changes made during the period (model updates, configuration changes)</li>
+                    <li>Upcoming risks or events (e.g., seasonal data pattern changes)</li>
+                    <li>Recommendation: continue / modify / suspend / decommission</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A government AI system\'s fairness dashboard shows that one demographic group is receiving negative outcomes at twice the rate of others. What severity level should this trigger?',
+                    options: [
+                        'Informational — demographic variation is normal and expected',
+                        'Warning — requires investigation within the defined SLA',
+                        'Critical — significant fairness violation requiring immediate escalation',
+                        'No alert — fairness metrics are advisory only'
+                    ],
+                    correct: 2,
+                    explanation: 'A twofold disparity in negative outcomes for a demographic group is a significant fairness violation that must be escalated immediately. Continuing to operate a system that demonstrably discriminates without investigation and remediation exposes the organisation to legal and reputational risk.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'What is "population stability index" (PSI) used to detect in AI monitoring?',
+                    options: [
+                        'Whether the model\'s accuracy is stable across different user sessions',
+                        'Whether the distribution of input data has shifted significantly from the training distribution',
+                        'Whether the system can handle increased user load without performance degradation',
+                        'Whether the model produces consistent predictions for the same input'
+                    ],
+                    correct: 1,
+                    explanation: 'PSI (Population Stability Index) measures the statistical distance between the current input distribution and the training data distribution. A high PSI indicates that the data the model is seeing in production looks significantly different from what it was trained on — a leading indicator of performance degradation.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Design the monitoring framework for a government AI that processes planning permission applications, assigning preliminary risk scores reviewed by planning officers. What would you monitor, at what frequency, and what would trigger a formal governance review?',
+                    sampleAnswer: 'Monitoring dimensions: (1) Performance — compare AI risk scores against final officer decisions as ground truth (with lag); track percentage of AI scores overridden by officers (high override rates suggest model-officer disagreement); (2) Fairness — disaggregate outcomes by applicant postcode (as proxy for demographics), application type, and project size; monitor for geographic bias in high-risk scores; (3) Input distribution — monitor feature distributions against training baseline using PSI for application type, location, and size characteristics; alert on significant drift; (4) Output distribution — monitor risk score distribution for unusual shifts; (5) Data quality — missing fields, invalid values, schema changes. Frequency: automated dashboards daily; operational team review weekly; system owner report monthly; governance board quarterly. Triggers for formal governance review: fairness disparity exceeding 15% between any postcode groups; PSI indicating significant input drift; officer override rate exceeding 30% (suggesting model is not aligned with planning policy); any complaint that the AI score influenced a decision in a way that disadvantages a protected characteristic; regulatory changes to planning policy that affect the model\'s training assumptions.'
+                }
+            ]
+        }
+    }
+});
+
 // Extended content for Course 5: Leadership
 const COURSE_5_CONTENT = {
     'course-5-1': {
