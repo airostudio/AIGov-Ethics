@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Governance Book Courses | AI Gov Academy</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---- Book Courses Layout ---- */
+        .bc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+        @media (max-width: 900px) {
+            .bc-layout { grid-template-columns: 1fr; }
+            .bc-sidebar { display: none; }
+            .bc-sidebar.open { display: block; position: fixed; top: 72px; left: 0; bottom: 0; width: 280px; z-index: 200; overflow-y: auto; }
+        }
+
+        /* ---- Sidebar ---- */
+        .bc-sidebar {
+            background: var(--neutral-900);
+            color: #fff;
+            height: calc(100vh - 72px);
+            position: sticky;
+            top: 72px;
+            overflow-y: auto;
+            padding: var(--space-md) 0;
+        }
+        .bc-sidebar-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: var(--space-md);
+        }
+        .bc-sidebar-header h2 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+        }
+        .bc-course-tab {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+            color: rgba(255,255,255,0.7);
+        }
+        .bc-course-tab:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .bc-course-tab.active { border-left-color: var(--primary-400); background: rgba(59,130,246,0.1); color: #fff; }
+        .bc-course-tab .tab-badge {
+            background: var(--primary-700);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+        .bc-chapter-list { padding: 0; }
+        .bc-chapter-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) var(--space-lg);
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.15s;
+            line-height: 1.3;
+            border-left: 3px solid transparent;
+        }
+        .bc-chapter-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .bc-chapter-item.active { color: var(--primary-300); border-left-color: var(--primary-400); background: rgba(59,130,246,0.1); }
+        .bc-chapter-item.completed .ch-num { background: var(--success-500); }
+        .bc-chapter-item.completed { color: rgba(255,255,255,0.7); }
+        .ch-num {
+            width: 22px;
+            height: 22px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .bc-chapter-item.passed .ch-num { background: var(--success-500); }
+        .bc-final-test-item {
+            margin: var(--space-md) var(--space-md) 0;
+            background: rgba(124,58,237,0.2);
+            border: 1px solid rgba(124,58,237,0.5);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm) var(--space-md);
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #c4b5fd;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .bc-final-test-item:hover { background: rgba(124,58,237,0.35); }
+        .bc-final-test-item.active { background: rgba(124,58,237,0.4); border-color: #a78bfa; }
+
+        /* ---- Main Content ---- */
+        .bc-main {
+            background: var(--neutral-50);
+            min-height: calc(100vh - 72px);
+            overflow-y: auto;
+        }
+
+        /* ---- Course Overview ---- */
+        .bc-overview {
+            padding: var(--space-2xl) var(--space-2xl);
+            max-width: 900px;
+        }
+        .bc-overview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--primary-100);
+            color: var(--primary-700);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+        .bc-overview h1 { font-size: 2rem; font-weight: 800; color: var(--neutral-900); margin-bottom: var(--space-sm); }
+        .bc-overview .bc-subtitle { color: var(--neutral-600); font-style: italic; margin-bottom: var(--space-lg); }
+        .bc-overview .bc-desc { color: var(--neutral-700); line-height: 1.7; margin-bottom: var(--space-xl); }
+        .bc-overview-stats {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+        }
+        .bc-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            min-width: 100px;
+        }
+        .bc-stat-num { font-size: 1.5rem; font-weight: 800; color: var(--primary-600); }
+        .bc-stat-label { font-size: 0.75rem; color: var(--neutral-500); margin-top: 2px; }
+        .bc-objectives {
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        .bc-objectives h3 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--neutral-600); margin-bottom: var(--space-md); }
+        .bc-objectives ul { list-style: none; padding: 0; margin: 0; }
+        .bc-objectives li {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-xs) 0;
+            font-size: 0.9rem;
+            color: var(--neutral-700);
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        .bc-objectives li:last-child { border-bottom: none; }
+        .bc-objectives li::before { content: '✓'; color: var(--success-500); font-weight: 700; flex-shrink: 0; }
+        .bc-chapters-list { margin-bottom: var(--space-xl); }
+        .bc-chapters-list h3 { font-size: 1.1rem; font-weight: 700; color: var(--neutral-900); margin-bottom: var(--space-md); }
+        .bc-chapter-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-sm);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .bc-chapter-card:hover { border-color: var(--primary-300); box-shadow: var(--shadow-sm); }
+        .bc-chapter-card.completed { border-left: 4px solid var(--success-500); }
+        .bc-chapter-card.passed { border-left: 4px solid var(--success-500); }
+        .bc-ch-num {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-100);
+            color: var(--primary-700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .bc-ch-num.passed { background: var(--success-100); color: var(--success-700); }
+        .bc-ch-info h4 { font-size: 0.95rem; font-weight: 600; color: var(--neutral-800); margin: 0 0 2px; }
+        .bc-ch-info span { font-size: 0.8rem; color: var(--neutral-500); }
+        .bc-ch-status { margin-left: auto; font-size: 0.75rem; }
+        .bc-ch-status.passed { color: var(--success-600); font-weight: 600; }
+        .bc-start-btn {
+            background: var(--primary-600);
+            color: #fff;
+            border: none;
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .bc-start-btn:hover { background: var(--primary-700); }
+
+        /* ---- Chapter View ---- */
+        .bc-chapter-view {
+            padding: var(--space-xl) var(--space-2xl);
+            max-width: 900px;
+        }
+        .bc-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.8rem;
+            color: var(--neutral-500);
+            margin-bottom: var(--space-lg);
+        }
+        .bc-breadcrumb a { color: var(--primary-600); text-decoration: none; }
+        .bc-breadcrumb a:hover { text-decoration: underline; }
+        .bc-chapter-header {
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        .bc-chapter-header .ch-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary-600);
+            margin-bottom: var(--space-sm);
+        }
+        .bc-chapter-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--neutral-900); margin: 0; }
+        .bc-sections { margin-bottom: var(--space-xl); }
+        .bc-section {
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+        }
+        .bc-section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            cursor: pointer;
+            background: var(--neutral-50);
+            border-bottom: 1px solid var(--neutral-200);
+            transition: background 0.15s;
+        }
+        .bc-section-header:hover { background: var(--primary-50); }
+        .bc-section-header h3 { font-size: 0.95rem; font-weight: 600; color: var(--neutral-800); margin: 0; }
+        .bc-section-header .section-toggle { margin-left: auto; color: var(--neutral-500); transition: transform 0.2s; }
+        .bc-section-header.open .section-toggle { transform: rotate(180deg); }
+        .bc-section-body { padding: var(--space-xl); line-height: 1.7; color: var(--neutral-700); display: none; }
+        .bc-section-body.open { display: block; }
+        .bc-section-body h3 { font-size: 1rem; font-weight: 700; color: var(--neutral-800); margin-top: var(--space-lg); }
+        .bc-section-body h3:first-child { margin-top: 0; }
+        .bc-section-body ul { padding-left: var(--space-lg); margin: var(--space-sm) 0; }
+        .bc-section-body li { margin-bottom: var(--space-xs); }
+
+        /* ---- Mini Test / Final Test ---- */
+        .bc-test-view {
+            padding: var(--space-xl) var(--space-2xl);
+            max-width: 900px;
+        }
+        .bc-test-header {
+            background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
+            color: #fff;
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        .bc-test-header.final-test { background: linear-gradient(135deg, #7c3aed, #4c1d95); }
+        .bc-test-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: var(--space-sm); }
+        .bc-test-header p { opacity: 0.85; font-size: 0.9rem; margin: 0; }
+        .bc-question-card {
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+        }
+        .bc-question-num {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary-600);
+            margin-bottom: var(--space-sm);
+        }
+        .bc-question-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-lg);
+            line-height: 1.5;
+        }
+        .bc-options { display: flex; flex-direction: column; gap: var(--space-sm); }
+        .bc-option {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.9rem;
+            color: var(--neutral-700);
+        }
+        .bc-option:hover { border-color: var(--primary-300); background: var(--primary-50); }
+        .bc-option.selected { border-color: var(--primary-500); background: var(--primary-50); color: var(--neutral-900); }
+        .bc-option.correct { border-color: var(--success-500); background: #f0fdf4; color: #166534; }
+        .bc-option.incorrect { border-color: var(--error-500); background: #fef2f2; color: #991b1b; }
+        .bc-option-radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bc-option.selected .bc-option-radio { border-color: var(--primary-500); background: var(--primary-500); }
+        .bc-option.correct .bc-option-radio { border-color: var(--success-500); background: var(--success-500); }
+        .bc-option.incorrect .bc-option-radio { border-color: var(--error-500); background: var(--error-500); }
+        .bc-option-radio::after { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; display: none; }
+        .bc-option.selected .bc-option-radio::after,
+        .bc-option.correct .bc-option-radio::after,
+        .bc-option.incorrect .bc-option-radio::after { display: block; }
+        .bc-explanation {
+            margin-top: var(--space-md);
+            padding: var(--space-md);
+            background: var(--neutral-50);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--primary-400);
+            font-size: 0.875rem;
+            color: var(--neutral-700);
+            display: none;
+        }
+        .bc-explanation.show { display: block; }
+        .bc-test-actions {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+            margin-top: var(--space-xl);
+        }
+        .bc-btn {
+            padding: var(--space-sm) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .bc-btn-primary { background: var(--primary-600); color: #fff; border-color: var(--primary-600); }
+        .bc-btn-primary:hover { background: var(--primary-700); }
+        .bc-btn-secondary { background: #fff; color: var(--neutral-700); border-color: var(--neutral-300); }
+        .bc-btn-secondary:hover { border-color: var(--neutral-400); }
+
+        /* ---- Results ---- */
+        .bc-results {
+            background: #fff;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .bc-results .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .score-circle.pass { background: #f0fdf4; border: 4px solid var(--success-500); color: var(--success-700); }
+        .score-circle.fail { background: #fef2f2; border: 4px solid var(--error-400); color: var(--error-600); }
+        .bc-results h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: var(--space-sm); }
+        .bc-results p { color: var(--neutral-600); margin-bottom: var(--space-lg); }
+        .bc-results .score-detail { font-size: 0.85rem; color: var(--neutral-500); }
+
+        /* Navigation arrows */
+        .bc-chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-xl) var(--space-2xl);
+            border-top: 1px solid var(--neutral-200);
+            background: #fff;
+            position: sticky;
+            bottom: 0;
+        }
+        .bc-chapter-nav .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius-md);
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--neutral-700);
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        .bc-chapter-nav .nav-btn:hover { border-color: var(--primary-400); color: var(--primary-600); }
+        .bc-chapter-nav .nav-btn.next { background: var(--primary-600); color: #fff; border-color: var(--primary-600); }
+        .bc-chapter-nav .nav-btn.next:hover { background: var(--primary-700); }
+
+        /* Progress bar */
+        .bc-progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 6px;
+            margin: var(--space-sm) var(--space-lg) 0;
+            overflow: hidden;
+        }
+        .bc-progress-fill {
+            background: var(--primary-400);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        /* Home link in header */
+        .bc-back-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: var(--space-xs) var(--space-md);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-md);
+            transition: all 0.15s;
+        }
+        .bc-back-link:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+        /* Info boxes */
+        .info-box { border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); margin: var(--space-md) 0; }
+        .info-box.important { background: #eff6ff; border-left: 4px solid var(--primary-500); }
+        .info-box.tip { background: #f0fdf4; border-left: 4px solid var(--success-500); }
+        .info-box.warning { background: #fffbeb; border-left: 4px solid var(--warning-500); }
+        .info-box.example { background: #f5f3ff; border-left: 4px solid #7c3aed; }
+        .info-box-title { font-weight: 700; font-size: 0.875rem; margin-bottom: var(--space-xs); }
+        .info-box.important .info-box-title { color: var(--primary-700); }
+        .info-box.tip .info-box-title { color: var(--success-700); }
+        .info-box.warning .info-box-title { color: #92400e; }
+        .info-box.example .info-box-title { color: #5b21b6; }
+        .content-table { width: 100%; border-collapse: collapse; margin: var(--space-md) 0; font-size: 0.875rem; }
+        .content-table th { background: var(--neutral-100); padding: var(--space-sm) var(--space-md); text-align: left; font-weight: 600; border-bottom: 2px solid var(--neutral-300); }
+        .content-table td { padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--neutral-200); }
+        .content-table tr:last-child td { border-bottom: none; }
+
+        /* Mobile hamburger */
+        .bc-mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: var(--space-lg);
+            left: var(--space-lg);
+            z-index: 300;
+            background: var(--primary-600);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+        }
+        @media (max-width: 900px) { .bc-mobile-toggle { display: flex; align-items: center; justify-content: center; } }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+                <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2"/>
+                    <path d="M24 8L24 40M8 24L40 24" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="24" cy="24" r="8" fill="currentColor" opacity="0.3"/>
+                    <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">AI Gov Academy</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html?page=pricing">Pricing</a></li>
+                    <li><a href="#" class="active">Book Courses</a></li>
+                </ul>
+            </nav>
+            <a href="index.html" class="bc-back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Academy
+            </a>
+        </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="bc-layout">
+        <!-- Sidebar -->
+        <aside class="bc-sidebar" id="bcSidebar">
+            <div class="bc-sidebar-header">
+                <h2>Book Courses</h2>
+            </div>
+
+            <!-- Course tabs -->
+            <div style="padding: 0 var(--space-md); margin-bottom: var(--space-md);">
+                <div class="bc-course-tab active" id="tab-course1" onclick="switchCourse(1)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+                    Course 1
+                    <span class="tab-badge">13 Ch.</span>
+                </div>
+                <div class="bc-course-tab" id="tab-course2" onclick="switchCourse(2)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    Course 2
+                    <span class="tab-badge">10 Ch.</span>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="bc-progress-bar">
+                <div class="bc-progress-fill" id="sidebarProgress" style="width:0%"></div>
+            </div>
+            <div style="padding: 4px var(--space-lg); font-size: 0.7rem; color: rgba(255,255,255,0.4);" id="progressLabel">0% complete</div>
+
+            <!-- Chapter list -->
+            <div class="bc-chapter-list" id="chapterList"></div>
+
+            <!-- Final test -->
+            <div class="bc-final-test-item" id="finalTestItem" onclick="showFinalTest()">
+                🏆 Final Course Assessment
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="bc-main" id="bcMain">
+            <!-- Content rendered here by JS -->
+        </main>
+    </div>
+
+    <button class="bc-mobile-toggle" onclick="document.getElementById('bcSidebar').classList.toggle('open')">☰</button>
+
+    <!-- Data files -->
+    <script src="js/book-course1-data.js"></script>
+    <script src="js/book-course2-data.js"></script>
+
+    <script>
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        currentCourse: 1,
+        currentView: 'overview',   // 'overview' | 'chapter' | 'chapter-test' | 'final-test' | 'results'
+        currentChapterIndex: 0,
+        currentTestData: null,
+        answers: {},
+        submitted: false,
+        progress: JSON.parse(localStorage.getItem('bc_progress') || '{}')
+        // progress[courseId][chapterId] = { read: bool, testPassed: bool, score: number }
+    };
+
+    function getCourse() {
+        return state.currentCourse === 1 ? BOOK_COURSE1_DATA : BOOK_COURSE2_DATA;
+    }
+
+    function saveProgress() {
+        localStorage.setItem('bc_progress', JSON.stringify(state.progress));
+    }
+
+    function getChapterProgress(courseId, chapterId) {
+        return (state.progress[courseId] || {})[chapterId] || { read: false, testPassed: false, score: 0 };
+    }
+
+    function setChapterProgress(courseId, chapterId, data) {
+        if (!state.progress[courseId]) state.progress[courseId] = {};
+        state.progress[courseId][chapterId] = { ...(state.progress[courseId][chapterId] || {}), ...data };
+        saveProgress();
+        updateSidebarProgress();
+    }
+
+    // ============================================================
+    // SIDEBAR
+    // ============================================================
+    function renderSidebar() {
+        const course = getCourse();
+        const list = document.getElementById('chapterList');
+        list.innerHTML = course.chapters.map((ch, i) => {
+            const prog = getChapterProgress(course.id, ch.id);
+            const isActive = state.currentView === 'chapter' && state.currentChapterIndex === i;
+            const isTestActive = state.currentView === 'chapter-test' && state.currentChapterIndex === i;
+            return `
+                <div class="bc-chapter-item ${isActive || isTestActive ? 'active' : ''} ${prog.testPassed ? 'passed' : ''}" onclick="showChapter(${i})">
+                    <div class="ch-num ${prog.testPassed ? 'passed' : ''}">${prog.testPassed ? '✓' : ch.number}</div>
+                    <span>${ch.title.length > 45 ? ch.title.substring(0, 45) + '…' : ch.title}</span>
+                </div>`;
+        }).join('');
+        updateSidebarProgress();
+        // Update final test item
+        const fti = document.getElementById('finalTestItem');
+        if (fti) {
+            fti.className = 'bc-final-test-item' + (state.currentView === 'final-test' || state.currentView === 'results' ? ' active' : '');
+        }
+    }
+
+    function updateSidebarProgress() {
+        const course = getCourse();
+        const total = course.chapters.length;
+        const passed = course.chapters.filter(ch => getChapterProgress(course.id, ch.id).testPassed).length;
+        const pct = total ? Math.round((passed / total) * 100) : 0;
+        const fill = document.getElementById('sidebarProgress');
+        const label = document.getElementById('progressLabel');
+        if (fill) fill.style.width = pct + '%';
+        if (label) label.textContent = `${passed}/${total} chapters passed`;
+    }
+
+    function switchCourse(num) {
+        state.currentCourse = num;
+        state.currentView = 'overview';
+        document.getElementById('tab-course1').classList.toggle('active', num === 1);
+        document.getElementById('tab-course2').classList.toggle('active', num === 2);
+        renderSidebar();
+        showOverview();
+    }
+
+    // ============================================================
+    // OVERVIEW
+    // ============================================================
+    function showOverview() {
+        state.currentView = 'overview';
+        renderSidebar();
+        const course = getCourse();
+        const passed = course.chapters.filter(ch => getChapterProgress(course.id, ch.id).testPassed).length;
+        document.getElementById('bcMain').innerHTML = `
+            <div class="bc-overview">
+                <div class="bc-overview-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    ${course.source}
+                </div>
+                <h1>${course.title}</h1>
+                <p class="bc-subtitle">${course.subtitle}</p>
+                <p class="bc-desc">${course.description}</p>
+                <div class="bc-overview-stats">
+                    <div class="bc-stat"><span class="bc-stat-num">${course.chapters.length}</span><span class="bc-stat-label">Chapters</span></div>
+                    <div class="bc-stat"><span class="bc-stat-num">${course.duration}</span><span class="bc-stat-label">Duration</span></div>
+                    <div class="bc-stat"><span class="bc-stat-num">${course.level}</span><span class="bc-stat-label">Level</span></div>
+                    <div class="bc-stat"><span class="bc-stat-num">${passed}/${course.chapters.length}</span><span class="bc-stat-label">Tests Passed</span></div>
+                </div>
+                <div class="bc-objectives">
+                    <h3>Learning Objectives</h3>
+                    <ul>${course.objectives.map(o => `<li>${o}</li>`).join('')}</ul>
+                </div>
+                <div class="bc-chapters-list">
+                    <h3>Chapter Overview</h3>
+                    ${course.chapters.map((ch, i) => {
+                        const prog = getChapterProgress(course.id, ch.id);
+                        return `<div class="bc-chapter-card ${prog.testPassed ? 'passed' : ''}" onclick="showChapter(${i})">
+                            <div class="bc-ch-num ${prog.testPassed ? 'passed' : ''}">${prog.testPassed ? '✓' : ch.number}</div>
+                            <div class="bc-ch-info">
+                                <h4>Chapter ${ch.number}: ${ch.title}</h4>
+                                <span>${ch.duration} · ${ch.content.sections.length} sections · Mini test included</span>
+                            </div>
+                            <div class="bc-ch-status ${prog.testPassed ? 'passed' : ''}">${prog.testPassed ? '✓ Passed (' + prog.score + '%)' : '→ Start'}</div>
+                        </div>`;
+                    }).join('')}
+                </div>
+                <button class="bc-start-btn" onclick="showChapter(0)">Start Course →</button>
+            </div>`;
+    }
+
+    // ============================================================
+    // CHAPTER CONTENT
+    // ============================================================
+    function showChapter(index) {
+        const course = getCourse();
+        state.currentView = 'chapter';
+        state.currentChapterIndex = index;
+        renderSidebar();
+        const ch = course.chapters[index];
+        setChapterProgress(course.id, ch.id, { read: true });
+
+        const prevBtn = index > 0 ? `<button class="nav-btn" onclick="showChapter(${index-1})">← Chapter ${course.chapters[index-1].number}</button>` : `<button class="nav-btn" onclick="showOverview()">← Overview</button>`;
+        const nextBtn = `<button class="nav-btn next" onclick="showChapterTest(${index})">Take Chapter Test →</button>`;
+
+        document.getElementById('bcMain').innerHTML = `
+            <div class="bc-chapter-view">
+                <div class="bc-breadcrumb">
+                    <a href="#" onclick="showOverview(); return false;">${course.title}</a>
+                    <span>›</span>
+                    <span>Chapter ${ch.number}</span>
+                </div>
+                <div class="bc-chapter-header">
+                    <div class="ch-tag">Chapter ${ch.number} · ${ch.duration}</div>
+                    <h2>${ch.title}</h2>
+                </div>
+                <div class="bc-sections">
+                    ${ch.content.sections.map((sec, si) => `
+                        <div class="bc-section">
+                            <div class="bc-section-header ${si===0?'open':''}" onclick="toggleSection(this)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/></svg>
+                                <h3>${sec.title}</h3>
+                                <svg class="section-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                            </div>
+                            <div class="bc-section-body ${si===0?'open':''}">${sec.content}</div>
+                        </div>`).join('')}
+                </div>
+                <div style="background:#fff; border:1px solid var(--neutral-200); border-radius:var(--radius-lg); padding:var(--space-xl); text-align:center; margin-bottom:80px;">
+                    <div style="font-size:1.5rem; margin-bottom:var(--space-sm);">📝</div>
+                    <h3 style="margin-bottom:var(--space-sm);">Ready for the Chapter Test?</h3>
+                    <p style="color:var(--neutral-600); margin-bottom:var(--space-lg);">Test your understanding of Chapter ${ch.number} with ${ch.content.chapterTest.questions.length} questions.</p>
+                    <button class="bc-start-btn" onclick="showChapterTest(${index})">Take Chapter ${ch.number} Test</button>
+                </div>
+            </div>
+            <div class="bc-chapter-nav">
+                ${prevBtn}
+                <span style="font-size:0.8rem; color:var(--neutral-500);">Chapter ${index+1} of ${course.chapters.length}</span>
+                ${nextBtn}
+            </div>`;
+    }
+
+    function toggleSection(header) {
+        header.classList.toggle('open');
+        const body = header.nextElementSibling;
+        body.classList.toggle('open');
+    }
+
+    // ============================================================
+    // CHAPTER TEST
+    // ============================================================
+    function showChapterTest(index) {
+        const course = getCourse();
+        state.currentView = 'chapter-test';
+        state.currentChapterIndex = index;
+        state.answers = {};
+        state.submitted = false;
+        renderSidebar();
+        const ch = course.chapters[index];
+        const test = ch.content.chapterTest;
+        renderTest(test, `chapter-${index}`, false);
+    }
+
+    function renderTest(test, testKey, isFinal) {
+        const course = getCourse();
+        document.getElementById('bcMain').innerHTML = `
+            <div class="bc-test-view">
+                <div class="bc-test-header ${isFinal ? 'final-test' : ''}">
+                    <h2>${test.title}</h2>
+                    <p>${test.description || `${test.questions.length} questions · Score 70%+ to pass`}</p>
+                </div>
+                ${test.questions.map((q, qi) => `
+                    <div class="bc-question-card" id="qcard-${qi}">
+                        <div class="bc-question-num">Question ${qi+1} of ${test.questions.length}</div>
+                        <div class="bc-question-text">${q.question}</div>
+                        <div class="bc-options">
+                            ${q.options.map((opt, oi) => `
+                                <div class="bc-option" id="opt-${qi}-${oi}" onclick="selectOption('${testKey}', ${qi}, ${oi}, ${q.correct})">
+                                    <div class="bc-option-radio"></div>
+                                    <span>${opt}</span>
+                                </div>`).join('')}
+                        </div>
+                        <div class="bc-explanation" id="exp-${qi}">${q.explanation || ''}</div>
+                    </div>`).join('')}
+                <div class="bc-test-actions">
+                    <button class="bc-btn bc-btn-secondary" onclick="${isFinal ? 'showFinalTest()' : 'showChapter(' + state.currentChapterIndex + ')'}">← Back to Chapter</button>
+                    <button class="bc-btn bc-btn-primary" id="submitBtn" onclick="submitTest('${testKey}', ${isFinal})" disabled>Submit Answers</button>
+                </div>
+            </div>`;
+        state.currentTestData = test;
+        state.answers = {};
+        state.submitted = false;
+    }
+
+    function selectOption(testKey, qi, oi, correct) {
+        if (state.submitted) return;
+        state.answers[qi] = oi;
+        // Update UI
+        const opts = document.querySelectorAll(`[id^="opt-${qi}-"]`);
+        opts.forEach(o => o.classList.remove('selected'));
+        document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+        // Enable submit if all answered
+        const test = state.currentTestData;
+        if (test && Object.keys(state.answers).length === test.questions.length) {
+            document.getElementById('submitBtn').disabled = false;
+        }
+    }
+
+    function submitTest(testKey, isFinal) {
+        state.submitted = true;
+        const test = state.currentTestData;
+        let correct = 0;
+        test.questions.forEach((q, qi) => {
+            const chosen = state.answers[qi];
+            const opts = document.querySelectorAll(`[id^="opt-${qi}-"]`);
+            opts.forEach((o, oi) => {
+                if (oi === q.correct) o.classList.add('correct');
+                else if (oi === chosen && chosen !== q.correct) o.classList.add('incorrect');
+                o.classList.remove('selected');
+            });
+            if (chosen === q.correct) correct++;
+            document.getElementById(`exp-${qi}`).classList.add('show');
+        });
+        const score = Math.round((correct / test.questions.length) * 100);
+        const passed = score >= (test.passingScore || 70);
+
+        if (!isFinal) {
+            // Save chapter progress
+            const course = getCourse();
+            const ch = course.chapters[state.currentChapterIndex];
+            setChapterProgress(course.id, ch.id, { testPassed: passed, score: score });
+        }
+
+        // Show result card at top
+        const resultHtml = `
+            <div class="bc-results">
+                <div class="score-circle ${passed ? 'pass' : 'fail'}">
+                    <span>${score}%</span>
+                </div>
+                <h3>${passed ? '🎉 Test Passed!' : '📚 Keep Studying'}</h3>
+                <p>${passed ? 'Excellent work! You\'ve passed this test.' : 'You scored below the passing threshold. Review the chapter content and try again.'}</p>
+                <div class="score-detail">${correct} of ${test.questions.length} correct · ${passed ? 'Pass' : 'Fail'} (threshold: ${test.passingScore || 70}%)</div>
+                <div style="margin-top:var(--space-lg); display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+                    ${!passed ? `<button class="bc-btn bc-btn-secondary" onclick="${isFinal ? 'showFinalTest()' : 'showChapterTest(' + state.currentChapterIndex + ')'}">Try Again</button>` : ''}
+                    ${!isFinal && state.currentChapterIndex < getCourse().chapters.length - 1 ? `<button class="bc-btn bc-btn-primary" onclick="showChapter(${state.currentChapterIndex + 1})">Next Chapter →</button>` : ''}
+                    ${!isFinal && state.currentChapterIndex === getCourse().chapters.length - 1 && passed ? `<button class="bc-btn bc-btn-primary" onclick="showFinalTest()">Take Final Assessment →</button>` : ''}
+                    ${isFinal && passed ? `<button class="bc-btn bc-btn-primary" onclick="showCertificate()">Download Certificate 🏆</button>` : ''}
+                    <button class="bc-btn bc-btn-secondary" onclick="showOverview()">← Course Overview</button>
+                </div>
+            </div>`;
+
+        const testView = document.querySelector('.bc-test-view');
+        testView.insertAdjacentHTML('afterbegin', resultHtml);
+        document.getElementById('submitBtn').style.display = 'none';
+        testView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ============================================================
+    // FINAL TEST
+    // ============================================================
+    function showFinalTest() {
+        const course = getCourse();
+        state.currentView = 'final-test';
+        state.answers = {};
+        state.submitted = false;
+        renderSidebar();
+        renderTest(course.finalTest, 'final', true);
+    }
+
+    // ============================================================
+    // CERTIFICATE
+    // ============================================================
+    function showCertificate() {
+        const course = getCourse();
+        const main = document.getElementById('bcMain');
+        main.innerHTML = `
+            <div style="max-width:700px; margin:var(--space-2xl) auto; padding:var(--space-2xl);">
+                <div style="background:#fff; border:4px solid var(--primary-600); border-radius:var(--radius-xl); padding:var(--space-2xl); text-align:center;">
+                    <div style="font-size:3rem; margin-bottom:var(--space-md);">🏆</div>
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--primary-600); margin-bottom:var(--space-sm);">Certificate of Completion</div>
+                    <h1 style="font-size:1.8rem; font-weight:800; color:var(--neutral-900); margin-bottom:var(--space-sm);">${course.title}</h1>
+                    <p style="color:var(--neutral-600); margin-bottom:var(--space-xl);">Successfully completed all chapters and the final assessment</p>
+                    <div style="border-top:1px solid var(--neutral-200); border-bottom:1px solid var(--neutral-200); padding:var(--space-lg) 0; margin-bottom:var(--space-xl);">
+                        <div style="font-size:0.8rem; color:var(--neutral-500);">Source Material</div>
+                        <div style="font-weight:600; color:var(--neutral-800);">${course.source}</div>
+                    </div>
+                    <div style="font-size:0.8rem; color:var(--neutral-500);">Issued: ${new Date().toLocaleDateString('en-GB', {year:'numeric',month:'long',day:'numeric'})}</div>
+                    <div style="font-size:0.8rem; color:var(--neutral-500);">AI Gov Academy</div>
+                    <div style="margin-top:var(--space-xl); display:flex; gap:var(--space-md); justify-content:center;">
+                        <button class="bc-btn bc-btn-primary" onclick="window.print()">Print Certificate</button>
+                        <button class="bc-btn bc-btn-secondary" onclick="showOverview()">Back to Overview</button>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSidebar();
+        showOverview();
+    });
+    </script>
+</body>
+</html>
