@@ -1879,6 +1879,385 @@ const COURSE_5_CONTENT = {
                 }
             ]
         }
+    },
+    'course-5-2': {
+        title: 'Leading Ethical AI Culture',
+        sections: [
+            {
+                title: 'Culture: The Foundation Structures Alone Can\'t Provide',
+                content: `<p>An organization can have a perfectly designed governance structure - clear roles, a well-staffed ethics board, comprehensive policies - and still produce harmful AI outcomes if the underlying culture doesn't genuinely value raising concerns. Structure defines what should happen; culture determines what actually does.</p>
+
+                <h3>Signs Culture Is Working</h3>
+                <ul>
+                    <li>Staff raise concerns about a project's ethics or fairness without being explicitly asked to, and without fear of being seen as obstructive.</li>
+                    <li>Delivery deadlines are adjusted, not just noted, when a legitimate governance concern is raised late in a project.</li>
+                    <li>Leaders visibly credit and reward people who caught problems before launch, not just people who shipped features on time.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The Leadership Test</div>
+                    <p>Ask any team building or deploying AI: "Has anyone here ever delayed or stopped a project over an ethics concern, and what happened to them afterward?" The answer reveals more about your actual governance culture than any policy document.</p>
+                </div>`
+            },
+            {
+                title: 'Practices That Build Ethical AI Culture',
+                content: `<p>Culture change is not achieved through a single training session or a values poster - it requires sustained, deliberate leadership practice.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Practice</th><th>What It Looks Like</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Psychological safety</td><td>Leaders explicitly and repeatedly invite dissent, and respond to raised concerns with genuine engagement rather than defensiveness</td></tr>
+                        <tr><td>Incentive alignment</td><td>Performance reviews and promotion decisions credit people for catching problems, not solely for shipping fast</td></tr>
+                        <tr><td>Storytelling</td><td>Sharing internal (and external) case studies of AI failures and near-misses, including the organization's own, as learning opportunities rather than embarrassments to bury</td></tr>
+                        <tr><td>Leadership modeling</td><td>Senior leaders visibly ask hard ethical questions themselves in reviews, rather than delegating all ethical scrutiny downward</td></tr>
+                        <tr><td>Accessible escalation</td><td>Multiple, genuinely safe channels to raise concerns, including ones that bypass a potentially resistant direct manager</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Culture is built more by what leaders do in the moment a real concern is raised than by any stated values. One visible instance of a leader delaying a launch to address a legitimate concern does more for culture than a year of training slides.</p>
+                </div>`
+            },
+            {
+                title: 'Diagnosing and Repairing a Weak Ethics Culture',
+                content: `<p>Even well-intentioned organizations can develop weak AI ethics cultures over time, particularly under sustained delivery pressure. Leaders need to actively diagnose this rather than assume good policy guarantees good culture.</p>
+
+                <h3>Warning Signs</h3>
+                <ul>
+                    <li>Ethics or governance review is treated as a final rubber-stamp step rather than genuine scrutiny.</li>
+                    <li>Concerns are raised informally ("in the hallway") but never through formal channels, suggesting people don't trust the formal channels to respond well.</li>
+                    <li>The same small group of people always raises concerns, while everyone else stays silent - suggesting broader silencing rather than genuine absence of concerns.</li>
+                    <li>Post-incident reviews focus on "who missed this" rather than "what in our culture or process allowed this to be missed."</li>
+                </ul>
+
+                <h3>Repair Strategies</h3>
+                <p>Repairing a weak culture starts with leadership visibly changing its own behavior first - responding constructively to the next concern raised, publicly, before asking staff to trust that things have changed. Policy changes alone, without a visible shift in how leadership actually responds to real concerns, will not rebuild trust.</p>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">A Hard Truth</div>
+                    <p>If your organization has previously punished, sidelined, or ignored someone for raising a legitimate AI ethics concern, no policy update will repair the culture until that pattern is visibly and credibly reversed.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why can a well-designed governance structure still fail to prevent harmful AI outcomes?',
+                    options: [
+                        'Governance structures are always sufficient on their own',
+                        'Culture determines whether people actually use the structure to raise and act on concerns, regardless of how well the structure is designed on paper',
+                        'Structure and culture are the same thing',
+                        'Only technical controls matter, not organizational factors'
+                    ],
+                    correct: 1,
+                    explanation: 'Structure defines what should happen (roles, policies, review boards); culture determines whether people actually raise concerns and whether leadership responds constructively when they do.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'What single leadership action does the most to build (or destroy) an organization\'s ethical AI culture, according to this module?',
+                    sampleAnswer: 'How leadership visibly responds when someone raises a genuine ethics or governance concern - especially if it means delaying a launch or adding cost - does more to build or destroy the culture than any policy, training program, or values statement. A leader who visibly credits and acts on a raised concern builds trust that the process is real; a leader who dismisses or penalizes someone for raising a concern signals, regardless of stated policy, that raising concerns is unsafe.'
+                }
+            ]
+        }
+    },
+    'course-5-3': {
+        title: 'Stakeholder Communication',
+        sections: [
+            {
+                title: 'Why AI Governance Communication Is a Leadership Skill',
+                content: `<p>Technical AI governance work - risk assessments, fairness testing, documentation - only creates value if it is communicated effectively to the people who need to act on it or approve it. Senior leaders are frequently the translation layer between technical AI governance work and the non-technical decision-makers, boards, and public who must understand and trust it.</p>
+
+                <h3>Common Communication Failures</h3>
+                <ul>
+                    <li>Presenting technical risk assessments to a board or minister in language only a data scientist would follow, leading to rubber-stamp approval without genuine understanding.</li>
+                    <li>Over-simplifying to the point of hiding real, material risk, leaving decision-makers unable to make an informed choice.</li>
+                    <li>Communicating only when something goes wrong, rather than building an ongoing relationship of trust and transparency with stakeholders.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The Leadership Role</div>
+                    <p>Effective AI governance leaders don't just approve technical reports - they actively translate them into language and framing appropriate for each audience, and know when a simplified summary is helping understanding versus when it is hiding a decision that deserves genuine scrutiny.</p>
+                </div>`
+            },
+            {
+                title: 'Tailoring the Message by Audience',
+                content: `<p>The same underlying facts about an AI system's risk profile need to be communicated differently depending on who is receiving the message and what decision they need to make.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Audience</th><th>What They Need to Decide</th><th>Communication Approach</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Board / ministers</td><td>Whether to approve, fund, or halt a program</td><td>Concise risk/benefit framing tied to strategic and political consequences, not technical detail</td></tr>
+                        <tr><td>Frontline staff</td><td>How to use the system day-to-day, including when to override it</td><td>Practical, scenario-based guidance rather than abstract principles</td></tr>
+                        <tr><td>Technical teams</td><td>What to build, test, and monitor</td><td>Detailed, precise technical requirements and acceptance criteria</td></tr>
+                        <tr><td>Public / media</td><td>Whether to trust the organization's use of AI</td><td>Plain-language, honest framing - avoiding both alarmism and defensive minimization</td></tr>
+                        <tr><td>Affected individuals</td><td>Whether and how to challenge a specific decision</td><td>Direct, individual-level explanation of the decision and available recourse</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Before any major AI governance communication, ask: what decision does this audience need to make, and what do they actually need to know to make it well? Tailor content to that decision, not to a generic "explain the AI system" template.</p>
+                </div>`
+            },
+            {
+                title: 'Communicating Through Difficult Moments',
+                content: `<p>The hardest communication challenges arise during incidents, budget pressure, or when genuine uncertainty exists - and how leaders handle these moments defines their credibility for years afterward.</p>
+
+                <h3>Incident Disclosure</h3>
+                <p>When an AI system causes harm, timely, honest, proactive disclosure - even when uncomfortable - preserves more trust than a defensive or delayed response that is later perceived as concealment. Acknowledge what is known, what is still being investigated, and what concrete steps are being taken, rather than waiting for complete certainty before saying anything.</p>
+
+                <h3>Defending Governance Investment Under Budget Pressure</h3>
+                <p>When governance activities compete with delivery timelines for resources, leaders need to communicate the cost of governance against the (often larger, if less visible) cost of failure - using concrete prior examples rather than abstract risk language.</p>
+
+                <h3>Admitting Genuine Uncertainty</h3>
+                <p>Not every AI governance question has a confident answer. Leaders who acknowledge genuine uncertainty ("we don't yet have a complete answer, and here is what we're doing to get one") generally build more durable trust than those who project false confidence that is later proven wrong.</p>
+
+                <div class="info-box example">
+                    <div class="info-box-title">Case in Point</div>
+                    <p>Contrast two agencies' responses to a discovered fairness issue: one issues a defensive, minimizing statement and is later found to have known about the issue for months, permanently damaging public trust. The other proactively discloses the issue as soon as confirmed, explains remediation steps clearly, and is subsequently seen as a credible, trustworthy actor - despite the underlying failure being similar in severity.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What should determine how an AI governance communication is framed for a specific audience?',
+                    options: [
+                        'Always use the same technical detail regardless of audience',
+                        'What decision that audience needs to make and what they need to know to make it well',
+                        'Whichever framing makes the AI system look best',
+                        'The personal preference of the presenter'
+                    ],
+                    correct: 1,
+                    explanation: 'Effective communication starts from what decision the audience needs to make - a board approving funding needs different information, framed differently, than frontline staff needing to know when to override a system.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Why does proactive, honest incident disclosure often preserve more trust than a delayed or defensive response, even though it means admitting a failure sooner?',
+                    sampleAnswer: 'Delayed or defensive disclosure, if later revealed to have concealed a known issue, is typically perceived as a deliberate cover-up, which damages trust far more severely and durably than the original failure itself. Proactive disclosure - even while some details are still being investigated - signals that the organization takes the issue seriously and is not trying to hide it, which tends to preserve stakeholder and public trust even through a genuine failure.'
+                }
+            ]
+        }
+    },
+    'course-5-4': {
+        title: 'Strategic AI Risk Management',
+        sections: [
+            {
+                title: 'From Project-Level to Enterprise-Level Risk',
+                content: `<p>Earlier courses covered risk assessment for individual AI projects. Strategic leaders must additionally manage AI risk at the enterprise level - understanding how risks aggregate, interact, and compare across an entire portfolio of AI systems.</p>
+
+                <h3>Why Enterprise-Level View Matters</h3>
+                <ul>
+                    <li><strong>Aggregation:</strong> Ten "medium-risk" AI systems, each individually approved, can collectively represent an unacceptable concentration of organizational risk that no single project review would catch.</li>
+                    <li><strong>Interaction effects:</strong> AI systems increasingly feed into or depend on one another; a failure in one upstream system can silently propagate into several downstream systems' decisions.</li>
+                    <li><strong>Resource allocation:</strong> Enterprise risk visibility lets leaders direct limited governance resources (skilled reviewers, audit capacity) toward the highest-risk systems in the portfolio, rather than spreading effort evenly regardless of risk.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">A Portfolio, Not a List</div>
+                    <p>Strategic AI risk management treats deployed AI systems as a portfolio to be actively managed - with visibility into aggregate exposure - rather than a simple list of individually-approved projects that nobody looks at collectively.</p>
+                </div>`
+            },
+            {
+                title: 'Building an AI Risk Register and Portfolio View',
+                content: `<p>A practical tool for enterprise-level AI risk management is a maintained risk register covering every deployed and in-development AI system across the organization.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Register Field</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>System description and owner</td><td>Establishes accountability and a single point of contact for each system</td></tr>
+                        <tr><td>Risk classification</td><td>Enables sorting and prioritization across the portfolio (e.g., aligned to EU AI Act risk tiers or an internal equivalent)</td></tr>
+                        <tr><td>Dependencies</td><td>Flags which systems feed into or rely on others, surfacing interaction risk</td></tr>
+                        <tr><td>Last validation / audit date</td><td>Identifies systems overdue for re-validation</td></tr>
+                        <tr><td>Open issues / mitigations in progress</td><td>Tracks known risks that haven't yet been fully addressed</td></tr>
+                        <tr><td>Vendor / internal build</td><td>Flags systems with vendor dependency risk (see Module 4.1) for portfolio-level vendor concentration analysis</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Review the risk register at portfolio level on a regular cadence, asking not just "is each system individually acceptable" but "what does our aggregate AI risk exposure look like, and is it within our organization's risk tolerance?"</p>
+                </div>`
+            },
+            {
+                title: 'Board and Executive Risk Reporting',
+                content: `<p>Strategic risk management requires translating the risk register into reporting that boards and executives can genuinely use to govern, not just review.</p>
+
+                <h3>Effective Executive AI Risk Reporting</h3>
+                <ul>
+                    <li>Leads with a small number of the highest-priority risks and their status, rather than an exhaustive list nobody will read in detail.</li>
+                    <li>Distinguishes clearly between risks that are actively being mitigated versus risks the organization has knowingly accepted, with named accountability for each.</li>
+                    <li>Tracks trend over time (is aggregate risk exposure improving or worsening), not just a point-in-time snapshot.</li>
+                    <li>Connects AI risk explicitly to the organization's broader enterprise risk management framework, rather than treating it as a separate, siloed concern.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">A Common Gap</div>
+                    <p>Many boards receive detailed reports on financial and cybersecurity risk but little to no aggregate visibility into AI risk, even as AI systems increasingly influence consequential decisions. Closing this reporting gap is a core strategic leadership responsibility, not merely a technical governance function's job.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why might ten individually-approved "medium-risk" AI systems still represent a serious governance problem at the enterprise level?',
+                    options: [
+                        'Individual approval always guarantees aggregate safety',
+                        'Their combined risk can represent an unacceptable aggregate concentration, and interaction effects between them may not be visible from any single project review',
+                        'Medium-risk systems cannot be aggregated in any way',
+                        'This scenario is purely theoretical and never occurs in practice'
+                    ],
+                    correct: 1,
+                    explanation: 'Enterprise-level risk management specifically addresses aggregation and interaction effects across a portfolio of systems - factors that individual project-level risk reviews are not designed to catch.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'What should an effective executive AI risk report prioritize, and what is a common failure mode to avoid?',
+                    sampleAnswer: 'An effective report should lead with a small number of the highest-priority risks and their current status, clearly distinguish between risks being actively mitigated versus risks knowingly accepted (with named ownership), and show trend over time rather than just a snapshot. A common failure mode is producing an exhaustive, undifferentiated list of every identified risk with no prioritization, which boards and executives will not meaningfully engage with, effectively defeating the purpose of the report.'
+                }
+            ]
+        }
+    },
+    'course-5-5': {
+        title: 'Future of AI Governance',
+        sections: [
+            {
+                title: 'Emerging Trends Leaders Must Track',
+                content: `<p>AI governance is one of the fastest-moving policy and technology areas any leader will manage. Strategic leaders need mechanisms to stay current, since the specific facts (which regulations are in force, which frameworks are current) will keep changing after this course is completed.</p>
+
+                <h3>Trends Shaping the Next Phase of AI Governance</h3>
+                <ul>
+                    <li><strong>Agentic AI:</strong> The shift from AI systems that produce a single output for human review toward autonomous agents that plan and take multi-step actions is creating governance challenges (unauthorized privilege escalation, goal drift) that most current frameworks were not designed around - covered in depth in Course 3's Global Regulatory Landscape module.</li>
+                    <li><strong>Regulatory fragmentation versus harmonization:</strong> Jurisdictions are moving in different directions simultaneously - the EU pursuing (and now partially delaying) comprehensive regulation, the US shifting toward a deregulatory federal posture while individual states legislate independently, and international bodies alternating between safety-focused and adoption-focused framing across successive summits.</li>
+                    <li><strong>Frontier model governance:</strong> As the most capable AI models grow more powerful, dedicated governance approaches for "frontier" models (such as California's SB 53 safety and disclosure requirements) are emerging as a distinct regulatory category from general-purpose AI rules.</li>
+                    <li><strong>Standards maturation:</strong> ISO/IEC 42001 and its companion standards (impact assessment, certification body requirements) are maturing from novel to expected baseline practice, similar to the trajectory ISO 27001 followed for information security.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The One Durable Certainty</div>
+                    <p>The specific regulations, frameworks, and dates in this course will continue to change. What will not change is the underlying need for the governance capabilities this program builds: risk assessment, human oversight, monitoring, documentation, and an organizational culture that takes ethical AI seriously.</p>
+                </div>`
+            },
+            {
+                title: 'Preparing the Organization for Continued Change',
+                content: `<p>Rather than trying to predict the future in detail, strategic leaders should build organizational capacity to adapt as the landscape keeps shifting.</p>
+
+                <h3>Building an Adaptive Governance Capability</h3>
+                <ul>
+                    <li><strong>Horizon scanning:</strong> Assign explicit ownership for monitoring regulatory and technological developments relevant to your AI portfolio, rather than relying on ad hoc awareness.</li>
+                    <li><strong>Modular governance design:</strong> Build internal policies and processes around durable principles (risk-based tiering, human oversight, documentation) that can absorb new specific regulatory requirements without a full redesign each time a law changes.</li>
+                    <li><strong>Scenario planning:</strong> Periodically war-game plausible near-term developments (a new binding regulation, a major AI incident in your sector, a significant new capability) and how the organization would respond.</li>
+                    <li><strong>External engagement:</strong> Participate in industry and cross-government forums tracking AI governance developments, both to stay informed and to help shape emerging norms before they harden into binding requirements.</li>
+                </ul>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Build your organization's AI governance policies around the durable "why" (protecting people from harm, maintaining accountability, sustaining public trust) rather than solely around the current specific "what" of any single regulation - durable principles absorb regulatory change far more gracefully than compliance checklists tied to one law's exact wording.</p>
+                </div>`
+            },
+            {
+                title: 'A Leader\'s Checklist for Staying Ahead',
+                content: `<p>Concluding this course, use the following checklist periodically to assess whether your organization's AI governance capability is keeping pace with the field.</p>
+
+                <ul>
+                    <li>Do we have someone explicitly responsible for tracking regulatory and technological developments relevant to our AI systems?</li>
+                    <li>Could our governance policies absorb a significant new regulatory requirement without a complete redesign?</li>
+                    <li>Have we assessed whether any of our AI systems are moving toward more autonomous, agentic behavior that our current oversight model wasn't designed for?</li>
+                    <li>Do we have genuine visibility into our aggregate AI risk exposure at the executive and board level (Module 5.4), not just individual project sign-offs?</li>
+                    <li>Is our organizational culture one where people would actually raise a concern about a new AI capability before it becomes a public incident?</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Closing Thought</div>
+                    <p>The organizations that navigate AI governance most successfully over time are rarely the ones that predicted every regulatory change correctly - they are the ones that built adaptable governance capability and a genuinely engaged culture, so that whatever comes next, they are ready to respond rather than caught by surprise.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why does this course recommend building governance policy around durable principles rather than the exact wording of current regulations?',
+                    options: [
+                        'Because current regulations are unimportant',
+                        'Because durable principles (risk-based tiering, human oversight, documentation) can absorb new specific regulatory requirements without requiring a complete policy redesign each time a law changes',
+                        'Because regulations never change',
+                        'Because principles are easier to write than detailed policies'
+                    ],
+                    correct: 1,
+                    explanation: 'Regulatory specifics change frequently (as this course\'s own content has needed to reflect), while durable underlying principles remain stable and can flex to absorb new specific requirements more easily than a rigid, regulation-specific compliance checklist.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'What is "horizon scanning" in the context of AI governance, and why does this course recommend assigning it explicit ownership rather than leaving it to ad hoc awareness?',
+                    sampleAnswer: 'Horizon scanning is the practice of actively and systematically monitoring regulatory, technological, and industry developments relevant to an organization\'s AI systems, rather than only reacting after a change has already taken effect. Assigning explicit ownership matters because ad hoc awareness - relying on individuals to notice developments incidentally - reliably misses important changes, especially in a field moving as quickly as AI governance; without a named owner and a defined process, the organization is likely to discover major shifts (like a regulatory delay or a new governance framework) too late to prepare properly.'
+                }
+            ]
+        }
+    },
+    'course-5-6': {
+        title: 'Leadership Assessment & Certification',
+        sections: [
+            {
+                title: 'Course Summary',
+                content: `<p>This leadership module has built your capability to govern AI at the strategic and organizational level, completing the full arc of this program from foundational concepts through executive practice:</p>
+
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Governance Structures:</strong> Centralized, federated, and embedded models each suit different organizational contexts, but all require genuine executive sponsorship and authority to be effective rather than merely advisory.</li>
+                    <li><strong>Ethical Culture:</strong> Structure alone cannot guarantee good outcomes - culture, and specifically how leaders respond when concerns are raised, determines whether governance structures are actually used.</li>
+                    <li><strong>Stakeholder Communication:</strong> Effective AI governance communication is tailored to what decision each specific audience needs to make, and is tested most under pressure - incidents, budget constraints, and genuine uncertainty.</li>
+                    <li><strong>Strategic Risk Management:</strong> Leaders need portfolio-level visibility into aggregate AI risk, not just individual project approvals, supported by a maintained risk register and meaningful board-level reporting.</li>
+                    <li><strong>The Future:</strong> The specific regulatory landscape will keep changing - durable governance capability comes from adaptive processes and genuine organizational culture, not memorizing today's rules.</li>
+                </ul>
+
+                <h3>Program Completion</h3>
+                <p>Having completed all five courses - AI Governance Foundations, Technical AI Ethics & Safety, Regulatory Compliance & Risk Management, AI Implementation & Operations, and Strategic Leadership & Governance - you have covered the full spectrum from foundational AI literacy through executive-level governance strategy. Consider the two book-based courses (Principles of AI Governance, and Model Risk Management) for additional depth grounded in a single authoritative text.</p>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'According to this course, which factor most determines whether a well-designed AI governance structure actually functions as intended?',
+                    options: [
+                        'The number of policies documented',
+                        'Organizational culture, particularly how leadership responds when someone raises a genuine concern',
+                        'The size of the compliance budget alone',
+                        'How advanced the AI technology is'
+                    ],
+                    correct: 1,
+                    explanation: 'This course emphasizes throughout that structure defines what should happen, but culture - especially leadership\'s real response to raised concerns - determines whether it actually does.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A board receives no aggregate reporting on AI risk across the organization\'s AI portfolio, only individual project sign-offs. What strategic risk management gap does this represent?',
+                    options: [
+                        'No gap - individual sign-offs are always sufficient',
+                        'Missing enterprise-level / portfolio risk visibility, which can hide aggregate risk concentration and interaction effects across systems',
+                        'A sign that the organization has too few AI systems',
+                        'An issue only relevant to technical teams, not the board'
+                    ],
+                    correct: 1,
+                    explanation: 'Enterprise-level risk visibility - via a maintained risk register and board-level reporting - is necessary to catch aggregate risk concentration and cross-system interaction effects that individual project reviews cannot surface.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'As a capstone reflection: identify one specific AI governance capability from this entire program (any course) that you believe your own organization (or a hypothetical government agency) most needs to strengthen, and explain why, using concepts from at least two different courses in this program.',
+                    sampleAnswer: 'Example answer: Our organization most needs to strengthen post-deployment monitoring (Course 4). We do thorough risk assessment and fairness testing before launch (Course 1\'s risk assessment framework, Course 2\'s fairness metrics), but have no structured process for ongoing drift detection or subgroup performance monitoring after go-live. This matters because, as covered in Course 4, pre-deployment validation only certifies a system against conditions at launch - without continuous monitoring, we could develop the exact kind of undetected fairness degradation described in the Course 3 regulatory modules, only discovering it after a complaint, audit, or media investigation rather than through our own governance processes.'
+                }
+            ]
+        }
     }
 };
 
