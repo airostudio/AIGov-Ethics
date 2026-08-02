@@ -1163,6 +1163,92 @@ const COURSE_3_CONTENT = {
 
 // Extended content for Course 4: Implementation
 const COURSE_4_CONTENT = {
+    'course-4-1': {
+        title: 'AI Procurement & Vendor Management',
+        sections: [
+            {
+                title: 'Why AI Procurement Needs Special Governance',
+                content: `<p>Most government AI systems are not built in-house - they are purchased or licensed from vendors. This makes procurement one of the most consequential and most overlooked AI governance checkpoints: decisions made before a contract is signed determine how much visibility and control the organization will have for the entire life of the system.</p>
+
+                <h3>How AI Procurement Differs from Traditional IT Procurement</h3>
+                <ul>
+                    <li><strong>Opaque internals:</strong> Vendors often treat model architecture and training data as proprietary, resisting the transparency needed for governance and audit.</li>
+                    <li><strong>Shifting behavior:</strong> Unlike static software, a vendor's AI system can change behavior after contract signing through retraining or underlying model updates, without a traditional "new version" release.</li>
+                    <li><strong>Liability ambiguity:</strong> When an AI system causes harm, responsibility can be genuinely unclear between vendor and deploying agency unless the contract explicitly allocates it.</li>
+                    <li><strong>Data entanglement:</strong> Vendor AI systems often require access to sensitive government data, and some vendors use customer data to improve their broader product - a practice that may be unacceptable for public-sector data.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">The Governance Gap Starts at Procurement</div>
+                    <p>An agency cannot govern what it cannot see. If procurement doesn't secure the contractual right to documentation, audit, and incident notification up front, no amount of governance effort after signing can fully compensate.</p>
+                </div>`
+            },
+            {
+                title: 'Key Contractual Protections',
+                content: `<p>Effective AI procurement builds specific protections into the contract itself, not just into internal policy.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Protection</th><th>What It Ensures</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Documentation rights</td><td>Access to technical documentation sufficient to support the agency's own risk assessments and regulatory obligations</td></tr>
+                        <tr><td>Audit rights</td><td>The ability for the agency (or an independent third party) to audit the system's performance, fairness, and security - not just take the vendor's word for it</td></tr>
+                        <tr><td>Performance and fairness SLAs</td><td>Contractually binding thresholds for accuracy and subgroup performance, with remedies if not met</td></tr>
+                        <tr><td>Incident notification</td><td>A defined, prompt timeline for the vendor to notify the agency of security incidents, model changes, or discovered flaws</td></tr>
+                        <tr><td>Data rights and exit provisions</td><td>Clear terms on data ownership, deletion on contract termination, and the ability to transition away from a vendor without losing historical data or continuity of service</td></tr>
+                        <tr><td>Change notification</td><td>Advance notice before the vendor materially changes the underlying model or system, so the agency can re-validate before the change affects production</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Negotiate Before, Not After</div>
+                    <p>These protections are far easier to negotiate before a contract is signed, when the vendor is competing for the business, than to add later once the agency is operationally dependent on the system.</p>
+                </div>`
+            },
+            {
+                title: 'Vendor Due Diligence Checklist',
+                content: `<p>Before selecting a vendor, procurement and technical teams should jointly work through a structured due diligence process.</p>
+
+                <h3>Questions to Ask Every AI Vendor</h3>
+                <ul>
+                    <li>What data was the system trained on, and can you provide evidence of its representativeness for our population?</li>
+                    <li>What fairness and bias testing has been conducted, and can we review the results?</li>
+                    <li>What explainability capabilities does the system offer, and at what level of detail?</li>
+                    <li>What is your security posture, and has the system undergone independent security assessment?</li>
+                    <li>Do you use subcontractors or "fourth-party" AI providers (e.g., building on another company's foundation model), and what does that mean for our data and liability exposure?</li>
+                    <li>What happens to our data if we terminate the contract?</li>
+                    <li>How and how often is the underlying model updated, and will we be notified before changes reach production?</li>
+                </ul>
+
+                <div class="info-box example">
+                    <div class="info-box-title">Red Flag</div>
+                    <p>A vendor who cannot answer basic questions about their training data or refuses any form of independent audit access is signaling a governance risk that should factor heavily into the procurement decision - regardless of how compelling the product demo looks.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why is procurement considered one of the most consequential AI governance checkpoints?',
+                    options: [
+                        'Because it is the cheapest phase of an AI project',
+                        'Because contractual terms negotiated before signing determine how much visibility and control the agency will have for the life of the system',
+                        'Because procurement staff are AI experts',
+                        'Because it happens after deployment'
+                    ],
+                    correct: 1,
+                    explanation: 'Rights to documentation, audit, and incident notification are far easier to secure before a contract is signed than after the agency becomes operationally dependent on a vendor system.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'A vendor\'s AI product looks excellent in the demo, but they decline to share any information about their training data or allow any independent audit. What would you recommend, and why?',
+                    sampleAnswer: 'I would treat this as a significant red flag that should weigh heavily against selecting this vendor, regardless of demo performance. Without visibility into training data and independent audit rights, the agency cannot conduct its own risk or fairness assessments, cannot meet its own regulatory documentation obligations, and has no way to verify vendor claims about performance. I would push to make documentation and audit rights a contractual requirement before proceeding, and if the vendor still refuses, recommend evaluating alternative vendors willing to provide these protections.'
+                }
+            ]
+        }
+    },
     'course-4-2': {
         title: 'Human Oversight Design',
         sections: [
@@ -1299,6 +1385,316 @@ const COURSE_4_CONTENT = {
                     type: 'free-text',
                     question: 'Describe two interface design choices that could help counter automation bias in a benefits eligibility system.',
                     sampleAnswer: '1) Have the reviewer make a preliminary eligibility determination based on the application before showing the AI recommendation - this forces independent judgment rather than just confirming AI output. 2) Display not just the AI recommendation but also the top factors arguing against that recommendation, forcing reviewers to consider counter-evidence rather than just confirming the suggested decision.'
+                }
+            ]
+        }
+    },
+    'course-4-3': {
+        title: 'Monitoring & Performance Management',
+        sections: [
+            {
+                title: 'Why Deployed AI Needs Continuous Monitoring',
+                content: `<p>An AI system that performed well at launch is not guaranteed to keep performing well. Monitoring is the practice of continuously watching a deployed system to catch degradation before it causes harm, rather than discovering it during an incident or complaint investigation.</p>
+
+                <h3>Why Performance Changes After Deployment</h3>
+                <ul>
+                    <li><strong>Data drift:</strong> The statistical properties of real-world input data gradually diverge from the training data, degrading accuracy.</li>
+                    <li><strong>Concept drift:</strong> The real-world relationship the model is trying to predict changes over time - for example, fraud patterns evolve as fraudsters adapt to detection methods.</li>
+                    <li><strong>Population changes:</strong> The population a system serves shifts (demographically, behaviorally, economically), which can differentially affect subgroup performance even if overall accuracy looks stable.</li>
+                    <li><strong>Upstream changes:</strong> Changes to data sources, feeder systems, or vendor-side models can silently alter a system's inputs or behavior.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The Core Principle</div>
+                    <p>Pre-deployment testing establishes a baseline. Monitoring is what confirms that baseline still holds a month, a quarter, and a year later - it is not optional follow-up, it is a core, ongoing governance obligation for any consequential AI system.</p>
+                </div>`
+            },
+            {
+                title: 'What to Monitor',
+                content: `<p>A comprehensive monitoring program tracks several categories of signal, not just overall accuracy.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Category</th><th>What to Track</th><th>Why It Matters</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Technical performance</td><td>Accuracy, precision, recall against ground truth as it becomes available</td><td>Detects overall model degradation</td></tr>
+                        <tr><td>Fairness metrics</td><td>Performance broken out by demographic and use-case subgroup</td><td>Catches disparate degradation that aggregate metrics hide</td></tr>
+                        <tr><td>Input data characteristics</td><td>Statistical distribution of incoming data vs. training data</td><td>Early warning of drift before it shows up in outcome metrics</td></tr>
+                        <tr><td>Usage patterns</td><td>Volume, unusual spikes, unexpected use cases</td><td>Flags misuse or use outside the system's intended and validated scope</td></tr>
+                        <tr><td>Human override rates</td><td>How often and why human reviewers override AI recommendations</td><td>Rising override rates often signal declining model quality before formal metrics catch it</td></tr>
+                        <tr><td>Complaints and appeals</td><td>Volume and nature of citizen complaints or appeals related to the system</td><td>A direct signal of real-world harm, not just statistical performance</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Override rate trends are one of the most underused monitoring signals. A steadily rising override rate for a specific case type often surfaces a genuine model problem well before it would appear in a quarterly accuracy report.</p>
+                </div>`
+            },
+            {
+                title: 'Building a Monitoring Program',
+                content: `<p>Effective monitoring requires more than collecting metrics - it requires a structured program with clear ownership and response paths.</p>
+
+                <h3>Program Components</h3>
+                <ul>
+                    <li><strong>Defined thresholds:</strong> Specific, pre-agreed thresholds that trigger review (e.g., a subgroup false-negative rate rising more than a defined percentage above baseline).</li>
+                    <li><strong>Alerting:</strong> Automated alerts when thresholds are breached, rather than relying on someone remembering to check a dashboard.</li>
+                    <li><strong>Regular review cadence:</strong> Scheduled reviews (monthly or quarterly, depending on risk level) even when no alert has fired, since some degradation is gradual rather than sudden.</li>
+                    <li><strong>Clear escalation paths:</strong> A defined process for what happens when a threshold is breached - who is notified, who decides whether to pause the system, and how quickly a decision must be made.</li>
+                    <li><strong>Accountable ownership:</strong> A named owner responsible for the monitoring program itself, not just for the underlying AI system.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Common Failure Mode</div>
+                    <p>Many organizations build monitoring dashboards that nobody is accountable for actually watching. A dashboard without a named owner, a review cadence, and an escalation process is not a monitoring program - it's a screen that data flows past unnoticed.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What is "concept drift" as distinct from "data drift"?',
+                    options: [
+                        'They are the same thing',
+                        'Concept drift is a change in the real-world relationship being predicted (e.g., evolving fraud patterns), while data drift is a change in the statistical properties of input data',
+                        'Concept drift only affects rule-based systems',
+                        'Concept drift is a type of security vulnerability'
+                    ],
+                    correct: 1,
+                    explanation: 'Data drift refers to input data distributions changing; concept drift refers to the underlying real-world relationship a model is trying to predict changing, such as fraudsters adapting their methods over time.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which underused monitoring signal often reveals model quality decline before formal accuracy metrics do?',
+                    options: ['Server uptime', 'Human override rate trends', 'Number of code deployments', 'Marketing spend'],
+                    correct: 1,
+                    explanation: 'A rising rate of human reviewers overriding AI recommendations for a specific case type is often an early, practical signal of declining model quality, well before quarterly accuracy reports would reveal it.'
+                }
+            ]
+        }
+    },
+    'course-4-4': {
+        title: 'Incident Response & Remediation',
+        sections: [
+            {
+                title: 'What Counts as an AI Incident',
+                content: `<p>AI incident response extends beyond traditional IT security incidents to cover a broader range of AI-specific failure modes, many of which don't involve any malicious actor at all.</p>
+
+                <h3>Categories of AI Incidents</h3>
+                <ul>
+                    <li><strong>Discriminatory or unfair outcomes:</strong> The system produces systematically worse outcomes for a protected group, discovered through monitoring, audit, or complaints.</li>
+                    <li><strong>Security incidents:</strong> Unauthorized access to the model, training data, or a successful adversarial attack causing incorrect outputs.</li>
+                    <li><strong>Harmful or inappropriate content:</strong> Particularly relevant for generative AI systems producing offensive, false, or dangerous content.</li>
+                    <li><strong>Unexpected behavior:</strong> The system behaves in ways not anticipated during design or testing, even without a clear "bug" to point to.</li>
+                    <li><strong>Cascading errors:</strong> A single model error propagates through downstream systems or decisions before being caught.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">A Broader Definition Than "Security Breach"</div>
+                    <p>Many AI incidents involve no hacking or malicious actor at all - a model can cause serious harm simply by behaving exactly as it was trained to, on data or in a context nobody anticipated. AI incident response processes must be built to catch and respond to both.</p>
+                </div>`
+            },
+            {
+                title: 'An AI Incident Response Lifecycle',
+                content: `<p>Traditional cybersecurity incident response provides a useful starting structure, adapted for AI-specific characteristics.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Phase</th><th>AI-Specific Considerations</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Detect</strong></td><td>Relies heavily on monitoring signals (Module 4.3) and complaint channels, since many AI incidents have no obvious external trigger like a system outage</td></tr>
+                        <tr><td><strong>Contain</strong></td><td>May mean pausing the system, reverting to a previous model version, or routing decisions to human review rather than a traditional network isolation response</td></tr>
+                        <tr><td><strong>Assess</strong></td><td>Requires determining scope (how many decisions were affected, over what time period) and severity (what harm resulted), often requiring re-analysis of historical decisions</td></tr>
+                        <tr><td><strong>Remediate</strong></td><td>May require correcting past decisions retroactively (e.g., reprocessing wrongly denied applications), not just fixing the system going forward</td></tr>
+                        <tr><td><strong>Report</strong></td><td>May trigger regulatory reporting obligations (see below) in addition to internal escalation</td></tr>
+                        <tr><td><strong>Learn</strong></td><td>Feed findings back into risk assessment, testing, and monitoring practices to prevent recurrence</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Establish AI incident response procedures and clear ownership before an incident occurs. Deciding who has authority to pause a production AI system, in the middle of an active incident, is far riskier than agreeing that authority in advance.</p>
+                </div>`
+            },
+            {
+                title: 'Remediation and Disclosure',
+                content: `<p>Responding to the technical failure is only part of incident response - remediation must also address the people affected and any regulatory reporting obligations.</p>
+
+                <h3>Remediating Harm to Affected Individuals</h3>
+                <ul>
+                    <li>Identify everyone plausibly affected, not just those who complained - many people affected by an AI error never realize the cause or file a complaint.</li>
+                    <li>Correct the underlying decision where possible (reprocessing a wrongly denied application), not just the system going forward.</li>
+                    <li>Communicate clearly and proactively with affected individuals rather than waiting for them to discover the error themselves.</li>
+                </ul>
+
+                <h3>Regulatory Reporting Obligations</h3>
+                <p>Increasingly, AI-specific law creates affirmative reporting duties. For example, the EU AI Act requires providers of high-risk AI systems to report serious incidents to market surveillance authorities. Government agencies should map which incident categories trigger which reporting obligations under the frameworks applicable to their jurisdiction, well before an incident occurs, so the reporting clock doesn't start with confusion about whether or how to report.</p>
+
+                <div class="info-box example">
+                    <div class="info-box-title">Case in Point</div>
+                    <p>An agency discovers that a benefits eligibility model incorrectly denied a subset of applications for three months due to an unnoticed data pipeline error. Full remediation means: identifying every affected application (not just those appealed), reprocessing them, proactively notifying affected citizens, assessing whether this meets any regulatory incident-reporting threshold, and updating monitoring to catch this failure mode earlier next time.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Which of the following would qualify as an AI incident, even without any malicious actor involved?',
+                    options: [
+                        'None - incidents require a hacker or attacker',
+                        'A model behaving exactly as trained but producing systematically unfair outcomes on real-world data nobody anticipated',
+                        'Only server downtime counts as an incident',
+                        'Only incidents reported by the media count'
+                    ],
+                    correct: 1,
+                    explanation: 'Many serious AI incidents involve no malicious actor at all - a model can cause real harm simply by behaving as trained in a context or on data nobody anticipated during design.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Why is it important to identify all individuals plausibly affected by an AI incident, not just those who filed a complaint?',
+                    sampleAnswer: 'Many people affected by an AI error never realize the AI system was the cause, or don\'t know how to file a complaint, or may face barriers (language, digital access, awareness of appeal rights) that prevent them from complaining even if they suspect something is wrong. Limiting remediation to complainants only would leave many affected individuals without redress and would understate the true scope and severity of the incident, undermining both fairness and any regulatory obligation to assess and report the incident\'s actual scope.'
+                }
+            ]
+        }
+    },
+    'course-4-5': {
+        title: 'Change Management & System Updates',
+        sections: [
+            {
+                title: 'Why AI Changes Are Different',
+                content: `<p>Traditional software change management assumes that a specific code change produces a predictable, testable effect. AI systems complicate this assumption in ways that require adapted change management practice.</p>
+
+                <h3>What Makes AI Change Management Different</h3>
+                <ul>
+                    <li><strong>Retraining changes behavior unpredictably:</strong> Updating a model with new training data can shift behavior across the board in ways that are hard to fully predict or scope in advance, unlike a targeted code fix.</li>
+                    <li><strong>"Silent" vendor-side updates:</strong> When using a vendor's hosted AI service or API, the underlying model can change without the deploying agency initiating or even being clearly notified of the change.</li>
+                    <li><strong>Non-obvious change triggers:</strong> Changes to upstream data sources, feature definitions, or thresholds can meaningfully alter system behavior even when no one describes it as a "system change."</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">The Governance Risk</div>
+                    <p>An organization can have rigorous initial validation and still suffer serious AI failures if it doesn't extend the same rigor to changes made after deployment - especially changes it didn't initiate itself, such as a vendor silently updating an underlying model.</p>
+                </div>`
+            },
+            {
+                title: 'A Change Management Framework for AI',
+                content: `<p>Effective AI change management classifies changes by type and risk, applying proportional re-validation to each.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Change Type</th><th>Example</th><th>Re-validation Needed</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Data refresh / retrain on new data</td><td>Periodic retraining on the latest year of data</td><td>Full performance and fairness re-testing across subgroups</td></tr>
+                        <tr><td>Threshold adjustment</td><td>Changing the score cutoff for flagging a case</td><td>Re-testing precision/recall trade-offs and downstream volume impact</td></tr>
+                        <tr><td>Feature change</td><td>Adding or removing an input feature</td><td>Full re-validation, including bias/proxy analysis of the new feature</td></tr>
+                        <tr><td>Full model replacement</td><td>Switching to a new model architecture or vendor</td><td>Treat as a new system: complete risk assessment and validation cycle</td></tr>
+                        <tr><td>Underlying vendor model update</td><td>A SaaS AI vendor upgrades their model version</td><td>Regression testing against your specific use cases before and after, regardless of vendor assurances</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Maintain a fixed regression test set specific to your use case - real (or representative) cases with known correct outcomes - that you can re-run against any model version, old or new, to quickly detect behavioral changes regardless of what triggered them.</p>
+                </div>`
+            },
+            {
+                title: 'Managing Vendor-Side Model Changes',
+                content: `<p>The hardest change management challenge is often the one least within an organization's direct control: changes a vendor makes to a hosted or API-based AI system.</p>
+
+                <h3>Practical Safeguards</h3>
+                <ul>
+                    <li><strong>Contractual change notification:</strong> Negotiate advance notice of material model changes as a procurement requirement (see Module 4.1), even if the vendor cannot give the agency approval rights over the change itself.</li>
+                    <li><strong>Independent regression testing:</strong> Run your own fixed test set against the vendor's system periodically, and specifically after any known update, rather than relying solely on vendor assurances that "nothing changed."</li>
+                    <li><strong>Version pinning where offered:</strong> Some vendors allow pinning to a specific model version rather than auto-upgrading to the latest - use this where risk tolerance requires stability, understanding it may mean forgoing improvements too.</li>
+                    <li><strong>Fallback plans:</strong> Maintain the ability to revert to human-only processing or a prior model version quickly if a vendor update degrades performance in production.</li>
+                </ul>
+
+                <div class="info-box example">
+                    <div class="info-box-title">Case in Point</div>
+                    <p>An agency using a vendor's document-classification API notices a shift in classification patterns following an unannounced vendor model update. Because the agency maintained its own regression test set, it detected the shift within days rather than months, and had contractual grounds (from Module 4.1's change-notification clause) to require the vendor to investigate and remediate.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why is a vendor\'s "silent" model update a governance risk even if the agency made no changes of its own?',
+                    options: [
+                        'It isn\'t a risk - vendors always test changes thoroughly',
+                        'The underlying system behavior can change without the deploying agency\'s knowledge or re-validation, potentially degrading performance or fairness undetected',
+                        'Vendor updates only ever improve performance',
+                        'This scenario cannot occur with cloud-based AI services'
+                    ],
+                    correct: 1,
+                    explanation: 'When a vendor updates an underlying hosted model, the deploying agency\'s system behavior can shift without any change on the agency\'s side, making detection dependent on the agency\'s own monitoring and regression testing rather than an internal change log.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'What is the value of maintaining a fixed, organization-specific regression test set for an AI system?',
+                    sampleAnswer: 'A fixed regression test set - representative cases with known correct outcomes specific to your actual use case - lets you quickly detect behavioral changes in a model regardless of what triggered them, whether an internal retrain, a threshold change, or an unannounced vendor-side update. Without it, an organization has to rely on vendor assurances or wait for problems to surface through complaints or monitoring alerts, both of which are slower and less reliable than proactively re-running a known test set after any change.'
+                }
+            ]
+        }
+    },
+    'course-4-6': {
+        title: 'Operations Assessment & Certification',
+        sections: [
+            {
+                title: 'Course Summary',
+                content: `<p>This operations module has equipped you with practical guidance for governing AI systems throughout deployment, not just before launch:</p>
+
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Procurement:</strong> Contractual protections (documentation, audit, and change-notification rights) negotiated before signing determine how much governance visibility an agency retains for the life of a vendor AI system.</li>
+                    <li><strong>Human Oversight:</strong> Effective oversight must be actively designed to counter automation bias, not simply inserted as a rubber-stamp approval step.</li>
+                    <li><strong>Monitoring:</strong> Deployed AI requires continuous monitoring across technical performance, fairness, and override-rate signals - a one-time launch validation is not sufficient.</li>
+                    <li><strong>Incident Response:</strong> AI incidents extend well beyond security breaches to include discriminatory outcomes and unexpected behavior, often with no malicious actor involved, and may trigger regulatory reporting duties.</li>
+                    <li><strong>Change Management:</strong> AI changes - including vendor-initiated ones outside an agency's direct control - require proportional re-validation, not just traditional software release testing.</li>
+                </ul>
+
+                <h3>Next Steps</h3>
+                <p>With this operational foundation, you're ready to proceed to:</p>
+                <ul>
+                    <li><strong>Course 5:</strong> Strategic Leadership & Governance - building the organizational structures that sustain these operational practices over time</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'An agency\'s AI vendor updates their underlying model without prior notice, and the agency only discovers the change through its own regression testing weeks later. What procurement-stage protection would have most directly prevented this gap?',
+                    options: [
+                        'A lower contract price',
+                        'A contractual change-notification requirement giving advance notice of material model updates',
+                        'A longer contract term',
+                        'A requirement that the vendor use open-source software'
+                    ],
+                    correct: 1,
+                    explanation: 'Change-notification clauses, negotiated during procurement, are specifically designed to close this gap by requiring vendors to notify the agency before material model changes reach production.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'A steadily increasing rate of human reviewers overriding an AI system\'s recommendations for a specific case type is best understood as:',
+                    options: [
+                        'Irrelevant operational noise',
+                        'A useful early monitoring signal that often reveals declining model quality before formal accuracy metrics do',
+                        'Proof that human reviewers are performing poorly',
+                        'A sign that human oversight should be removed'
+                    ],
+                    correct: 1,
+                    explanation: 'Rising override rates are a valuable, underused monitoring signal that frequently surfaces model degradation earlier than periodic formal accuracy reporting would.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your agency discovers that a fraud-detection model has been producing biased outcomes against a specific demographic group for the past two months, caused by an undetected retraining issue. Walk through how the incident response, remediation, and change management practices from this course would apply.',
+                    sampleAnswer: 'Incident response: treat this as an AI incident even though no malicious actor was involved - detect scope (how many decisions over the two months), contain (pause or revert the model to a prior validated version), and assess severity (what harm resulted for the affected group). Remediation: identify everyone plausibly affected, not just those who complained, correct wrongly-flagged cases retroactively, and proactively notify affected individuals; assess whether this meets any regulatory incident-reporting threshold. Change management: this traces back to an undetected retraining change - going forward, retraining should trigger mandatory full fairness re-validation before deployment (per the change management framework), and monitoring should include subgroup performance tracking so this kind of drift is caught within days rather than months next time.'
                 }
             ]
         }
