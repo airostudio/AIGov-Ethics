@@ -1,0 +1,13 @@
+{
+  "name": "ai-governance-ethics-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Governance & Ethics Academy - LMS with Stripe checkout and Supabase backend",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "stripe": "^17.4.0"
+  }
+}

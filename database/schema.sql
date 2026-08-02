@@ -56,9 +56,23 @@ CREATE POLICY "Users can insert own profile" ON public.profiles
     FOR INSERT WITH CHECK (auth.uid() = id);
 
 -- Trigger to create profile on user signup
+-- Also backfills any tier entitlement from a completed purchase made before signup
+-- (see api/stripe-webhook.js, which cannot create a profiles row directly since it
+-- has no auth.users id to satisfy the primary key/foreign key until the account exists).
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+    prior_purchase RECORD;
+    had_prior_purchase BOOLEAN;
 BEGIN
+    SELECT tier_id, tier_level, tier_name, stripe_payment_intent, amount, created_at
+    INTO prior_purchase
+    FROM public.purchases
+    WHERE email = NEW.email AND status = 'completed'
+    ORDER BY created_at DESC
+    LIMIT 1;
+    had_prior_purchase := FOUND;
+
     INSERT INTO public.profiles (
         id,
         email,
@@ -67,7 +81,13 @@ BEGIN
         role,
         organization,
         phone,
-        newsletter_opt_in
+        newsletter_opt_in,
+        tier_id,
+        tier_level,
+        tier_name,
+        payment_id,
+        payment_amount,
+        payment_date
     )
     VALUES (
         NEW.id,
@@ -77,8 +97,20 @@ BEGIN
         NEW.raw_user_meta_data->>'role',
         NEW.raw_user_meta_data->>'organization',
         NEW.raw_user_meta_data->>'phone',
-        COALESCE((NEW.raw_user_meta_data->>'newsletter_opt_in')::boolean, false)
+        COALESCE((NEW.raw_user_meta_data->>'newsletter_opt_in')::boolean, false),
+        prior_purchase.tier_id,
+        COALESCE(prior_purchase.tier_level, 0),
+        prior_purchase.tier_name,
+        prior_purchase.stripe_payment_intent,
+        prior_purchase.amount,
+        prior_purchase.created_at
     );
+
+    -- Link the purchase record(s) to the newly created account
+    IF had_prior_purchase THEN
+        UPDATE public.purchases SET user_id = NEW.id WHERE email = NEW.email AND user_id IS NULL;
+    END IF;
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -170,8 +202,19 @@ ALTER TABLE public.certificates ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own certificates" ON public.certificates
     FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY "Public can verify certificates" ON public.certificates
-    FOR SELECT USING (true);
+-- Certificate verification for the public is provided via verify_certificate() below,
+-- a SECURITY DEFINER function that returns only non-sensitive fields for a single
+-- certificate number. A blanket "SELECT USING (true)" policy here would let anyone
+-- with the anon key enumerate every issued certificate (including user_id) via the
+-- Supabase REST API, so it is intentionally NOT added as a table-wide policy.
+CREATE OR REPLACE FUNCTION public.verify_certificate(cert_number TEXT)
+RETURNS TABLE (course_id TEXT, certificate_number TEXT, issued_at TIMESTAMPTZ) AS $$
+    SELECT course_id, certificate_number, issued_at
+    FROM public.certificates
+    WHERE certificate_number = cert_number;
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+GRANT EXECUTE ON FUNCTION public.verify_certificate(TEXT) TO anon, authenticated;
 
 -- ============================================
 -- BOOKMARKS / NOTES
@@ -233,7 +276,10 @@ CREATE POLICY "Users can view own feedback" ON public.feedback
 CREATE TABLE IF NOT EXISTS public.analytics_events (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-    event_type TEXT NOT NULL,
+    event_type TEXT NOT NULL CHECK (event_type IN (
+        'page_view', 'course_started', 'course_completed', 'lesson_viewed',
+        'assessment_started', 'assessment_completed', 'certificate_issued', 'signup', 'purchase'
+    )),
     event_data JSONB DEFAULT '{}'::jsonb,
     page_path TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW()

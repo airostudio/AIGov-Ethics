@@ -3,6 +3,12 @@
  * Configuration File
  *
  * Replace with your actual Supabase credentials
+ *
+ * Note: the Supabase URL and anon/publishable key below are meant to be public -
+ * they are the intended client access path and are safe to commit as long as every
+ * table's Row Level Security policies (see database/schema.sql) are deployed to this
+ * exact project. Never put the Supabase service role key or Stripe secret key here;
+ * those belong only in server-side environment variables (see api/*.js).
  */
 
 const CONFIG = {

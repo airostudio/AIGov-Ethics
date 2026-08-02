@@ -22,7 +22,6 @@ const PRICING_TIERS = {
                 'Self-paced learning',
                 '12-month access'
             ],
-            stripePriceId: 'price_foundation', // Set via Stripe Dashboard
             popular: false
         },
         {
@@ -40,7 +39,6 @@ const PRICING_TIERS = {
                 'Progress tracking',
                 '18-month access'
             ],
-            stripePriceId: 'price_intermediate',
             popular: false
         },
         {
@@ -58,7 +56,6 @@ const PRICING_TIERS = {
                 'NIST AI RMF frameworks',
                 '24-month access'
             ],
-            stripePriceId: 'price_advanced',
             popular: true
         },
         {
@@ -76,7 +73,6 @@ const PRICING_TIERS = {
                 'Incident response planning',
                 'Lifetime access'
             ],
-            stripePriceId: 'price_professional',
             popular: false
         },
         {
@@ -95,7 +91,6 @@ const PRICING_TIERS = {
                 'Priority support',
                 'Lifetime access'
             ],
-            stripePriceId: 'price_executive',
             popular: false
         }
     ],
@@ -137,18 +132,34 @@ const PRICING_TIERS = {
 
 // Stripe checkout configuration
 const STRIPE_CONFIG = {
-    // These will be populated from environment variables via Vercel
-    publishableKey: null, // Set from STRIPE_PUBLISHABLE_KEY env var
+    // Populated at runtime from /api/config (backed by the STRIPE_PUBLISHABLE_KEY env var)
+    publishableKey: null,
+    stripe: null,
+    initPromise: null,
 
-    // Initialize Stripe
+    // Fetch the publishable key from the server and initialize Stripe.js.
+    // Safe to call multiple times - subsequent calls reuse the same in-flight/completed request.
     async init() {
-        // In production, this would be injected by the server
-        // For now, we check if it's available globally
-        if (typeof Stripe !== 'undefined' && this.publishableKey) {
-            this.stripe = Stripe(this.publishableKey);
-            return true;
-        }
-        return false;
+        if (this.initPromise) return this.initPromise;
+
+        this.initPromise = (async () => {
+            try {
+                const response = await fetch('/api/config');
+                if (!response.ok) return false;
+                const { stripePublishableKey } = await response.json();
+                if (!stripePublishableKey || typeof Stripe === 'undefined') {
+                    return false;
+                }
+                this.publishableKey = stripePublishableKey;
+                this.stripe = Stripe(this.publishableKey);
+                return true;
+            } catch (error) {
+                console.error('Stripe initialization failed:', error);
+                return false;
+            }
+        })();
+
+        return this.initPromise;
     },
 
     // Create checkout session (calls backend API)

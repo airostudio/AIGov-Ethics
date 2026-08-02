@@ -15,9 +15,13 @@ const appState = {
     isSupabaseConnected: false
 };
 
-// Fallback demoStorage if config.js didn't load
+// Fallback demoStorage if config.js didn't load.
+// Assigned via window (not `var`) because config.js declares demoStorage with `const`,
+// and top-level `const`/`let` bindings from an earlier <script> share the same global
+// lexical scope as later scripts - redeclaring the same name with `var` here would throw
+// "Identifier 'demoStorage' has already been declared" and abort this entire script.
 if (typeof demoStorage === 'undefined') {
-    var demoStorage = {
+    window.demoStorage = {
         user: null,
         progress: {},
         assessments: {},
@@ -48,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check for payment success/cancel from Stripe redirect
         checkPaymentSuccess();
 
+        // Fetch the Stripe publishable key and initialize Stripe.js, if configured server-side
+        if (typeof STRIPE_CONFIG !== 'undefined') {
+            STRIPE_CONFIG.init();
+        }
+
         // Setup event listeners
         setupNavigation();
         setupMobileMenu();
@@ -77,7 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
             navigateTo(initialPage, params);
         }
 
-        console.log('AI Governance & Ethics Academy initialized');
+        if (typeof CONFIG !== 'undefined' && CONFIG.features?.debugMode) {
+            console.log('AI Governance & Ethics Academy initialized');
+        }
     } catch (error) {
         console.error('Initialization error:', error);
         // Attempt minimal setup for navigation
@@ -224,6 +235,23 @@ function setupHeroSlideshow() {
     const dots = document.querySelectorAll('.hero-dot');
 
     if (slides.length === 0) return;
+
+    // Defer loading the non-visible slide images until after first paint,
+    // so the initial page load only fetches the one image actually shown.
+    const applyDeferredBackgrounds = () => {
+        slides.forEach(slide => {
+            const bg = slide.getAttribute('data-bg');
+            if (bg) {
+                slide.style.backgroundImage = `url('${bg}')`;
+                slide.removeAttribute('data-bg');
+            }
+        });
+    };
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(applyDeferredBackgrounds, { timeout: 2000 });
+    } else {
+        setTimeout(applyDeferredBackgrounds, 1000);
+    }
 
     let currentSlide = 0;
     let interval = null;
@@ -1992,12 +2020,19 @@ async function purchaseTier(tierId) {
                          appState.user.user_metadata?.email ||
                          '';
 
+        // Make sure Stripe has had a chance to initialize (idempotent - safe if already done)
+        if (typeof STRIPE_CONFIG !== 'undefined') {
+            await STRIPE_CONFIG.init();
+        }
+
         // Try Stripe checkout
         if (typeof STRIPE_CONFIG !== 'undefined' && STRIPE_CONFIG.stripe) {
             await STRIPE_CONFIG.redirectToCheckout(tierId, userEmail);
         } else {
-            // Demo mode - simulate purchase
-            console.log('Demo mode: Simulating purchase for', tierId);
+            // Stripe isn't configured server-side (no publishable key available) - demo mode
+            if (typeof CONFIG !== 'undefined' && CONFIG.features?.debugMode) {
+                console.log('Demo mode: Simulating purchase for', tierId);
+            }
             await simulatePurchase(tierId);
         }
     } catch (error) {

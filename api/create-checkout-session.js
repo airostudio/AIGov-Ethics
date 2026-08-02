@@ -40,8 +40,8 @@ module.exports = async (req, res) => {
     ].filter(Boolean);
 
     const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    if (origin && (allowedOrigins.includes(origin) || (process.env.NODE_ENV !== 'production' && /^https?:\/\/localhost(:\d+)?$/.test(origin)))) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
     }
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -69,7 +69,9 @@ module.exports = async (req, res) => {
         }
 
         // Validate URLs if provided (must be from same origin)
-        const validUrlPattern = /^https?:\/\/(ai-gov-ethics.*\.vercel\.app|localhost)/;
+        const validUrlPattern = process.env.NODE_ENV === 'production'
+            ? /^https:\/\/ai-gov-ethics[a-z0-9-]*\.vercel\.app\//
+            : /^https?:\/\/(ai-gov-ethics[a-z0-9-]*\.vercel\.app|localhost)/;
         if (successUrl && !validUrlPattern.test(successUrl)) {
             return res.status(400).json({ error: 'Invalid success URL' });
         }

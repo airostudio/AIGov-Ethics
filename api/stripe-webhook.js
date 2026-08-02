@@ -31,7 +31,10 @@ module.exports = async (req, res) => {
     let event;
 
     try {
-        // Verify webhook signature
+        // Verify webhook signature. This MUST read the raw, unparsed request body -
+        // do not access req.body anywhere before this, as Vercel's Node runtime lazily
+        // parses (and consumes) the stream the first time req.body is touched, which
+        // would leave nothing here for getRawBody() to read and break signature verification.
         const rawBody = await getRawBody(req);
         event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
     } catch (err) {
@@ -99,19 +102,13 @@ async function handleSuccessfulPayment(session) {
                 throw updateError;
             }
         } else {
-            // Create new profile (user will need to sign up to access)
-            const { error: insertError } = await supabase
-                .from('profiles')
-                .insert({
-                    email: userEmail,
-                    ...tierData,
-                    created_at: now
-                });
-
-            if (insertError) {
-                console.error('Error creating profile:', insertError);
-                throw insertError;
-            }
+            // No account exists yet for this email. profiles.id is the Supabase auth
+            // user's UUID with no default, so we cannot create a row here - it can only
+            // be created once the customer signs up. The purchases insert below is the
+            // durable record of this entitlement; the handle_new_user() trigger in
+            // schema.sql looks up purchases by email and applies the tier automatically
+            // when the account is created.
+            console.log(`No existing account for ${userEmail} - entitlement will be applied on signup via purchases record`);
         }
 
         // Log the purchase

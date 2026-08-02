@@ -2,7 +2,7 @@
  * AI Governance & Ethics Academy
  * Comprehensive Course Data
  *
- * 5 Main Courses with 5-6 Sub-Courses Each
+ * 5 Main Courses with 6 Sub-Courses Each (30 total)
  * Designed for Government IT Professionals and Line Managers
  */
 
@@ -1266,7 +1266,7 @@ const COURSE_DATA = {
             level: 'Intermediate-Advanced',
             description: 'Comprehensive coverage of AI regulations worldwide, compliance frameworks, and risk management strategies for government AI deployments.',
             duration: '15-18 hours',
-            lessons: 42,
+            lessons: 38,
             icon: 'regulatory',
             color: '#7c3aed',
             objectives: [
@@ -1339,7 +1339,7 @@ const COURSE_DATA = {
             level: 'Advanced',
             description: 'Hands-on guidance for implementing AI governance throughout the system lifecycle, from procurement to retirement.',
             duration: '12-15 hours',
-            lessons: 38,
+            lessons: 35,
             icon: 'implementation',
             color: '#ea580c',
             objectives: [

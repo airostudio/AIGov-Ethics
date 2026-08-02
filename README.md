@@ -4,7 +4,7 @@ A comprehensive, professional learning management platform for AI governance and
 
 ## Overview
 
-This platform provides **5 main courses** with **28 sub-courses** covering everything from foundational AI concepts to strategic leadership in AI governance. The courseware is designed to be:
+This platform provides **5 main courses** with **30 sub-courses** covering everything from foundational AI concepts to strategic leadership in AI governance, plus two additional standalone courses derived directly from a published AI governance and model risk management text. The courseware is designed to be:
 
 - **Comprehensive** - Covering the full spectrum from introduction to professional level
 - **Factual** - Based on authoritative sources (EU AI Act, NIST AI RMF, OECD guidelines)
@@ -138,8 +138,14 @@ AIGov-Ethics/
 ├── database/
 │   └── schema.sql         # Supabase database schema
 ├── assets/
-│   ├── icons/             # SVG icons
-│   └── illustrations/     # SVG illustrations
+│   ├── illustrations/     # SVG illustrations
+│   └── images/hero/       # Hero slideshow photography
+├── book-courses.html      # Standalone viewer for the book-based courses
+├── js/
+│   ├── book-course1-data.js  # Principles of AI Governance (13 chapters)
+│   └── book-course2-data.js  # Model Risk Management (10 chapters)
+├── api/                   # Vercel serverless functions (Stripe checkout/webhook, runtime config)
+├── package.json           # Node dependencies for the api/ functions
 └── README.md              # This file
 ```
 
