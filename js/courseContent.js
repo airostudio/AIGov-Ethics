@@ -259,6 +259,321 @@ const COURSE_2_CONTENT = {
                 }
             ]
         }
+    },
+    'course-2-3': {
+        title: 'Explainability & Interpretability',
+        sections: [
+            {
+                title: 'Why Explainability Matters',
+                content: `<p>Explainability is the ability to describe, in terms a human can understand, why an AI system produced a particular output. It sits alongside but is distinct from interpretability - the degree to which a model's internal mechanics can be understood directly, without a separate explanation layer.</p>
+
+                <h3>The Legal and Ethical Drivers</h3>
+                <ul>
+                    <li><strong>GDPR Article 22:</strong> Individuals subject to solely automated decisions with legal or similarly significant effects have a right to "meaningful information about the logic involved."</li>
+                    <li><strong>EU AI Act Article 13:</strong> High-risk AI systems must be designed to allow deployers to interpret system output and use it appropriately, with instructions for use covering the system's characteristics and limitations.</li>
+                    <li><strong>Administrative law:</strong> Government decisions generally must be justified and open to challenge - a decision citizens cannot understand is one they cannot meaningfully appeal.</li>
+                </ul>
+
+                <h3>Interpretable vs. Explainable</h3>
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Approach</th><th>Description</th><th>Trade-off</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Intrinsically interpretable</strong></td><td>Simple models (linear/logistic regression, decision trees, rule lists) whose logic can be read directly</td><td>Easy to audit, often lower predictive accuracy on complex data</td></tr>
+                        <tr><td><strong>Post-hoc explainable</strong></td><td>Complex "black box" models (deep neural networks, gradient-boosted ensembles) paired with a separate explanation technique</td><td>Higher accuracy, but explanations are approximations of the model's true reasoning, not the reasoning itself</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">A Critical Caveat</div>
+                    <p>Post-hoc explanation techniques describe correlations the explanation method found, not necessarily the actual causal logic the model used. Two different explanation methods can plausibly disagree about the same prediction. Treat post-hoc explanations as useful evidence, not ground truth.</p>
+                </div>`
+            },
+            {
+                title: 'Explainability Techniques in Practice',
+                content: `<p>IT professionals overseeing AI systems should be familiar with the major families of explanation technique, even without implementing them personally.</p>
+
+                <h3>Feature Importance Methods</h3>
+                <ul>
+                    <li><strong>SHAP (SHapley Additive exPlanations):</strong> Assigns each input feature a contribution value for a specific prediction, grounded in cooperative game theory. Widely used because it provides both local (single-prediction) and global (whole-model) explanations.</li>
+                    <li><strong>LIME (Local Interpretable Model-agnostic Explanations):</strong> Approximates a complex model's behavior near a single prediction with a simple, interpretable local model.</li>
+                    <li><strong>Permutation importance:</strong> Measures how much a model's performance degrades when a feature's values are randomly shuffled, indicating how much the model relies on that feature overall.</li>
+                </ul>
+
+                <h3>Counterfactual Explanations</h3>
+                <p>Rather than describing why a decision was made, counterfactuals describe what would need to change for a different outcome: "Your application would have been approved if your reported income had been $4,000 higher." These are often the most useful explanation for an affected citizen, since they point directly to actionable next steps.</p>
+
+                <h3>Example-Based Explanations</h3>
+                <p>Showing similar past cases and their outcomes ("this application was treated similarly to these three prior cases") can build trust and aid review without requiring any technical explanation of the model itself.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Open-source libraries such as SHAP, LIME, and Google's What-If Tool implement these techniques and integrate with common ML frameworks, making explanation generation accessible without building custom tooling.</p>
+                </div>`
+            },
+            {
+                title: 'Matching Explanations to the Audience',
+                content: `<p>A single technical explanation rarely serves everyone who needs one. Effective explainability programs tailor the form of explanation to who is asking.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Audience</th><th>What They Need</th><th>Appropriate Format</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Affected citizen</td><td>Why did this happen to me, and what can I do about it?</td><td>Plain-language summary + counterfactual ("what would change the outcome")</td></tr>
+                        <tr><td>Case worker / reviewer</td><td>Enough detail to judge whether to override the recommendation</td><td>Top contributing factors with confidence level</td></tr>
+                        <tr><td>Auditor / regulator</td><td>Evidence the system behaves as documented and without prohibited bias</td><td>Full technical documentation, aggregate feature importance, subgroup performance</td></tr>
+                        <tr><td>Developer / data scientist</td><td>Debugging information to diagnose and fix issues</td><td>Detailed model internals, training data lineage, error analysis</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Governance Checkpoint</div>
+                    <p>Before deployment, confirm that every audience who will legitimately ask "why did the system decide this?" has an explanation format designed for them - not just whatever technical output the development team happened to produce for their own debugging purposes.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A citizen denied a benefit wants to know what they could do differently to be approved. Which explanation type directly answers this?',
+                    options: ['Global feature importance', 'Counterfactual explanation', 'Model architecture diagram', 'Permutation importance'],
+                    correct: 1,
+                    explanation: 'Counterfactual explanations describe what would need to change for a different outcome, directly answering "what could I do differently."'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Why should post-hoc explanations (like SHAP or LIME) be treated as evidence rather than ground truth?',
+                    options: [
+                        'They are always inaccurate',
+                        'They describe correlations the explanation method found, which may approximate but not equal the model\'s actual internal reasoning',
+                        'They only work for simple linear models',
+                        'They cannot be used for regulatory compliance'
+                    ],
+                    correct: 1,
+                    explanation: 'Post-hoc methods approximate a complex model\'s behavior; different methods can produce differing explanations for the same prediction, so they should be treated as useful evidence, not definitive proof of the model\'s reasoning.'
+                }
+            ]
+        }
+    },
+    'course-2-4': {
+        title: 'Privacy-Preserving AI',
+        sections: [
+            {
+                title: 'Privacy Risks Unique to AI Systems',
+                content: `<p>AI systems create privacy risks that go beyond traditional data storage and access concerns, because trained models can themselves leak information about the data used to train them.</p>
+
+                <h3>AI-Specific Privacy Risks</h3>
+                <ul>
+                    <li><strong>Membership inference:</strong> An attacker determines whether a specific individual's data was used to train a model, which can itself be sensitive (e.g., confirming someone was a patient in a specific treatment program).</li>
+                    <li><strong>Model inversion:</strong> An attacker reconstructs approximations of training data (such as a face associated with a name) by repeatedly querying a model.</li>
+                    <li><strong>Training data memorization:</strong> Large models can memorize and later reproduce verbatim snippets of training data, including personal information that was never meant to be disclosed.</li>
+                    <li><strong>Re-identification:</strong> Combining "anonymized" outputs with other available datasets can re-identify individuals thought to be protected by anonymization.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Anonymization Is Not Foolproof</div>
+                    <p>Removing direct identifiers (name, ID number) is often insufficient. Research has repeatedly shown that supposedly anonymized datasets can be re-identified by cross-referencing with other public data sources. Genuine privacy protection requires stronger techniques than simple field removal.</p>
+                </div>`
+            },
+            {
+                title: 'Privacy-Enhancing Technologies',
+                content: `<p>A growing toolkit of techniques allows AI systems to learn from data while formally limiting what can be inferred about any individual in that data.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Technique</th><th>How It Works</th><th>Government Use Case</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Differential privacy</strong></td><td>Adds calibrated statistical noise to data or model outputs, providing a mathematical guarantee limiting what can be learned about any single individual</td><td>Publishing aggregate census or statistical data</td></tr>
+                        <tr><td><strong>Federated learning</strong></td><td>Trains a shared model across decentralized devices or servers without the raw data ever leaving its source</td><td>Training models across hospitals or agencies without centralizing sensitive records</td></tr>
+                        <tr><td><strong>Synthetic data</strong></td><td>Generates artificial data that preserves the statistical properties of real data without corresponding to real individuals</td><td>Sharing realistic datasets with researchers or vendors for testing</td></tr>
+                        <tr><td><strong>Secure multi-party computation</strong></td><td>Multiple parties jointly compute a result over their combined data without any party seeing the others' raw inputs</td><td>Cross-agency fraud detection without full data sharing</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">No Silver Bullet</div>
+                    <p>Each technique involves trade-offs between privacy protection, model accuracy, and computational cost. Differential privacy's noise can reduce accuracy for smaller subgroups; federated learning adds engineering complexity. Select techniques based on the specific risk profile of the data and use case.</p>
+                </div>`
+            },
+            {
+                title: 'Privacy by Design in Government AI',
+                content: `<p>Beyond specific technologies, privacy-preserving AI requires embedding privacy considerations throughout the system lifecycle.</p>
+
+                <h3>Core Principles</h3>
+                <ul>
+                    <li><strong>Data minimization:</strong> Collect and retain only the data genuinely necessary for the stated purpose - not everything that might one day be useful.</li>
+                    <li><strong>Purpose limitation:</strong> Use data only for the purpose it was collected for; repurposing citizen data for a new AI application typically requires fresh legal basis and, often, a new Data Protection Impact Assessment (DPIA).</li>
+                    <li><strong>Storage limitation:</strong> Define and enforce retention periods; don't keep training data indefinitely "just in case."</li>
+                    <li><strong>Access control:</strong> Limit who can query models and access outputs, particularly for systems where model inversion or membership inference is a realistic risk.</li>
+                </ul>
+
+                <h3>Data Protection Impact Assessments (DPIAs)</h3>
+                <p>Most data protection regimes (including GDPR) require a DPIA before deploying AI systems that involve high-risk processing of personal data. A thorough DPIA for an AI system should document: the data used and its source, the privacy risks specific to the AI technique employed, mitigations applied, and residual risk accepted by an accountable owner.</p>
+
+                <div class="info-box example">
+                    <div class="info-box-title">Case in Point</div>
+                    <p>A revenue agency building a fraud-detection model should ask: does the training set include data from taxpayers who were never suspected of fraud, and if so, is that use within the original purpose for which their data was collected? Building the model may require a new legal basis and citizen notice, not just technical safeguards.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What privacy risk allows an attacker to determine whether a specific person\'s data was used to train a model?',
+                    options: ['Model inversion', 'Membership inference', 'Data minimization failure', 'Purpose limitation breach'],
+                    correct: 1,
+                    explanation: 'Membership inference attacks determine whether specific individuals\' data was part of a model\'s training set, which can itself reveal sensitive information.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Why is removing names and ID numbers from a dataset often insufficient to protect privacy?',
+                    sampleAnswer: 'Simple field removal does not prevent re-identification through cross-referencing with other available datasets - research has repeatedly shown that combinations of seemingly innocuous fields (like birth date, zip code, and gender) can uniquely identify individuals. Genuine protection requires stronger techniques like differential privacy that provide formal mathematical guarantees rather than relying on the absence of obvious identifiers.'
+                }
+            ]
+        }
+    },
+    'course-2-5': {
+        title: 'Testing & Validation for AI',
+        sections: [
+            {
+                title: 'Why Traditional Software Testing Falls Short',
+                content: `<p>Conventional software testing verifies that code behaves according to a fixed specification: given input X, the program should produce output Y. AI systems break this model in several important ways.</p>
+
+                <h3>What Makes AI Testing Different</h3>
+                <ul>
+                    <li><strong>No fixed specification:</strong> A model's behavior is learned from data, not written as explicit rules - there is no single "correct" line of code to inspect for a given decision.</li>
+                    <li><strong>Statistical, not deterministic, correctness:</strong> A model that is 92% accurate is not "broken" for the 8% of cases it gets wrong - the question is whether errors are acceptable, evenly distributed, and safely handled.</li>
+                    <li><strong>Distributional dependence:</strong> A model tested as accurate on historical data can degrade sharply when real-world conditions shift (model drift), even with no code changes at all.</li>
+                    <li><strong>Emergent failure modes:</strong> Complex models can fail in ways developers never anticipated or explicitly tested for, especially on inputs unlike anything in the training data.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Reframing the Question</div>
+                    <p>Traditional testing asks "does the code do what we specified?" AI testing must ask a broader question: "does the system behave acceptably across the full range of situations it will actually encounter, including ones we didn't anticipate?"</p>
+                </div>`
+            },
+            {
+                title: 'A Multi-Layered Testing Framework',
+                content: `<p>Comprehensive AI testing combines several complementary layers, each catching different classes of problems.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Testing Layer</th><th>Purpose</th><th>Example</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Functional testing</strong></td><td>Confirms overall accuracy/performance meets targets on held-out data</td><td>Overall accuracy, precision, recall on a test set</td></tr>
+                        <tr><td><strong>Subgroup performance testing</strong></td><td>Confirms performance is consistent across demographic and use-case subgroups</td><td>Comparing false-negative rates across age groups</td></tr>
+                        <tr><td><strong>Robustness / adversarial testing</strong></td><td>Confirms the system resists deliberate attempts to manipulate its output</td><td>Testing whether small, deliberate input changes flip a decision</td></tr>
+                        <tr><td><strong>Edge-case / scenario testing</strong></td><td>Confirms sensible behavior on rare or unusual inputs</td><td>Testing behavior on incomplete applications or unusual family structures</td></tr>
+                        <tr><td><strong>Red-teaming</strong></td><td>A dedicated team actively tries to find failure modes before deployment</td><td>Attempting to trick a chatbot into giving prohibited advice</td></tr>
+                        <tr><td><strong>Integration testing</strong></td><td>Confirms the model behaves correctly within the full surrounding system</td><td>Testing that human review triggers correctly for flagged cases</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Budget testing effort proportionally to risk. A high-stakes system affecting benefits eligibility warrants all six layers; a low-stakes internal tool may only need functional and integration testing.</p>
+                </div>`
+            },
+            {
+                title: 'Validation Doesn\'t Stop at Deployment',
+                content: `<p>Pre-deployment testing establishes a baseline, but AI systems require ongoing validation because their operating environment keeps changing after launch.</p>
+
+                <h3>Post-Deployment Validation Practices</h3>
+                <ul>
+                    <li><strong>Drift monitoring:</strong> Continuously compare the statistical properties of live input data against training data to detect when the world has changed enough to affect model accuracy.</li>
+                    <li><strong>Shadow testing:</strong> Run a new or updated model alongside the production model on live data without acting on its outputs, comparing results before fully switching over.</li>
+                    <li><strong>Canary releases:</strong> Roll out model updates to a small percentage of cases first, monitoring closely before expanding to full production traffic.</li>
+                    <li><strong>Periodic re-validation:</strong> Schedule regular reassessment of fairness and accuracy metrics, not just a one-time pre-launch check, since real-world populations and behaviors shift over time.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Common Pitfall</div>
+                    <p>Treating the pre-deployment test report as a permanent certificate of correctness is one of the most common AI governance failures. A model validated as fair and accurate at launch can become biased or inaccurate within months as populations, behaviors, or upstream data sources change - ongoing validation is not optional.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Why is traditional software testing insufficient on its own for AI systems?',
+                    options: [
+                        'AI systems never contain bugs',
+                        'AI behavior is learned from data and can degrade due to real-world distributional shifts, not just code defects',
+                        'AI systems cannot be tested at all',
+                        'Traditional testing is too expensive for AI'
+                    ],
+                    correct: 1,
+                    explanation: 'AI systems learn behavior from data rather than following a fixed specification, and can degrade due to model drift even without any code changes - something traditional testing approaches don\'t account for.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'What is "shadow testing" in the context of AI system validation?',
+                    options: [
+                        'Testing a model in a completely dark room',
+                        'Running a new model alongside the production model on live data without acting on its outputs, to compare results before switching over',
+                        'Testing only with synthetic data',
+                        'A form of adversarial attack on the model'
+                    ],
+                    correct: 1,
+                    explanation: 'Shadow testing runs a candidate model in parallel with the live production model, comparing outputs on real data without letting the candidate model\'s outputs affect any actual decisions, reducing deployment risk.'
+                }
+            ]
+        }
+    },
+    'course-2-6': {
+        title: 'Technical Assessment & Certification',
+        sections: [
+            {
+                title: 'Course Summary',
+                content: `<p>This technical module has equipped you with the practical knowledge IT professionals need to evaluate and oversee AI systems from an ethics and safety perspective:</p>
+
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>Algorithmic Bias:</strong> Bias enters AI systems through historical, representation, measurement, aggregation, evaluation, and deployment pathways - and requires deliberate detection, not just good intentions.</li>
+                    <li><strong>Fairness Metrics:</strong> Different mathematical fairness definitions (demographic parity, equal opportunity, equalized odds, predictive parity) can conflict, requiring deliberate, documented choices based on context.</li>
+                    <li><strong>Explainability:</strong> Different audiences need different types of explanation - a technically accurate SHAP plot means little to an affected citizen who needs a plain-language counterfactual.</li>
+                    <li><strong>Privacy-Preserving AI:</strong> AI introduces privacy risks beyond traditional data storage, including membership inference and model inversion, requiring purpose-built privacy-enhancing technologies.</li>
+                    <li><strong>Testing & Validation:</strong> AI systems require multi-layered testing (functional, subgroup, robustness, edge-case, red-team) and continuous post-deployment validation, not a one-time pre-launch check.</li>
+                </ul>
+
+                <h3>Next Steps</h3>
+                <p>With this technical foundation, you're ready to proceed to:</p>
+                <ul>
+                    <li><strong>Course 3:</strong> Regulatory Compliance & Risk Management - how these technical practices map to specific legal requirements</li>
+                    <li><strong>Course 4:</strong> AI Implementation & Operations - operationalizing these practices throughout the system lifecycle</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'A model shows a 20% approval rate for both men and women, satisfying demographic parity. However, closer analysis shows the model approves genuinely qualified women at a much lower rate than genuinely qualified men. Which metric would have revealed this problem?',
+                    options: ['Demographic parity', 'Equal opportunity (true positive rate parity)', 'Overall accuracy', 'Total approval count'],
+                    correct: 1,
+                    explanation: 'Equal opportunity specifically checks whether true positive rates (qualified individuals correctly approved) are equal across groups - a check demographic parity alone does not provide.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Which technique allows a model to be trained across multiple hospitals\' data without the raw patient records ever leaving each hospital?',
+                    options: ['SHAP', 'Federated learning', 'LIME', 'Permutation importance'],
+                    correct: 1,
+                    explanation: 'Federated learning trains a shared model across decentralized data sources without centralizing the raw data, which is why it is well suited to sensitive, siloed government and healthcare data.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your agency\'s fraud-detection model passed all pre-deployment fairness and accuracy tests six months ago. A colleague asks why you still recommend an ongoing monitoring budget. What would you tell them?',
+                    sampleAnswer: 'Pre-deployment testing only certifies performance against conditions that existed at launch. Real-world populations, behaviors, and data sources shift over time (model drift), which can silently degrade accuracy or introduce new fairness problems even without any code changes. Ongoing monitoring - drift detection, periodic fairness re-testing, and tracking override patterns - is the only way to catch this degradation before it causes harm, rather than discovering it only after a complaint or audit.'
+                }
+            ]
+        }
     }
 };
 
@@ -275,9 +590,15 @@ const COURSE_3_CONTENT = {
                 <ul>
                     <li><strong>August 2024:</strong> Entry into force</li>
                     <li><strong>February 2025:</strong> Banned AI practices prohibited</li>
-                    <li><strong>August 2025:</strong> GPAI rules and governance apply</li>
-                    <li><strong>August 2026:</strong> Full application for high-risk systems</li>
+                    <li><strong>August 2025:</strong> GPAI model obligations and governance rules apply</li>
+                    <li><strong>December 2027:</strong> Full application for Annex III high-risk systems (postponed from the original August 2026 date - see update below)</li>
+                    <li><strong>August 2028:</strong> Obligations apply to high-risk AI embedded in regulated products (Annex I)</li>
                 </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">2026 Update: The "Digital Omnibus" Delay</div>
+                    <p>In November 2025 the European Commission proposed a simplification package (the "Digital Omnibus on AI") in response to industry concerns about implementation readiness. Parliament and Council reached agreement in mid-2026, formally postponing the high-risk system obligations that were originally due to apply in August 2026 to <strong>December 2, 2027</strong> (with embedded high-risk systems under Annex I pushed to August 2028). As of today, only the prohibited-practices ban, the GPAI rules, and Article 50 transparency duties (such as AI-generated content labeling) are actually in force - the detailed conformity assessment, technical documentation, and logging requirements for high-risk systems described below are not yet legally required, though agencies should still treat them as the target state to build toward.</p>
+                </div>
 
                 <div class="info-box important">
                     <div class="info-box-title">Scope</div>
@@ -434,6 +755,406 @@ const COURSE_3_CONTENT = {
                     ],
                     correct: 1,
                     explanation: 'Social scoring by public authorities is classified as unacceptable risk and is prohibited under the EU AI Act.'
+                }
+            ]
+        }
+    },
+    'course-3-2': {
+        title: 'NIST AI Risk Management Framework',
+        sections: [
+            {
+                title: 'Overview of the NIST AI RMF',
+                content: `<p>Published in January 2023 by the U.S. National Institute of Standards and Technology, the AI Risk Management Framework (AI RMF 1.0) is a voluntary framework for managing risks throughout the AI lifecycle. Unlike the EU AI Act, it carries no direct legal force - but it has become one of the most widely referenced AI governance frameworks globally, including by organizations outside the United States, because it is detailed, practical, and framework-agnostic.</p>
+
+                <h3>Why It Matters Even Where It Isn't Mandatory</h3>
+                <ul>
+                    <li>Many procurement contracts and vendor questionnaires now reference NIST AI RMF alignment as an evidence baseline.</li>
+                    <li>It maps cleanly onto other frameworks (ISO/IEC 42001, EU AI Act risk management requirements), making it a useful "Rosetta Stone" for organizations operating across jurisdictions.</li>
+                    <li>Its outcome-focused structure works for organizations at any AI maturity level, from first pilot to enterprise-wide deployment.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Trustworthy AI Characteristics</div>
+                    <p>The NIST AI RMF defines trustworthy AI as: valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed. These characteristics underpin every function of the framework.</p>
+                </div>`
+            },
+            {
+                title: 'The Four Core Functions',
+                content: `<p>The framework organizes AI risk management activities into four functions, intended to be applied continuously rather than sequentially.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Function</th><th>Purpose</th><th>Example Activities</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Govern</strong></td><td>Cultivate a culture of risk management and establish accountability structures</td><td>Policies, roles, risk tolerance statements, oversight committees</td></tr>
+                        <tr><td><strong>Map</strong></td><td>Establish context and identify risks specific to the AI system and its use case</td><td>Documenting intended purpose, stakeholders, and potential impacts before development</td></tr>
+                        <tr><td><strong>Measure</strong></td><td>Analyze and assess identified risks using appropriate methods</td><td>Fairness testing, robustness testing, performance benchmarking</td></tr>
+                        <tr><td><strong>Manage</strong></td><td>Prioritize and act on risks based on their measured impact</td><td>Mitigation planning, monitoring, incident response, resource allocation</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Govern</strong> is deliberately positioned as cross-cutting - it underpins and connects the other three functions rather than being a one-time first step.</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Organizations often adopt Map-Measure-Manage as the technical risk assessment cycle for individual AI systems, while Govern operates at the organizational level, setting the policies and risk appetite that the other three functions operate within.</p>
+                </div>`
+            },
+            {
+                title: 'Beyond the Core: Profiles for Specific Contexts',
+                content: `<p>NIST has extended the core AI RMF with "profiles" that apply the framework's functions to specific technologies and sectors, since generic guidance often needs translation for particular risk contexts.</p>
+
+                <h3>The Generative AI Profile (NIST AI 600-1)</h3>
+                <p>Published in mid-2024, this profile addresses risks specific to generative AI systems: confabulation ("hallucination"), data privacy in large training corpora, dangerous or violent content generation, intellectual property concerns, and the risk of over-reliance on generated content without verification.</p>
+
+                <h3>Emerging Profiles</h3>
+                <ul>
+                    <li><strong>Cyber AI Profile (draft, NIST IR 8596):</strong> Addresses risks at the intersection of AI and cybersecurity, including AI-enabled attacks and securing AI systems themselves against compromise.</li>
+                    <li><strong>Critical infrastructure profile work:</strong> Concept-stage guidance applying AI RMF functions to the heightened stakes of AI use in critical infrastructure sectors (energy, water, transportation).</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Stay Current</div>
+                    <p>NIST guidance in this area continues to evolve rapidly. Treat this section as a snapshot rather than an exhaustive or permanent list, and check nist.gov/itl/ai-risk-management-framework directly before citing a specific document in a compliance filing.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Which NIST AI RMF function is described as cross-cutting, underpinning the other three rather than being a one-time first step?',
+                    options: ['Map', 'Measure', 'Manage', 'Govern'],
+                    correct: 3,
+                    explanation: 'Govern establishes the culture, policies, and accountability structures that the Map, Measure, and Manage functions operate within on an ongoing basis.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Unlike the EU AI Act, the NIST AI RMF is:',
+                    options: [
+                        'Legally binding only in the United States',
+                        'A voluntary framework with no direct legal force, though widely referenced in procurement and other frameworks',
+                        'Mandatory for all AI systems sold internationally',
+                        'Only applicable to generative AI systems'
+                    ],
+                    correct: 1,
+                    explanation: 'The NIST AI RMF is voluntary and carries no direct legal force, but has become a widely referenced practical baseline, including in procurement requirements and cross-framework mapping.'
+                }
+            ]
+        }
+    },
+    'course-3-3': {
+        title: 'Data Protection & AI',
+        sections: [
+            {
+                title: 'GDPR and AI: Key Intersections',
+                content: `<p>The General Data Protection Regulation (GDPR) predates most AI-specific legislation but applies directly whenever an AI system processes personal data - which is true of the large majority of consequential government AI systems.</p>
+
+                <h3>Key GDPR Requirements for AI Systems</h3>
+                <ul>
+                    <li><strong>Lawful basis:</strong> Every use of personal data in training or operating an AI system needs an identified legal basis (such as consent, legal obligation, or public task) - "we already had the data" is not sufficient justification for a new AI use.</li>
+                    <li><strong>Article 22 - automated decision-making:</strong> Individuals have the right not to be subject to a decision based solely on automated processing that produces legal or similarly significant effects, subject to limited exceptions, and have a right to meaningful information about the logic involved plus the ability to contest the decision.</li>
+                    <li><strong>Data Protection Impact Assessments (DPIAs):</strong> Required before processing likely to result in high risk to individuals' rights - most consequential public-sector AI systems meet this threshold.</li>
+                    <li><strong>Data subject rights:</strong> Access, rectification, and erasure rights apply to data used in AI systems, which raises hard technical questions about how to honor an erasure request against an already-trained model.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">"Solely Automated" Is a Narrower Category Than It Sounds</div>
+                    <p>Article 22's strongest protections apply to decisions made <em>without meaningful human involvement</em>. A human reviewer who merely rubber-stamps an AI recommendation without genuine engagement may not satisfy the "meaningful human involvement" test - see the Human Oversight Design module in Course 4 for what genuine human review requires.</p>
+                </div>`
+            },
+            {
+                title: 'Applying Core Data Protection Principles to AI',
+                content: `<p>GDPR's foundational principles translate into specific engineering and governance obligations when applied to AI systems.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Principle</th><th>AI-Specific Application</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Purpose limitation</td><td>Data collected for one program (e.g., benefits administration) cannot be repurposed for a new AI use (e.g., fraud risk scoring) without a fresh legal basis</td></tr>
+                        <tr><td>Data minimization</td><td>Training sets should exclude fields not genuinely needed for the model's purpose, even if convenient to include "in case they're useful"</td></tr>
+                        <tr><td>Accuracy</td><td>Extends to the accuracy of the model's inferences about individuals, not just the underlying stored data</td></tr>
+                        <tr><td>Storage limitation</td><td>Training data and model artifacts need defined retention schedules, not indefinite retention</td></tr>
+                        <tr><td>Accountability</td><td>Organizations must be able to demonstrate compliance, not merely assert it - documentation is not optional</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Involve your data protection officer or privacy team at the design stage of an AI project, not just before launch. Retrofitting purpose limitation or data minimization into an already-trained model is far more costly than designing for it from the outset.</p>
+                </div>`
+            },
+            {
+                title: 'A Global Patchwork of Data Protection Regimes',
+                content: `<p>GDPR is the most detailed and influential data protection regime, but it is far from the only one relevant to AI governance. Organizations operating across jurisdictions must navigate an increasingly complex patchwork.</p>
+
+                <ul>
+                    <li><strong>Sector-specific US privacy law:</strong> The United States has no single federal equivalent to GDPR; instead, sector-specific laws (health data, financial data) and a growing set of state privacy and AI-specific statutes apply, covered in depth in the Global Regulatory Landscape module.</li>
+                    <li><strong>UK GDPR:</strong> A near-identical regime to EU GDPR following Brexit, with the UK Information Commissioner's Office issuing its own AI-specific guidance.</li>
+                    <li><strong>Emerging AI-specific data provisions:</strong> Newer AI laws increasingly embed their own data-related obligations (such as training data transparency requirements) alongside, rather than replacing, general data protection law.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">Don't Assume One Regime Covers Everything</div>
+                    <p>An AI system built for a single national deployment can still trigger foreign data protection obligations - for example, if it processes data belonging to residents of another jurisdiction, or if a cloud vendor stores or processes data across borders. Map data flows carefully rather than assuming your home jurisdiction's law is the only one that applies.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'Under GDPR Article 22, individuals have the right not to be subject to a decision based solely on automated processing when the decision:',
+                    options: [
+                        'Involves any use of AI whatsoever',
+                        'Produces legal or similarly significant effects on them, subject to limited exceptions',
+                        'Is made by a private company rather than government',
+                        'Costs the organization more than a specified threshold'
+                    ],
+                    correct: 1,
+                    explanation: 'Article 22 protections apply specifically to solely automated decisions with legal or similarly significant effects, such as benefit denials or employment decisions.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Why might a human reviewer who "rubber-stamps" AI recommendations fail to satisfy GDPR\'s requirement for meaningful human involvement?',
+                    sampleAnswer: 'Article 22\'s protections against solely automated decisions require genuine human engagement with the decision, not just nominal sign-off. A reviewer who habitually approves AI recommendations without independently evaluating the case - often due to automation bias or time pressure - is not exercising meaningful oversight, which means the decision remains effectively "solely automated" in substance even though a human technically clicked approve.'
+                }
+            ]
+        }
+    },
+    'course-3-4': {
+        title: 'Global Regulatory Landscape',
+        sections: [
+            {
+                title: 'The United States: A Shifting Federal Approach',
+                content: `<p>US federal AI policy has changed direction sharply and repeatedly since 2023, and government professionals working with US-based vendors, data, or operations need to track the current posture rather than relying on older reference material.</p>
+
+                <h3>The 2025 Reversal</h3>
+                <ul>
+                    <li>President Biden's Executive Order 14110 ("Safe, Secure, and Trustworthy AI," October 2023) was <strong>rescinded on January 20, 2025</strong>, on the first day of the new administration.</li>
+                    <li>It was replaced by "Removing Barriers to American Leadership in AI" (January 23, 2025), reorienting federal policy away from the earlier order's safety-testing and reporting requirements and toward reducing perceived regulatory barriers to AI development.</li>
+                    <li>A subsequent federal "AI Action Plan" and a December 2025 executive order (EO 14365) established a Department of Justice AI Litigation Task Force, active since January 2026, aimed at challenging state AI laws viewed as conflicting with the federal deregulatory approach.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">No Federal Preemption - Yet</div>
+                    <p>Despite the administration's stated goal of a more unified national approach, no statutory federal preemption of state AI laws exists as of this writing. A 2025 legislative attempt to attach a ten-year moratorium on state AI regulation to a broader federal bill was stripped out by a 99-1 Senate vote. State law remains the primary source of binding AI-specific obligations in the US.</p>
+                </div>`
+            },
+            {
+                title: 'US State Laws: An Active, Fragmented Patchwork',
+                content: `<p>With no comprehensive federal AI statute, US states have become the primary source of binding AI regulation - and the picture continues to shift.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>State</th><th>Law</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Colorado</td><td>Original Colorado AI Act</td><td>Repealed and replaced by SB 26-189 (signed ~May 2026); the replacement is narrower, dropping the original's risk-management and impact-assessment mandates, with an effective date of January 1, 2027</td></tr>
+                        <tr><td>Texas</td><td>Texas Responsible AI Governance Act (TRAIGA)</td><td>Took effect January 1, 2026; fully in force</td></tr>
+                        <tr><td>California</td><td>AB 2013 (training data transparency), SB 53 (frontier model safety and whistleblower protections)</td><td>Both effective January 1, 2026</td></tr>
+                        <tr><td>California</td><td>SB 942 (AI content transparency)</td><td>Effective date delayed to August 2, 2026 via AB 853</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box important">
+                    <div class="info-box-title">Practical Implication</div>
+                    <p>Organizations operating nationally in the US cannot rely on a single compliance posture. A system that is compliant in one state may face different disclosure, risk-assessment, or documentation obligations in another. Track each state where the system is deployed or where affected individuals reside, and expect this list to keep changing - state AI legislation is one of the fastest-moving areas of the field.</p>
+                </div>`
+            },
+            {
+                title: 'International Developments and the Rise of Agentic AI Governance',
+                content: `<p>Beyond the US and EU, the international AI governance landscape continues to evolve, and a genuinely new category of guidance has emerged: governance frameworks specifically for agentic AI.</p>
+
+                <h3>International Bodies and Summits</h3>
+                <ul>
+                    <li>The UK's AI Safety Institute was renamed the <strong>AI Security Institute</strong> in February 2025, with its focus shifting toward cyber and criminal misuse risks.</li>
+                    <li>The global AI summit series has progressed from Bletchley Park (2023) through Seoul (2024) to the Paris AI Action Summit (February 2025), which notably shifted tone from "safety" toward "action" and economic adoption, and most recently the India AI Impact Summit (2026), the first hosted in the Global South.</li>
+                    <li>China has continued tightening its domestic framework, including amendments to its Cybersecurity Law (effective January 2026) adding AI-specific security review and data localization requirements.</li>
+                </ul>
+
+                <h3>The New Frontier: Agentic AI Governance</h3>
+                <p>Autonomous AI "agents" that can plan multi-step tasks, use tools, and take actions with limited human intervention introduce risks that earlier frameworks - written when AI systems primarily produced a single output for a human to act on - do not fully address: unauthorized privilege escalation, unintended goal pursuit ("goal drift"), and resistance to shutdown or correction attempts.</p>
+                <ul>
+                    <li>Singapore's Infocomm Media Development Authority (IMDA) circulated a draft Model AI Governance Framework for Agentic AI in early 2026.</li>
+                    <li>UC Berkeley published an Agentic AI Risk-Management Standards Profile in early 2026, extending NIST-style risk management thinking to autonomous agent behaviors.</li>
+                </ul>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">A Genuine Content Gap</div>
+                    <p>If your organization is piloting or deploying agentic AI systems (autonomous coding agents, automated procurement or workflow agents, AI systems that can take real-world actions), do not assume your existing AI governance policies - likely written with single-output, human-in-the-loop systems in mind - adequately cover the distinct risks of autonomous, multi-step, tool-using AI behavior. Governance frameworks for this category are still maturing; err toward more conservative human oversight until your organization's own policies catch up.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What happened to Executive Order 14110 (the Biden administration\'s AI executive order)?',
+                    options: [
+                        'It remains in full force today',
+                        'It was rescinded on January 20, 2025, and replaced with a deregulation-focused order',
+                        'It was upheld by the Supreme Court',
+                        'It became a binding international treaty'
+                    ],
+                    correct: 1,
+                    explanation: 'EO 14110 was rescinded on the first day of the new administration (January 20, 2025) and replaced by "Removing Barriers to American Leadership in AI," reflecting a sharp policy reversal.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'Why do agentic AI systems (autonomous, multi-step, tool-using AI agents) pose governance challenges that many older frameworks don\'t fully address?',
+                    options: [
+                        'They are always less accurate than traditional AI systems',
+                        'They can take real-world actions with limited human intervention, raising risks like unauthorized privilege escalation and goal drift that single-output, human-reviewed systems don\'t present',
+                        'They only exist in theoretical research and are not deployed in practice',
+                        'They are fully covered by the original NIST AI RMF core functions with no modification needed'
+                    ],
+                    correct: 1,
+                    explanation: 'Agentic AI\'s capacity for autonomous multi-step action introduces risks - like unintended goal pursuit and resistance to correction - that frameworks designed around a human reviewing a single AI output do not fully anticipate, driving the emergence of dedicated agentic AI governance frameworks in 2026.'
+                }
+            ]
+        }
+    },
+    'course-3-5': {
+        title: 'Compliance Documentation & Auditing',
+        sections: [
+            {
+                title: 'Building a Compliance Documentation Trail',
+                content: `<p>Across every framework covered in this course, one requirement is universal: organizations must be able to <em>demonstrate</em> compliance, not merely assert it. Documentation is the evidence base that makes this possible.</p>
+
+                <h3>Core Documentation Artifacts</h3>
+                <ul>
+                    <li><strong>Technical documentation:</strong> System purpose, architecture, training data sources and characteristics, performance metrics, and known limitations.</li>
+                    <li><strong>Impact assessments:</strong> Data Protection Impact Assessments (DPIAs) and, where applicable, Fundamental Rights Impact Assessments (FRIAs) required for high-risk systems under some frameworks.</li>
+                    <li><strong>Model cards:</strong> Concise, standardized summaries of a model's intended use, performance across subgroups, and limitations - popularized by industry but increasingly expected as baseline practice.</li>
+                    <li><strong>Decision logs:</strong> Records of individual automated decisions sufficient to support later audit, appeal, or investigation.</li>
+                    <li><strong>Governance records:</strong> Risk assessments, review board approvals, and sign-offs demonstrating that governance processes described in policy were actually followed in practice.</li>
+                </ul>
+
+                <div class="info-box important">
+                    <div class="info-box-title">The Core Test</div>
+                    <p>A useful test for any compliance document: if a regulator, journalist, or court asked to see evidence that your AI system was properly governed, would this document actually answer their question - or does it just describe what your policy says should happen, without evidence it happened?</p>
+                </div>`
+            },
+            {
+                title: 'Internal and External Auditing',
+                content: `<p>Documentation is only valuable if it is periodically tested through structured auditing, not simply filed away.</p>
+
+                <table class="content-table">
+                    <thead>
+                        <tr><th>Audit Type</th><th>Who Performs It</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>First-party (internal)</td><td>Your own compliance/audit function</td><td>Frequent, low-cost, builds internal capability</td></tr>
+                        <tr><td>Second-party</td><td>A customer, partner, or contracting authority auditing a vendor</td><td>Verifies vendor claims before or during a contract</td></tr>
+                        <tr><td>Third-party (independent)</td><td>An accredited external auditor or certification body</td><td>Highest credibility; required for certain certifications and increasingly expected for high-risk systems</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Certification Against ISO/IEC 42001</h3>
+                <p>ISO/IEC 42001:2023, the AI Management System standard, can be certified by accredited bodies in the same manner as ISO 9001 (quality) or ISO 27001 (information security). Certification does not by itself guarantee legal compliance with any specific AI law, but provides externally verified evidence of a functioning AI management system - increasingly requested in procurement processes. Related standards worth tracking include ISO/IEC 42005 (AI system impact assessment guidance, published 2025) and ISO/IEC 42006 (requirements for bodies certifying AI management systems).</p>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">Practical Tip</div>
+                    <p>Even organizations not pursuing formal ISO 42001 certification can use its control structure as an internal audit checklist - it provides a comprehensive, independently developed baseline of what a mature AI management system should include.</p>
+                </div>`
+            },
+            {
+                title: 'Preparing for Regulatory Examination',
+                content: `<p>When a regulator, oversight body, or legislative committee requests information about an AI system, preparation determines whether the response is a routine formality or a crisis.</p>
+
+                <h3>Readiness Checklist</h3>
+                <ul>
+                    <li>Can you produce, within days rather than weeks, the technical documentation and risk assessment for any specific deployed AI system?</li>
+                    <li>Can you demonstrate - with dated records, not recollection - that required approvals were obtained before deployment?</li>
+                    <li>Do you have a designated point of contact and escalation process for regulatory inquiries, so requests don't stall while staff figure out who should respond?</li>
+                    <li>Have you conducted a mock audit or tabletop exercise recently, rather than only discovering documentation gaps during a real examination?</li>
+                </ul>
+
+                <div class="info-box example">
+                    <div class="info-box-title">The Cost of Being Unprepared</div>
+                    <p>Organizations that scramble to reconstruct documentation after a regulatory request often find gaps that look far worse under scrutiny than they would have if disclosed proactively during routine internal audit. Regulators generally respond more favorably to organizations that can show ongoing, systematic governance than to those producing polished documentation only after being asked.</p>
+                </div>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'What is the key difference between second-party and third-party AI audits?',
+                    options: [
+                        'Second-party audits are always more thorough',
+                        'Second-party audits are performed by a customer or partner, while third-party audits are performed by an independent accredited body',
+                        'Third-party audits are always free of charge',
+                        'There is no meaningful difference'
+                    ],
+                    correct: 1,
+                    explanation: 'Second-party audits involve a direct business relationship (e.g., a contracting authority auditing its vendor), while third-party audits use an independent accredited body, generally carrying the highest credibility.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'A colleague says "we don\'t need to worry about ISO 42001 certification since it isn\'t legally required in our jurisdiction." How would you respond?',
+                    sampleAnswer: 'While ISO 42001 certification may not be a legal mandate, it provides an externally verified, independently developed structure for AI management that is increasingly requested in procurement and can serve as strong evidence of due diligence if the organization faces regulatory scrutiny or litigation. Even without pursuing formal certification, using its control framework as an internal benchmark helps identify governance gaps before they become compliance failures - the value isn\'t limited to the certificate itself.'
+                }
+            ]
+        }
+    },
+    'course-3-6': {
+        title: 'Regulatory Assessment & Certification',
+        sections: [
+            {
+                title: 'Course Summary',
+                content: `<p>This regulatory module has built your capability to navigate the complex, fast-moving global AI compliance landscape:</p>
+
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li><strong>EU AI Act:</strong> A risk-tiered framework whose high-risk obligations, originally due August 2026, were postponed to December 2027 under the 2026 "Digital Omnibus" simplification - GPAI rules and the prohibited-practices ban are already in force today.</li>
+                    <li><strong>NIST AI RMF:</strong> A voluntary but globally influential framework organized around Govern-Map-Measure-Manage, extended by profiles for generative AI and emerging areas like cybersecurity.</li>
+                    <li><strong>Data Protection:</strong> GDPR's automated decision-making protections, DPIAs, and core principles (purpose limitation, minimization) apply directly to most consequential AI systems, alongside a growing patchwork of other regimes.</li>
+                    <li><strong>Global Landscape:</strong> US federal AI policy reversed sharply in 2025; state law (Colorado, Texas, California) is now the primary source of binding US AI obligations; agentic AI governance is an entirely new, still-maturing frontier.</li>
+                    <li><strong>Documentation & Auditing:</strong> Compliance must be demonstrable through technical documentation, impact assessments, and both internal and independent auditing - not merely asserted in policy.</li>
+                </ul>
+
+                <h3>Next Steps</h3>
+                <p>With this regulatory foundation, you're ready to proceed to:</p>
+                <ul>
+                    <li><strong>Course 4:</strong> AI Implementation & Operations - translating these compliance requirements into day-to-day operational practice</li>
+                    <li><strong>Course 5:</strong> Strategic Leadership & Governance - building organizational structures that sustain compliance over time</li>
+                </ul>`
+            }
+        ],
+        assessment: {
+            questions: [
+                {
+                    type: 'multiple-choice',
+                    question: 'As of today, which EU AI Act obligations are actually in force, given the 2026 Digital Omnibus delay?',
+                    options: [
+                        'Full high-risk system conformity assessment requirements',
+                        'The prohibited-practices ban, GPAI model rules, and Article 50 transparency duties - high-risk obligations are postponed to December 2027',
+                        'Nothing - the entire Act has been repealed',
+                        'Only requirements for systems developed after 2027'
+                    ],
+                    correct: 1,
+                    explanation: 'The 2026 Digital Omnibus postponed Annex III high-risk system obligations to December 2027 (and Annex I embedded systems to August 2028), but the prohibited-practices ban, GPAI rules, and transparency duties took effect on schedule and are already law.'
+                },
+                {
+                    type: 'multiple-choice',
+                    question: 'In the absence of comprehensive US federal AI legislation, what has become the primary source of binding AI-specific obligations for organizations operating in the United States?',
+                    options: [
+                        'International treaties',
+                        'State laws such as those in Colorado, Texas, and California',
+                        'Federal executive orders alone',
+                        'Industry self-regulation with no legal force'
+                    ],
+                    correct: 1,
+                    explanation: 'With no statutory federal preemption in place, state-level laws (Colorado\'s replacement act, Texas TRAIGA, California\'s AB 2013/SB 53/SB 942) are the primary binding AI-specific obligations in the US today.'
+                },
+                {
+                    type: 'free-text',
+                    question: 'Your organization is piloting an autonomous AI agent that can independently query systems and take corrective actions without a human approving each step. Which governance gap from this course is most directly relevant, and what would you recommend?',
+                    sampleAnswer: 'This is the agentic AI governance gap: most existing frameworks (NIST AI RMF, EU AI Act, older internal policies) were designed around systems that produce a single output for human review, not autonomous multi-step action. I would recommend treating this pilot with more conservative human oversight than the organization\'s standard policy requires - for example, requiring human approval before any action with real-world effect - until the organization has adapted its governance framework using emerging references like the UC Berkeley Agentic AI Risk-Management Standards Profile or Singapore IMDA\'s draft agentic AI framework, rather than assuming existing single-output governance policies are sufficient.'
                 }
             ]
         }
